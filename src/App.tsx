@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { IList } from './types';
+import List from './components/List';
+import Card from './components/Card';
+import Button from './components/Button';
+import './styles/app.scss';
+const  App = () => {
+  const [list, setList] = useState<IList[]>([
+    {id: 1, title : 'TO DO', cards: [{id: 1, title: 'Complete trello task', comment: 'JEEZ, just do it already'}]},
+    {id: 2, title : 'In Progress', cards: []},
+    {id: 3, title : 'Testing', cards: []},
+    {id: 4, title : 'Done', cards: []}
+  ]);
 
-function App() {
   return (
-    <>
-    </>
+    <div className='page-wrapper'>
+      {
+        list.map(list=> (
+          <List title = {list.title}>
+            {
+              list.cards.map(
+                card => (
+                  <Card title = {card.title}></Card>
+                )
+              )
+            }
+            <Button
+              borderRadius='3px'
+              backgroundColor='#5e6c84'
+              height='40px'
+              width='220px'
+              onClick={()=>{}}
+              ><span>Add task</span></Button>
+          </List>
+        ))
+      }
+    </div>
   );
 }
 
