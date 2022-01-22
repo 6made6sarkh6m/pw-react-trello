@@ -3,6 +3,7 @@ import '../../styles/list.scss';
 
 interface ListProps {
     title: string,
+    key: number
 }
 const List: FC<ListProps> = ({title, children}) => {
     return(

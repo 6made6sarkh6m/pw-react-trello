@@ -16,11 +16,11 @@ const  App = () => {
     <div className='page-wrapper'>
       {
         list.map(list=> (
-          <List title = {list.title}>
+          <List key = {list.id} title = {list.title}>
             {
               list.cards.map(
                 card => (
-                  <Card title = {card.title}></Card>
+                  <Card key ={card.id} title = {card.title}></Card>
                 )
               )
             }
@@ -30,7 +30,7 @@ const  App = () => {
               height='40px'
               width='220px'
               onClick={()=>{}}
-              ><span>Add task</span></Button>
+              ><samp>Add task</samp></Button>
           </List>
         ))
       }
