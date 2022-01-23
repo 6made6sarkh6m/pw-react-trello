@@ -31,7 +31,22 @@ const InputWrapper = styled.div`
     align-items: center;
     max-width: 350px;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
+`
+const UserNameInput = styled.input`
+    width: 70%;
+    border: 1px solid lightgrey;
+    font-family: monospace;
+    font-size: 1.5rem;
+    border-radius: 3px;
+`
+
+const Button = styled.button`
+    width: 20%;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+
 `
 type PopupProps = {
     setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -46,18 +61,18 @@ const Popup: FC <PopupProps> = ({setIsPresent}) => {
         if(username.length > 0) {
             UserService.setUsername(username);
             setIsPresent(true);
-            
-        }else{
-            alert('Enter your name!');
+        }else {
+            alert('Please, enter your name');
         }
+        
     }
     return (
         <PopupWrapper>
             <PopupInner>
-                <h5>What's your name?</h5>
+                <h5><samp>What's your name?</samp></h5>
                 <InputWrapper>
-                <input type='text' onChange={(e) =>handleChange(e.target.value)}></input>
-                <button onClick={() => saveUsername()}>Save</button>
+                <UserNameInput type='text' required onChange={(e) =>handleChange(e.target.value)}></UserNameInput>
+                <Button type='submit' onClick={() => saveUsername()}><samp>SAVE</samp></Button>
             </InputWrapper>
             </PopupInner>
             
