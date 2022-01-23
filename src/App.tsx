@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IList } from './types';
+import { IList} from './types';
 import List from './components/List';
 import Card from './components/Card';
 import Button from './components/Button';
@@ -19,13 +19,14 @@ const  App = () => {
   useEffect(() => {
     UserService.isLoggedIn() ? setIsPresent(true) : setIsPresent(false);
   }, [])
+  
 
   
     return (
       <>
       {
         !isPresent && (
-          <Popup></Popup>
+          <Popup setIsPresent={setIsPresent}></Popup>
         )
       }
       <div className='page-wrapper'>

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import {UserService} from '../../helpers/userService';
-
 const PopupWrapper = styled.div`
     position: fixed;
     top: 0;
@@ -34,14 +33,23 @@ const InputWrapper = styled.div`
     width: 100%;
     justify-content: space-around;
 `
-const Popup = () => {
+type PopupProps = {
+    setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Popup: FC <PopupProps> = ({setIsPresent}) => {
     const [username, setUsername] = useState<string>('');
 
     const handleChange = (value : string) => {
         setUsername(value);
     }
     const saveUsername = () => {
-        username.length > 0 ? UserService.setUsername(username) : alert('Enter your name!');
+        if(username.length > 0) {
+            UserService.setUsername(username);
+            setIsPresent(true);
+            
+        }else{
+            alert('Enter your name!');
+        }
     }
     return (
         <PopupWrapper>
