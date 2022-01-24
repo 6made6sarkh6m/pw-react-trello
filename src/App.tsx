@@ -36,7 +36,7 @@ const  App = () => {
       <PageWrapper>
         {
           list.map(list=> (
-            <List key = {list.id} title = {list.title}>
+            <List key = {list.id} title = {list.title} >
               {
                 list.cards.map(
                   card => (

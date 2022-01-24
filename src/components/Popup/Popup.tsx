@@ -71,8 +71,10 @@ const Popup: FC <PopupProps> = ({setIsPresent}) => {
             <PopupInner>
                 <h5><samp>What's your name?</samp></h5>
                 <InputWrapper>
-                <UserNameInput type='text' required onChange={(e) =>handleChange(e.target.value)}></UserNameInput>
+                <form onSubmit={() => saveUsername()}>
+                <UserNameInput type='text' required  onChange={(e) =>handleChange(e.target.value)}></UserNameInput>
                 <Button type='submit' onClick={() => saveUsername()}><samp>SAVE</samp></Button>
+                </form>
             </InputWrapper>
             </PopupInner>
             

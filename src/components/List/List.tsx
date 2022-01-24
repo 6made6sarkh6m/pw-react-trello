@@ -12,8 +12,13 @@ const ListWrapper = styled.div`
     align-items: center;
     flex-direction: column;`
 
-const ListTitle = styled.div`
+const ListTitle = styled.input`
     font-size: 1rem;
+    font-family: monospace;
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin: 0 0 5px 0;
     font-weight: 500;`
 
 
@@ -24,9 +29,10 @@ interface ListProps {
 const List: FC<ListProps> = ({title, children}) => {
     return(
         <ListWrapper>
-            <ListTitle>
-                <samp>{title}</samp>
+            <form>
+            <ListTitle defaultValue={title}>
             </ListTitle>
+            </form>
             {children}
         </ListWrapper>
     )
