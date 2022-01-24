@@ -1,7 +1,42 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import {UserService} from '../../helpers/userService';
-const PopupWrapper = styled.div`
+
+type PopupProps = {
+    setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Popup: FC <PopupProps> = ({setIsPresent}) => {
+    const [username, setUsername] = useState<string>('');
+
+    const handleChange = (value : string) => {
+        setUsername(value);
+    }
+    const saveUsername = () => {
+        if(username.length > 0) {
+            UserService.setUsername(username);
+            setIsPresent(true);
+        }else {
+            alert('Please, enter your name');
+        }
+        
+    }
+    return (
+        <Root>
+            <PopupInner>
+                <h5><samp>What's your name?</samp></h5>
+                <InputWrapper>
+                <form onSubmit={() => saveUsername()}>
+                <UserNameInput type='text' required  onChange={(e) =>handleChange(e.target.value)}></UserNameInput>
+                <Button type='submit' onClick={() => saveUsername()}><samp>SAVE</samp></Button>
+                </form>
+            </InputWrapper>
+            </PopupInner>
+            
+        </Root>
+    )
+}
+
+const Root = styled.div`
     position: fixed;
     top: 0;
     left: 0;
@@ -48,38 +83,4 @@ const Button = styled.button`
     cursor: pointer;
 
 `
-type PopupProps = {
-    setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const Popup: FC <PopupProps> = ({setIsPresent}) => {
-    const [username, setUsername] = useState<string>('');
-
-    const handleChange = (value : string) => {
-        setUsername(value);
-    }
-    const saveUsername = () => {
-        if(username.length > 0) {
-            UserService.setUsername(username);
-            setIsPresent(true);
-        }else {
-            alert('Please, enter your name');
-        }
-        
-    }
-    return (
-        <PopupWrapper>
-            <PopupInner>
-                <h5><samp>What's your name?</samp></h5>
-                <InputWrapper>
-                <form onSubmit={() => saveUsername()}>
-                <UserNameInput type='text' required  onChange={(e) =>handleChange(e.target.value)}></UserNameInput>
-                <Button type='submit' onClick={() => saveUsername()}><samp>SAVE</samp></Button>
-                </form>
-            </InputWrapper>
-            </PopupInner>
-            
-        </PopupWrapper>
-    )
-}
-
 export default Popup;

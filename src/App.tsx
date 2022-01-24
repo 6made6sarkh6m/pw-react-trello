@@ -2,17 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { IList} from './types';
 import List from './components/List';
 import Card from './components/Card';
-import Button from './components/Button';
 import styled from 'styled-components';
 import {UserService} from './helpers/userService';
 import { StorageService } from './helpers/storageService';
 import { mockData } from './utils/mock';
 import Popup from './components/Popup';
 
-const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`
+
 const  App = () => {
 
   const [list, setList] = useState<IList[]>(
@@ -44,13 +40,6 @@ const  App = () => {
                   )
                 )
               }
-              <Button
-                borderRadius='3px'
-                backgroundColor='#5e6c84'
-                height='40px'
-                width='220px'
-                onClick={()=>{}}
-                ><samp>Add task</samp></Button>
             </List>
           ))
         }
@@ -59,6 +48,11 @@ const  App = () => {
     );
   }
   
-  
+  const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 1440px;
+  padding: 20px;
+`
 
 export default App;
