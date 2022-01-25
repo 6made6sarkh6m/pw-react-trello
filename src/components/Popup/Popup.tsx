@@ -7,29 +7,32 @@ type PopupProps = {
 }
 const Popup: FC <PopupProps> = ({setIsPresent}) => {
     const [username, setUsername] = useState<string>('');
+    const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
-    const handleChange = (value : string) => {
-        setUsername(value);
-    }
     const saveUsername = () => {
-        if(username.length > 0) {
+        if(username.length > 0 && !UserService.patternValidation(username)) {
             UserService.setUsername(username);
             setIsPresent(true);
         }else {
-            alert('Please, enter your name');
+            setIsNotValid(true);
         }
         
     }
     return (
         <Root>
             <PopupInner>
-                <h5><samp>What's your name?</samp></h5>
+            <PopupTitle>What's your name?</PopupTitle>
                 <InputWrapper>
                 <form onSubmit={() => saveUsername()}>
-                <UserNameInput type='text' required  onChange={(e) =>handleChange(e.target.value)}></UserNameInput>
-                <Button type='submit' onClick={() => saveUsername()}><samp>SAVE</samp></Button>
+                <UserNameInput placeholder='Type your name!' required  onChange={(e) =>setUsername(e.target.value)}></UserNameInput>
+                <Button type='submit'><samp>SAVE</samp></Button>
                 </form>
             </InputWrapper>
+            {
+                isNotValid && (
+                    <ErrorTitle>Please, type your name!</ErrorTitle>
+                )
+            }
             </PopupInner>
             
         </Root>
@@ -41,7 +44,8 @@ const Root = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    max-height: 1080px;
     background-color: #000000b5;
     display: flex;
     justify-content: center;
@@ -53,9 +57,9 @@ const PopupInner = styled.div`
     padding: 24px;
     max-width: 400px;
     width: 100%;
-    background-color: #ebecf0;
+    background-color: ${props => props.color || props.theme.containerColors.listWrapper};
     border-radius: 3px;
-    box-shadow: 0 1px 0 #091e4240;
+    box-shadow: ${props => props.color || props.theme.containerColors.boxShadow};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,18 +73,55 @@ const InputWrapper = styled.div`
     justify-content: space-between;
 `
 const UserNameInput = styled.input`
-    width: 70%;
-    border: 1px solid lightgrey;
-    font-family: monospace;
-    font-size: 1.5rem;
+    font-family: sans-serif;
+    background: ${props => props.color || props.theme.containerColors.whiteBackground};
+    border: none;
     border-radius: 3px;
+    resize: none;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 10px;
+    margin: 10px;
+    ::placeholder {
+        font-weight: 400;
+        color: ${props => props.color || props.theme.containerColors.placeholder};
+    }
+
+    &:focus {
+        outline: none;
+    }
+`
+const PopupTitle = styled.h2`
+    font-family: sans-serif;
+    color: ${props => props.color || props.theme.containerColors.listTitle};
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 600;
+    min-height: 20px;
+    padding: 8px;
+    margin: 0;`
+
+const ErrorTitle = styled.p`
+    font-family: sans-serif;
+    color: ${props => props.color || props.theme.containerColors.error};
+    font-size: 15px;
+    margin: 0;
+    min-height: 20px;
+    }
 `
 
 const Button = styled.button`
-    width: 20%;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 15px;
+    font-family: sans-serif;
     cursor: pointer;
-
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: none;
+    outline: 0;
+    background-color: #0079bf;
+    margin: 10px 0px;
+    box-shadow: 0px 2px 2px lightgray;
+    transition: ease background-color 250ms;
 `
 export default Popup;

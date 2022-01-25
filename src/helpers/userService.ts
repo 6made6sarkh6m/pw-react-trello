@@ -5,11 +5,15 @@ export class UserService {
     }
 
     static getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user') || '');
+        return (localStorage.getItem('user') || '');
     }
 
     static setUsername(username : string) {
         localStorage.setItem('user', username);
+    }
+
+    static patternValidation(value : string) {
+        return /\s/g.test(value);
     }
 }
 

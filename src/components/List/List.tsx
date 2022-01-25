@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { StorageService } from '../../helpers/storageService';
 import useClickOutside from '../../hooks/useClickOutside';
 interface ListProps {
     title: string,
@@ -9,7 +10,7 @@ interface ListProps {
 interface InputProps {
    readonly isEditing: boolean;
 }
-const List: FC<ListProps> = ({title, children}) => {
+const List: FC<ListProps> = ({key, title, children}) => {
 
     const [currentTitle, setCurrentTitle] = useState<string>(title);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -35,6 +36,7 @@ const List: FC<ListProps> = ({title, children}) => {
     const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if ( e.key === 'Enter' ) {
             e.preventDefault();
+            StorageService.updateList(key, currentTitle);
             setIsEditing(false);
         }
 
@@ -75,7 +77,7 @@ const List: FC<ListProps> = ({title, children}) => {
 const ListWrapper = styled.div`
     min-width: 272px;
     max-width: 272px;
-    background-color:#ebecf0;
+    background: ${props => props.color || props.theme.containerColors.listWrapper};
     border-radius: 3px;
     margin-right: 12px;
     margin-bottom: 12px;
@@ -88,19 +90,10 @@ const ListHeader = styled.div`
     position: relative;
     display: flex;
 `
-// const ListTitle = styled.input`
-//     font-size: 1rem;
-//     font-family: monospace;
-//     border: none;
-//     background: none;
-//     cursor: pointer;
-//     margin: 0 0 5px 0;
-//     font-weight: 500;`
-
 const ListTitle = styled.h2`
     display: none;
     text-align: start;
-    color: #172b4d;
+    color: ${props => props.color || props.theme.containerColors.listTitle};
     font-size: 14px;
     line-height: 14px;
     font-weight: 600;
@@ -123,10 +116,10 @@ const EditTitleInput = styled.textarea<InputProps>`
     font-family: sans-serif;
     width: 100%;
     color: #172b4d;
-    background: ${({ isEditing }) => (isEditing ? "#fff" : "transparent") };
+    background: ${({ isEditing }) => (isEditing ? (props => props.color || props.theme.containerColors.whiteBackground) : "transparent") };
     border: none;
     border-radius: 3px;
-    box-shadow: ${({ isEditing}) => (isEditing ? "0 1px 0 #091e4240" : "none")};
+    box-shadow: ${({ isEditing}) => (isEditing ? (props => props.color || props.theme.containerColors.boxShadow) : "none")};
     resize: none;
     font-size: 14px;
     line-height: 20px;
@@ -139,7 +132,7 @@ const EditTitleInput = styled.textarea<InputProps>`
 
   ::placeholder {
     font-weight: 400;
-    color: #838da1;
+    color: ${props => props.color || props.theme.containerColors.placeholder};
   }
 
   &:focus {

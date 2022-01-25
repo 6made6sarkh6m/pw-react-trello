@@ -1,5 +1,3 @@
-import React from 'react';
-import Card from './Card';
 
 
-export default Card;
+export {default as Card} from './Card';

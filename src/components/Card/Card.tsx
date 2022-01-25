@@ -1,15 +1,7 @@
-import React from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
+import useClickOutside from '../../hooks/useClickOutside';
 
-
-const CardItem = styled.div`
-    background-color: #fff;
-    min-width: 220px;
-    min-height: 50px;
-    box-shadow: 0 1px 0 #091e4240;
-    cursor: pointer;
-    padding: 3px 0px 0px 10px;
-    margin-bottom: 10px;`
 
 
 interface CardProps {
@@ -17,11 +9,118 @@ interface CardProps {
     key : number
 }
 const Card = ({title} : CardProps) => {
+
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [currentTitle, setCurrentTitle] = useState<string>(title);
+
+    const ref = useRef<HTMLTextAreaElement>();
+
+    useClickOutside(ref, () => {
+        if (isEditing) {
+          setIsEditing(false);
+        }
+      });
+    
+      useEffect(() => {
+        if (isEditing) {
+          ref?.current?.focus?.();
+          ref?.current?.select?.();
+        }
+      }, [isEditing]);
+
+      
+    const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if(currentTitle) {
+                setIsEditing(false);
+            }
+        }
+        if (e.key === 'Escape') {
+            setIsEditing(false);
+            setCurrentTitle(title);
+        }
+    }
     return (
-        <CardItem className='card'>
-            <samp>{title}</samp>
+        <CardItem>
+            { !isEditing && (
+                <>
+                <EditTitleContainer
+                    onClick={() => {setIsEditing(true);}}>
+                </EditTitleContainer>
+                <CardTitle>
+                    {currentTitle}
+            </CardTitle>
+                </>
+            )}
+            {isEditing && (
+                <CardTitleInput
+                    ref = {ref as any}
+                    rows = {1}
+                    value = {currentTitle}
+                    spellCheck = {false}
+                    onChange={(e) => setCurrentTitle(e.target.value)}
+                    onKeyDown={onKeyDown}>
+                </CardTitleInput>
+            )}
         </CardItem>
     )
 }
+
+const CardItem = styled.div`
+    position: relative;
+    display: flex;
+    background-color: ${props => props.color || props.theme.containerColors.whiteBackground};
+    width: 90%;
+    min-height: 50px;
+    box-shadow: ${props => props.color || props.theme.containerColors.boxShadow};
+    cursor: pointer;
+    padding: 6px 8px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+`
+const CardTitle = styled.span`
+    font-size: 14px;
+    flex-grow: 1;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: start;
+    word-break: break-all;
+    font-family: sans-serif;
+`
+const CardTitleInput = styled.textarea`
+    font-family: sans-serif;
+    width: 100%;
+    background: ${props => props.color || props.theme.containerColors.whiteBackground};
+    border: none;
+    border-radius: 3px;
+    resize: none;
+    font-size: 14px;
+    font-weight: 400;
+    min-height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    display: block;
+    flex-grow: 1;
+
+    ::placeholder {
+        font-weight: 400;
+        color: ${props => props.color || props.theme.containerColors.placeholder};
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const EditTitleContainer = styled.div`
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+`
 
 export default Card;
