@@ -3,20 +3,29 @@ import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import AddIcon from "ui-components/AddIcon";
 import { CardsData } from "App";
-import { Card } from "../Card";
+import Card, { NewCard } from "../Card";
 interface ListProps {
   key: string;
   title: string;
   listId: string;
   cards: CardsData;
   updateList: (listId: string, title: string) => void;
+  addCard: (listId: string, cardTitle: string) => void;
 }
 
 interface InputProps {
   readonly isEditing: boolean;
 }
-const List: FC<ListProps> = ({title, children, updateList, listId, cards}) => {
+const List: FC<ListProps> = ({
+  title,
+  children,
+  updateList,
+  listId,
+  cards,
+  addCard,
+}) => {
   const [currentTitle, setCurrentTitle] = useState<string>(title);
+  const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const ref = useRef<HTMLTextAreaElement>();
@@ -40,7 +49,7 @@ const List: FC<ListProps> = ({title, children, updateList, listId, cards}) => {
     if (e.key === "Enter") {
       e.preventDefault();
       setIsEditing(false);
-      updateList(listId, currentTitle)
+      updateList(listId, currentTitle);
     }
 
     if (e.key === "Escape") {
@@ -48,6 +57,10 @@ const List: FC<ListProps> = ({title, children, updateList, listId, cards}) => {
       setIsEditing(false);
     }
   };
+
+  const onCancelAddingCard = () => {
+    setIsAddingCard(false);
+  }
   return (
     <ListWrapper>
       <ListHeader>
@@ -71,21 +84,28 @@ const List: FC<ListProps> = ({title, children, updateList, listId, cards}) => {
           onKeyDown={handleonKeyDown}
         ></EditTitleInput>
       </ListHeader>
-      {
-        Object.keys(cards).map((card) => {
-          if(cards[card].listId === listId ) {
-            return (
-              <Card title={cards[card].cardTitle} key = {cards[card].cardId}></Card>
-            )
-          }
-        })
-      }
-      <AddCardButton>
-        <IconContainer>
-          <AddIcon></AddIcon>
-        </IconContainer>
-        <span>Add card</span>
-      </AddCardButton>
+      {Object.keys(cards).map((card) => {
+        if (cards[card].listId === listId) {
+          return (
+            <Card listId = {listId} title={cards[card].cardTitle} key={cards[card].cardId}></Card>
+          );
+        }
+      })}
+      {isAddingCard && (
+        <>
+      <NewCard
+      onCancelAddingCard={onCancelAddingCard}
+      addCard={addCard}
+      listId={listId}></NewCard>
+      </>)}
+      {!isAddingCard && (
+        <AddCardButton onClick={() => setIsAddingCard(!isAddingCard)}>
+          <IconContainer>
+            <AddIcon></AddIcon>
+          </IconContainer>
+          <span>Add card</span>
+        </AddCardButton>
+      )}
     </ListWrapper>
   );
 };

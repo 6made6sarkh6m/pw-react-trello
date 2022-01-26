@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import {v4 as uuid} from 'uuid'
 import { UserService } from "./helpers/userService";
 import { StorageService } from "./helpers/storageService";
 import Board from './components/Board/Board'
@@ -31,17 +32,31 @@ const App = () => {
     StorageService.setList(newList);
     setList(newList);
   }
+  const setCardData = (newCardList: CardsData) => {
+    StorageService.setCards(newCardList);
+    setCard(newCardList);
+  }
   const updateListTittle = (listId: string, title: string) => {
     const cloneList = {...lists};
     cloneList[listId] = {listId, title}
     setListData(cloneList);
+  }
+  const addCard = (listId: string, cardTitle: string) => {
+    const cloneCards = {...cards};
+    const newCardId = uuid();
+    cloneCards[newCardId] = {
+      cardId: newCardId,
+      cardTitle: cardTitle,
+      listId: listId
+    };
+    setCardData(cloneCards);
   }
   return (
     <>
       {!isPresent && <Popup setIsPresent={setIsPresent}></Popup>}
       <Header username={UserService.getCurrentUser()}></Header>
       <PageWrapper>
-       <Board lists={lists} cards={cards} updateList={updateListTittle}></Board>
+       <Board lists={lists} cards={cards} updateList={updateListTittle} addCard={addCard}></Board>
       </PageWrapper>
     </>
   );

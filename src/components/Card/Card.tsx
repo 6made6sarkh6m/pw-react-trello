@@ -1,46 +1,66 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "ui-components/DeleteIcon";
 import useClickOutside from "../../hooks/useClickOutside";
 
 interface CardProps {
+  listId: string;
   title: string;
   key: string;
 }
-const Card = ({ title }: CardProps) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [currentTitle, setCurrentTitle] = useState<string>(title);
+
+interface AddCardProps {
+  listId: string;
+  onCancelAddingCard: () => void;
+  addCard: (listId: string, currentTitle: string) => void;
+}
+export const NewCard: FC<AddCardProps> = ({ listId, onCancelAddingCard, addCard}) => {
+  const [currentTitle, setCurrentTitle] = useState<string>("");
 
   const ref = useRef<HTMLTextAreaElement>();
 
-  useClickOutside(ref, () => {
-    if (isEditing) {
-      setIsEditing(false);
-    }
-  });
-
   useEffect(() => {
-    if (isEditing) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
+    if (ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = ref.current.scrollHeight + "px";
     }
-  }, [isEditing]);
+  }, [currentTitle]);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       if (currentTitle) {
-        setIsEditing(false);
+        console.log(currentTitle);
       }
     }
-    if (e.key === "Escape") {
-      setIsEditing(false);
-      setCurrentTitle(title);
-    }
   };
+
+  const onAddCard = () => {
+    addCard(listId, currentTitle);
+    onCancelAddingCard();
+  }
+  return (
+    <>
+      <CardItem>
+        <CardTitleInput placeholder="Set card name" onChange={(e)=> setCurrentTitle(e.target.value)}></CardTitleInput>
+      </CardItem>
+      <ButtonContainer>
+        <AddNewCardButton onClick={()=> onAddCard()}>
+          <span>Add card</span>
+        </AddNewCardButton>
+        <CancelButton onClick={()=> onCancelAddingCard()}>
+          <span>Cancel</span>
+        </CancelButton>
+      </ButtonContainer>
+    </>
+  );
+};
+const Card = ({ title }: CardProps) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
   return (
     <CardItem>
-      <CardTitle>{currentTitle}</CardTitle>
+      <CardTitle>{title}</CardTitle>
       <DeleteButton>
         <DeleteIcon></DeleteIcon>
       </DeleteButton>
@@ -107,21 +127,73 @@ const EditTitleContainer = styled.div`
 `;
 
 const DeleteButton = styled.button`
-align-self: flex-start;
-position: relative;
-color: ${(props) => props.color || props.theme.containerColors.buttonText};
-border: none;
-background-color: ${(props) => props.color || props.theme.buttons.transparent};
-padding: 4px;
-border-radius: 3px;
-margin-top: -2px;
-margin-right: -4px;
-opacity: 0.8;
+  align-self: flex-start;
+  position: relative;
+  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  border: none;
+  background-color: ${(props) =>
+    props.color || props.theme.buttons.transparent};
+  padding: 4px;
+  border-radius: 3px;
+  margin-top: -2px;
+  margin-right: -4px;
+  opacity: 0.8;
 
-:hover {
-  opacity: 1;
-  color: ${(props) => props.color || props.theme.containerColors.listTitle};
-  background-color: rgba(9, 30, 66, 0.08);
-}
-`
+  :hover {
+    opacity: 1;
+    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    background-color: rgba(9, 30, 66, 0.08);
+  }
+`;
+const AddNewCardButton = styled.button`
+  width: 40%;
+  font-size: 15px;
+  font-family: sans-serif;
+  cursor: pointer;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: none;
+  outline: 0;
+  background-color: #0079bf;
+  margin: 10px 0px;
+  box-shadow: 0px 2px 2px lightgray;
+  transition: ease background-color 250ms;
+  &:hover,
+  &:focus {
+    outline: none;
+    background-color: rgba(rgba(0, 121, 191, 0.08));
+    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  }
+`;
+const CancelButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin: 10px 0px;
+  padding: 5px 15px;
+  width: 30%;
+  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  background-color: ${(props) =>
+    props.color || props.theme.buttons.transparent};
+  border-radius: 3px;
+  font-size: 14px;
+  cursor: pointer;
+  & > span {
+    line-height: 20px;
+    font-family: sans-serif;
+  }
+  &:hover,
+  &:focus {
+    outline: none;
+    background-color: rgba(9, 30, 66, 0.08);
+    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  }
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 export default Card;

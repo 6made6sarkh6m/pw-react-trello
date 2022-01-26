@@ -32,4 +32,8 @@ export class StorageService {
   static setList(data: any) {
     localStorage.setItem("lists", JSON.stringify(data));
   }
+
+  static setCards(data: any) {
+    localStorage.setItem("cards", JSON.stringify(data));
+  }
 }

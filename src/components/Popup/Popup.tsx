@@ -127,5 +127,11 @@ const Button = styled.button`
   margin: 10px 0px;
   box-shadow: 0px 2px 2px lightgray;
   transition: ease background-color 250ms;
+  &:hover,
+  &:focus {
+    outline: none;
+    background-color: rgba(rgba(0, 121, 191, .08));
+    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  }
 `;
 export default Popup;
