@@ -1,20 +1,35 @@
-import { mockData } from "../utils/mock";
+import { lists, cards, comments } from "../utils/mock";
 export class StorageService {
-    
-    static hasToDolists() {
-        return !!localStorage.getItem('lists');
+  static hasToDolists() {
+    return !!localStorage.getItem("lists");
+  }
+  static hasCards() {
+    return !!localStorage.getItem("cards");
+  }
+  static hasComments() {
+    return !!localStorage.getItem("comments");
+  }
+  static getToDoLists() {
+    if (!this.hasToDolists()) {
+      localStorage.setItem("lists", JSON.stringify(lists));
     }
-    static getToDoLists() {
-        if(!this.hasToDolists()) {
-            localStorage.setItem('lists', JSON.stringify(mockData))
-        }
-        return JSON.parse(localStorage.getItem('lists') || '');
+    return JSON.parse(localStorage.getItem("lists") || "");
+  }
+
+  static getCards() {
+    if(!this.hasCards()) {
+      localStorage.setItem("cards", JSON.stringify(cards));
     }
-
-    static updateList(key: number, newTitle: string) {
-        const listItems = this.getToDoLists();
-
+    return JSON.parse(localStorage.getItem("cards") || "");
+  }
+  static getComments() {
+    if(!this.hasComments()) {
+      localStorage.setItem("comments", JSON.stringify(comments));
     }
-    
+    return JSON.parse(localStorage.getItem("comments") || "");
+  }
 
+  static setList(data: any) {
+    localStorage.setItem("lists", JSON.stringify(data));
+  }
 }

@@ -1,6 +1,33 @@
-export const mockData = [
-    {id: 1, title : 'TO DO', cards: [{id: 1, title: 'Complete trello task', comment: 'JEEZ, just do it already'}]},
-    {id: 2, title : 'In Progress', cards: []},
-    {id: 3, title : 'Testing', cards: []},
-    {id: 4, title : 'Done', cards: []}
-]
+export const lists = {
+  "1": {
+    listId: "1",
+    listTitle: "To do",
+  },
+  "2": {
+    listId: "2",
+    listTitle: "In prgress",
+  },
+  "3": {
+    listId: "3",
+    listTitle: "Testing",
+  },
+  "4": {
+    listId: "4",
+    listTitle: "Done",
+  },
+};
+
+export const cards = {
+  "1": {
+    cardId: "1",
+    listId: "1",
+    cardTitle: "Complete trello task",
+  },
+};
+
+export const comments = {
+  "1": {
+    commentId: "1",
+    cardId: "1",
+  },
+};
