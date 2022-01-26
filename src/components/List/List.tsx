@@ -1,14 +1,16 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
+import { UserService } from "../../helpers/userService";
 import AddIcon from "ui-components/AddIcon";
-import { CardsData } from "App";
+import { CardsData, CommentsData } from "App";
 import Card, { NewCard } from "../Card";
 interface ListProps {
   key: string;
   title: string;
   listId: string;
   cards: CardsData;
+  comments: CommentsData;
   updateList: (listId: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
   deleteCard: (cardId: string) => void;
@@ -22,6 +24,7 @@ const List: FC<ListProps> = ({
   updateList,
   listId,
   cards,
+  comments,
   addCard,
   deleteCard,
 }) => {
@@ -49,8 +52,10 @@ const List: FC<ListProps> = ({
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      setIsEditing(false);
-      updateList(listId, currentTitle);
+      if (currentTitle.length != 0 && !UserService.patternValidation(currentTitle)) {
+        setIsEditing(false);
+        updateList(listId, currentTitle);
+      }
     }
 
     if (e.key === "Escape") {
@@ -92,8 +97,9 @@ const List: FC<ListProps> = ({
               listId={listId}
               title={cards[card].cardTitle}
               key={cards[card].cardId}
-              cardId = {cards[card].cardId}
+              cardId={cards[card].cardId}
               deleteCard={deleteCard}
+              comments={comments}
             ></Card>
           );
         }

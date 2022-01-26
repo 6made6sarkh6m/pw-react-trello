@@ -17,13 +17,21 @@ export interface CardProps {
   listId: string;
   cardTitle: string;
 }
+export interface CommentProps {
+  commentId: string;
+  cardId: string;
+  author: string;
+  comment: string;
+
+}
 export type DeskData = Record<string, ListProps>;
 export type CardsData = Record<string, CardProps>;
+export type CommentsData = Record<string, CommentProps>;
 const App = () => {
   const [isPresent, setIsPresent] = useState<boolean>(false);
   const [lists, setList] = useState<DeskData>(StorageService.getToDoLists());
   const [cards, setCard] = useState<CardsData>(StorageService.getCards());
-  const [comments, setComment] = useState(StorageService.getComments());
+  const [comments, setComment] = useState<CommentsData>(StorageService.getComments());
   useEffect(() => {
     UserService.isLoggedIn() ? setIsPresent(true) : setIsPresent(false);
   }, [isPresent]);
@@ -62,6 +70,7 @@ const App = () => {
       <Header username={UserService.getCurrentUser()}></Header>
       <PageWrapper>
         <Board
+          comments={comments}
           lists={lists}
           cards={cards}
           updateList={updateListTittle}

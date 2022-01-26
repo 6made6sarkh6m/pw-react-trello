@@ -1,14 +1,15 @@
 import React, { useRef, useState, useEffect, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "ui-components/DeleteIcon";
-import useClickOutside from "../../hooks/useClickOutside";
-
+import CommentIcon from "ui-components/CommentIcon";
+import {CommentsData} from '../../App';
 interface CardProps {
   listId: string;
   title: string;
   key: string;
   cardId: string;
-  deleteCard: (cardId: string) => void; 
+  deleteCard: (cardId: string) => void;
+  comments: CommentsData;
 }
 
 interface AddCardProps {
@@ -16,7 +17,21 @@ interface AddCardProps {
   onCancelAddingCard: () => void;
   addCard: (listId: string, currentTitle: string) => void;
 }
-export const NewCard: FC<AddCardProps> = ({ listId, onCancelAddingCard, addCard}) => {
+interface CardViewProps {
+  cardId: string;
+  title: string;
+  comments: CommentsData;
+}
+export const CardView:FC<CardViewProps> = () => {
+  return(
+    <></>
+  )
+}
+export const NewCard: FC<AddCardProps> = ({
+  listId,
+  onCancelAddingCard,
+  addCard,
+}) => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
   const ref = useRef<HTMLTextAreaElement>();
@@ -32,40 +47,54 @@ export const NewCard: FC<AddCardProps> = ({ listId, onCancelAddingCard, addCard}
     if (e.key === "Enter") {
       e.preventDefault();
       if (currentTitle) {
-        console.log(currentTitle);
+        addCard(listId, currentTitle);
+        onCancelAddingCard();
       }
+    }
+    if(e.key === "Escape") {
+      onCancelAddingCard();
     }
   };
 
   const onAddCard = () => {
     addCard(listId, currentTitle);
     onCancelAddingCard();
-  }
+  };
   return (
     <>
       <CardItem>
-        <CardTitleInput placeholder="Set card name" onChange={(e)=> setCurrentTitle(e.target.value)}></CardTitleInput>
+        <CardTitleInput
+          placeholder="Set card name"
+          onKeyDown={handleonKeyDown}
+          onChange={(e) => setCurrentTitle(e.target.value)}
+        ></CardTitleInput>
+
       </CardItem>
       <ButtonContainer>
-        <AddNewCardButton onClick={()=> onAddCard()}>
+        <AddNewCardButton onClick={() => onAddCard()}>
           <span>Add card</span>
         </AddNewCardButton>
-        <CancelButton onClick={()=> onCancelAddingCard()}>
+        <CancelButton onClick={() => onCancelAddingCard()}>
           <span>Cancel</span>
         </CancelButton>
       </ButtonContainer>
     </>
   );
 };
-const Card = ({ title, cardId, deleteCard }: CardProps) => {
+const Card = ({ title, cardId, deleteCard, comments }: CardProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
   return (
     <CardItem>
       <CardTitle>{title}</CardTitle>
-      <DeleteButton onClick={()=> deleteCard(cardId)}>
+      <DeleteButton onClick={() => deleteCard(cardId)}>
         <DeleteIcon></DeleteIcon>
       </DeleteButton>
+      <CommentCounter>
+        <CommentIcon></CommentIcon>
+      {
+        Object.values(comments).filter(comment=> comment.cardId === cardId).length
+      }
+        </CommentCounter>
     </CardItem>
   );
 };
@@ -198,4 +227,12 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+const CommentCounter = styled.span`
+  font-family: monospace;
+  font-size: 13px;
+  position: absolute;
+  margin-left: 10px; 
+  align-self: flex-end;
+  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+`
 export default Card;

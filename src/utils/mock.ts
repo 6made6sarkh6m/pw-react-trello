@@ -29,5 +29,7 @@ export const comments = {
   "1": {
     commentId: "1",
     cardId: "1",
+    author: 'John Doe',
+    comment: 'Lorem Ipsum'
   },
 };
