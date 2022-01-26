@@ -11,6 +11,7 @@ interface ListProps {
   cards: CardsData;
   updateList: (listId: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
+  deleteCard: (cardId: string) => void;
 }
 
 interface InputProps {
@@ -18,11 +19,11 @@ interface InputProps {
 }
 const List: FC<ListProps> = ({
   title,
-  children,
   updateList,
   listId,
   cards,
   addCard,
+  deleteCard,
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>(title);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
@@ -60,7 +61,7 @@ const List: FC<ListProps> = ({
 
   const onCancelAddingCard = () => {
     setIsAddingCard(false);
-  }
+  };
   return (
     <ListWrapper>
       <ListHeader>
@@ -87,17 +88,25 @@ const List: FC<ListProps> = ({
       {Object.keys(cards).map((card) => {
         if (cards[card].listId === listId) {
           return (
-            <Card listId = {listId} title={cards[card].cardTitle} key={cards[card].cardId}></Card>
+            <Card
+              listId={listId}
+              title={cards[card].cardTitle}
+              key={cards[card].cardId}
+              cardId = {cards[card].cardId}
+              deleteCard={deleteCard}
+            ></Card>
           );
         }
       })}
       {isAddingCard && (
         <>
-      <NewCard
-      onCancelAddingCard={onCancelAddingCard}
-      addCard={addCard}
-      listId={listId}></NewCard>
-      </>)}
+          <NewCard
+            onCancelAddingCard={onCancelAddingCard}
+            addCard={addCard}
+            listId={listId}
+          ></NewCard>
+        </>
+      )}
       {!isAddingCard && (
         <AddCardButton onClick={() => setIsAddingCard(!isAddingCard)}>
           <IconContainer>

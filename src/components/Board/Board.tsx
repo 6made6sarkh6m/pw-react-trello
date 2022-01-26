@@ -6,9 +6,10 @@ interface BoardProps {
   cards: CardsData;
   updateList: (listId: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
+  deleteCard: (cardId: string) => void;
 }
 
-const Board: FC<BoardProps> = ({ lists, updateList, cards, addCard }) => {
+const Board: FC<BoardProps> = ({ lists, updateList, cards, addCard, deleteCard }) => {
   return (
     <>
       {Object.keys(lists).map((list) => {
@@ -20,6 +21,7 @@ const Board: FC<BoardProps> = ({ lists, updateList, cards, addCard }) => {
             title={lists[list].title}
             updateList={updateList}
             addCard={addCard}
+            deleteCard={deleteCard}
           ></List>
         );
       })}

@@ -7,6 +7,8 @@ interface CardProps {
   listId: string;
   title: string;
   key: string;
+  cardId: string;
+  deleteCard: (cardId: string) => void; 
 }
 
 interface AddCardProps {
@@ -55,13 +57,13 @@ export const NewCard: FC<AddCardProps> = ({ listId, onCancelAddingCard, addCard}
     </>
   );
 };
-const Card = ({ title }: CardProps) => {
+const Card = ({ title, cardId, deleteCard }: CardProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   return (
     <CardItem>
       <CardTitle>{title}</CardTitle>
-      <DeleteButton>
+      <DeleteButton onClick={()=> deleteCard(cardId)}>
         <DeleteIcon></DeleteIcon>
       </DeleteButton>
     </CardItem>
