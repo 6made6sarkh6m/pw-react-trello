@@ -3,26 +3,24 @@ import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 import { UserService } from "./helpers/userService";
 import { StorageService } from "./helpers/storageService";
-import Board from "./components/Board/Board";
+import { Board } from "components/Board";
 import Popup from "./components/Popup";
 import Header from "./components/Header/Header";
-import { lists as listData } from "./utils/mock";
 
 export interface ListProps {
-  listId: string;
-  title: string;
+  id: string;
+  listTitle: string;
 }
 export interface CardProps {
-  cardId: string;
+  id: string;
   listId: string;
   cardTitle: string;
 }
 export interface CommentProps {
-  commentId: string;
+  id: string;
   cardId: string;
   author: string;
   comment: string;
-
 }
 export type DeskData = Record<string, ListProps>;
 export type CardsData = Record<string, CardProps>;
@@ -31,9 +29,13 @@ const App = () => {
   const [isPresent, setIsPresent] = useState<boolean>(false);
   const [lists, setList] = useState<DeskData>(StorageService.getToDoLists());
   const [cards, setCard] = useState<CardsData>(StorageService.getCards());
-  const [comments, setComment] = useState<CommentsData>(StorageService.getComments());
+  const [comments, setComment] = useState<CommentsData>(
+    StorageService.getComments()
+  );
   useEffect(() => {
-    UserService.isLoggedIn() ? setIsPresent(true) : setIsPresent(false);
+    UserService.getCurrentUser() !== ""
+      ? setIsPresent(true)
+      : setIsPresent(false);
   }, [isPresent]);
 
   const setListData = (newList: DeskData) => {
@@ -44,24 +46,24 @@ const App = () => {
     StorageService.setCards(newCardList);
     setCard(newCardList);
   };
-  const updateListTittle = (listId: string, title: string) => {
+  const updateListTittle = (id: string, listTitle: string) => {
     const cloneList = { ...lists };
-    cloneList[listId] = { listId, title };
+    cloneList[id] = { id, listTitle };
     setListData(cloneList);
   };
   const addCard = (listId: string, cardTitle: string) => {
     const cloneCards = { ...cards };
     const newCardId = uuid();
     cloneCards[newCardId] = {
-      cardId: newCardId,
+      id: newCardId,
       cardTitle: cardTitle,
       listId: listId,
     };
     setCardData(cloneCards);
   };
-  const deleteCard = (cardId: string) => {
+  const deleteCard = (id: string) => {
     const cloneCards = { ...cards };
-    delete cloneCards[cardId];
+    delete cloneCards[id];
     setCardData(cloneCards);
   };
   return (
@@ -75,7 +77,7 @@ const App = () => {
           cards={cards}
           updateList={updateListTittle}
           addCard={addCard}
-          deleteCard = {deleteCard}
+          deleteCard={deleteCard}
         ></Board>
       </PageWrapper>
     </>
@@ -84,6 +86,7 @@ const App = () => {
 
 const PageWrapper = styled.div`
   display: flex;
+  align-items: flex-start;
   width: 1440px;
   padding: 20px;
 `;

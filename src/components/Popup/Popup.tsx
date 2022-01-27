@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { UserService } from "../../helpers/userService";
+import { patternValidation } from "utils/validate";
+import { UserService } from "helpers/userService";
 
 type PopupProps = {
   setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +11,7 @@ const Popup: FC<PopupProps> = ({ setIsPresent }) => {
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
   const saveUsername = () => {
-    if (username.length > 0 && !UserService.patternValidation(username)) {
+    if (username.trim() !== "" && !patternValidation(username)) {
       UserService.setUsername(username);
       setIsPresent(true);
     } else {
@@ -130,7 +131,7 @@ const Button = styled.button`
   &:hover,
   &:focus {
     outline: none;
-    background-color: rgba(rgba(0, 121, 191, .08));
+    background-color: rgba(rgba(0, 121, 191, 0.08));
     color: ${(props) => props.color || props.theme.containerColors.listTitle};
   }
 `;

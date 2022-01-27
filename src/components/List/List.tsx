@@ -1,39 +1,37 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState, useCallback } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
-import { UserService } from "../../helpers/userService";
-import AddIcon from "ui-components/AddIcon";
+import { patternValidation } from "utils/validate";
+import AddIcon from "../ui-components/AddIcon";
 import { CardsData, CommentsData } from "App";
-import Card, { NewCard } from "../Card";
+import { Card, NewCard } from "../Card";
 interface ListProps {
   key: string;
-  title: string;
-  listId: string;
+  listTitle: string;
+  id: string;
   cards: CardsData;
   comments: CommentsData;
-  updateList: (listId: string, title: string) => void;
+  updateList: (id: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
-  deleteCard: (cardId: string) => void;
+  deleteCard: (id: string) => void;
 }
 
 interface InputProps {
   readonly isEditing: boolean;
 }
 const List: FC<ListProps> = ({
-  title,
+  listTitle,
   updateList,
-  listId,
+  id,
   cards,
   comments,
   addCard,
   deleteCard,
 }) => {
-  const [currentTitle, setCurrentTitle] = useState<string>(title);
+  const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
   const ref = useRef<HTMLTextAreaElement>();
-
   useClickOutside(ref, () => {
     if (isEditing) {
       setIsEditing(false);
@@ -48,18 +46,20 @@ const List: FC<ListProps> = ({
       ref?.current?.blur?.();
     }
   }, [isEditing]);
-
+  useEffect(() => {
+    console.log(listTitle);
+  }, []);
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (currentTitle.length != 0 && !UserService.patternValidation(currentTitle)) {
+      if (currentTitle.trim() !== "" && !patternValidation(currentTitle)) {
         setIsEditing(false);
-        updateList(listId, currentTitle);
+        updateList(id, currentTitle);
       }
     }
 
     if (e.key === "Escape") {
-      setCurrentTitle(title);
+      setCurrentTitle(listTitle);
       setIsEditing(false);
     }
   };
@@ -70,7 +70,7 @@ const List: FC<ListProps> = ({
   return (
     <ListWrapper>
       <ListHeader>
-        <ListTitle>{currentTitle}</ListTitle>
+        <ListTitle>{listTitle}</ListTitle>
         {!isEditing && (
           <>
             <EditTitleContainer
@@ -90,30 +90,27 @@ const List: FC<ListProps> = ({
           onKeyDown={handleonKeyDown}
         ></EditTitleInput>
       </ListHeader>
-      {Object.keys(cards).map((card) => {
-        if (cards[card].listId === listId) {
+      {Object.values(cards).map((card) => {
+        if (card.listId === id) {
           return (
             <Card
-              listId={listId}
-              title={cards[card].cardTitle}
-              key={cards[card].cardId}
-              cardId={cards[card].cardId}
+              listId={id}
+              title={card.cardTitle}
+              key={card.id}
+              id={card.id}
               deleteCard={deleteCard}
               comments={comments}
             ></Card>
           );
         }
       })}
-      {isAddingCard && (
-        <>
-          <NewCard
-            onCancelAddingCard={onCancelAddingCard}
-            addCard={addCard}
-            listId={listId}
-          ></NewCard>
-        </>
-      )}
-      {!isAddingCard && (
+      {isAddingCard ? (
+        <NewCard
+          onCancelAddingCard={onCancelAddingCard}
+          addCard={addCard}
+          listId={id}
+        ></NewCard>
+      ) : (
         <AddCardButton onClick={() => setIsAddingCard(!isAddingCard)}>
           <IconContainer>
             <AddIcon></AddIcon>
@@ -125,8 +122,7 @@ const List: FC<ListProps> = ({
   );
 };
 const ListWrapper = styled.div`
-  min-width: 272px;
-  max-width: 272px;
+  width: 272px;
   background: ${(props) =>
     props.color || props.theme.containerColors.listWrapper};
   border-radius: 3px;
@@ -197,7 +193,11 @@ const EditTitleInput = styled.textarea<InputProps>`
     outline: none;
   }
 `;
-
+export const CardList = styled.div`
+  min-height: 1px;
+  padding: 0 4px;
+  margin-bottom: 4px;
+`;
 const AddCardButton = styled.button`
   display: flex;
   align-items: flex-end;

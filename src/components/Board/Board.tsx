@@ -1,26 +1,33 @@
 import React, { FC } from "react";
-import List from "../List";
+import { List } from "components/List";
 import { CardsData, CommentsData, DeskData } from "App";
 interface BoardProps {
   lists: DeskData;
   cards: CardsData;
   comments: CommentsData;
-  updateList: (listId: string, title: string) => void;
+  updateList: (id: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
   deleteCard: (cardId: string) => void;
 }
 
-const Board: FC<BoardProps> = ({ lists, updateList, cards, comments, addCard, deleteCard }) => {
+const Board: FC<BoardProps> = ({
+  lists,
+  updateList,
+  cards,
+  comments,
+  addCard,
+  deleteCard,
+}) => {
   return (
     <>
-      {Object.keys(lists).map((list) => {
+      {Object.values(lists).map((list) => {
         return (
           <List
             cards={cards}
             comments={comments}
-            listId={lists[list].listId}
-            key={lists[list].listId}
-            title={lists[list].title}
+            id={list.id}
+            key={list.id}
+            listTitle={list.listTitle}
             updateList={updateList}
             addCard={addCard}
             deleteCard={deleteCard}
