@@ -2,7 +2,7 @@ import React, { useState, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "../ui-components/DeleteIcon";
 import CommentIcon from "../ui-components/CommentIcon";
-import { CommentsData, CardProps } from "../../App";
+import { CommentsData, CardProps, CommentProps } from "../../App";
 import CardView from "./CardView";
 interface Card {
   listId: string;
@@ -18,6 +18,14 @@ interface Card {
     cardProperty: keyof CardProps,
     value: string
   ) => void;
+  updateComment: (
+    id: string,
+    commentProperty: keyof CommentProps,
+    value: string
+  ) => void;
+  deleteComment: (id: string) => void;
+  username: string;
+  addComment: (cardId: string, author: string, comment: string) => void;
 }
 
 const Card: FC<Card> = ({
@@ -28,6 +36,10 @@ const Card: FC<Card> = ({
   listTitle,
   updateCardTitle,
   cardDescription,
+  updateComment,
+  deleteComment,
+  username,
+  addComment
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
@@ -54,6 +66,10 @@ const Card: FC<Card> = ({
           listTitle={listTitle}
           updateCardTitle={updateCardTitle}
           cardDescription={cardDescription}
+          updateComment={updateComment}
+          deleteComment={deleteComment}
+          username={username}
+          addComment={addComment}
         ></CardView>
       )}
     </>

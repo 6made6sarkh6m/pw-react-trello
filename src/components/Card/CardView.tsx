@@ -1,10 +1,11 @@
-import { CardProps, CommentsData } from "App";
+import { CardProps, CommentProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useRef, useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { patternValidation } from "utils/validate";
 import DeleteIcon from "../ui-components/DeleteIcon";
+import { Comment } from "../Comment";
 interface CardViewProps {
   onClose?: () => void;
   comments: CommentsData;
@@ -17,6 +18,14 @@ interface CardViewProps {
     value: string
   ) => void;
   cardDescription: string;
+  updateComment: (
+    id: string,
+    commentProperty: keyof CommentProps,
+    value: string
+  ) => void;
+  deleteComment: (id: string) => void;
+  username: string;
+  addComment: (cardId: string, author: string, comment: string) => void;
 }
 interface InputProps {
   readonly isEditing: boolean;
@@ -30,23 +39,33 @@ const CardView: FC<CardViewProps> = ({
   listTitle,
   updateCardTitle,
   cardDescription,
+  updateComment,
+  deleteComment,
+  username,
+  addComment,
 }) => {
   const ref = useRef<HTMLTextAreaElement>();
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isEditingDescription, setIsEditingDescription] =
     useState<boolean>(false);
-
+  const [newComment, setNewComment] = useState<string>("");
+  const [isAddingComment, setIsAddingComment] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(cardDescription);
   const [title, setTitle] = useState<string>(cardTitle);
   const onDescriptionUpdate = () => {
-      if(description.trim() !== "" && !patternValidation(title)) {
-          setIsEditingDescription(false);
-          updateCardTitle(cardId, "cardDescription", description);
-      }else{
-          setIsEditingDescription(false);
-          updateCardTitle(cardId, "cardDescription", "");
-      }
-  }
+    if (description.trim() !== "" && !patternValidation(title)) {
+      setIsEditingDescription(false);
+      updateCardTitle(cardId, "cardDescription", description);
+    } else {
+      setIsEditingDescription(false);
+      updateCardTitle(cardId, "cardDescription", "");
+    }
+  };
+  const onSaveComment = () => {
+      if (newComment.trim() !== "" && !patternValidation(newComment)) {
+        addComment(cardId, username, newComment);
+    }
+  };
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -72,20 +91,25 @@ const CardView: FC<CardViewProps> = ({
     if (isEditingDescription) {
       setIsEditingDescription(false);
     }
+    if (isAddingComment) {
+      setIsAddingComment(false);
+    }
   });
   useEffect(() => {
     if (isEditingTitle) {
       ref?.current?.focus?.();
       ref?.current?.select?.();
-    } else {
-      ref?.current?.blur?.();
+    }
+    if (isAddingComment) {
+      ref?.current?.focus?.();
+      ref?.current?.select?.();
     }
     if (isEditingDescription) {
       ref?.current?.focus?.();
     } else {
       ref?.current?.blur?.();
     }
-  }, [isEditingTitle, isEditingDescription]);
+  }, [isEditingTitle, isEditingDescription, isAddingComment]);
   useEffect(() => {
     document.addEventListener("keydown", handleCloseView, false);
 
@@ -142,10 +166,9 @@ const CardView: FC<CardViewProps> = ({
           </DescriptionContainer>
           {isEditingDescription && (
             <DescriptionControlConteiner>
-              <AddDescriptionButton
-              onClick={onDescriptionUpdate}>
+              <SaveButton onClick={onDescriptionUpdate}>
                 <span>Add</span>
-              </AddDescriptionButton>
+              </SaveButton>
               <CancelButton
                 onClick={() => {
                   setIsEditingDescription(false);
@@ -156,6 +179,36 @@ const CardView: FC<CardViewProps> = ({
               </CancelButton>
             </DescriptionControlConteiner>
           )}
+          <Title>Actions</Title>
+          <NewCommentContainer>
+            <NewCommentInput
+              placeholder="Type your comment here"
+              onChange={(e) => setNewComment(e.target.value)}
+              spellCheck={false}
+            ></NewCommentInput>
+            <SaveButton onClick={onSaveComment}>
+                <span>Save</span>
+              </SaveButton>
+          </NewCommentContainer>
+          <CommentsContainer>
+            <Title>Comments</Title>
+          {Object.values(comments)
+            .filter((comment) => comment.cardId === cardId)
+            .map((comment) => {
+              return (
+                <>
+                <Title>By {username}</Title>
+                <Comment
+                    id={comment.id}
+                    key={comment.id}
+                    updateComment={updateComment}
+                    commentValue={comment.comment}
+                    deleteComment={deleteComment}
+                  ></Comment>
+                  </>
+              );
+            })}
+            </CommentsContainer>
         </CardModal>
       </Container>
     </Root>
@@ -262,7 +315,7 @@ const DeleteButton = styled.button`
   border: none;
   background-color: ${(props) =>
     props.color || props.theme.buttons.transparent};
-  padding: 4px;
+  padding: 0 8px;
   border-radius: 3px;
   margin-top: -2px;
   margin-right: -4px;
@@ -313,8 +366,8 @@ const DescriptionControlConteiner = styled.div`
   padding: 0 4px;
   margin-top: 15px;
 `;
-const AddDescriptionButton = styled.button`
-  width: 40%;
+const SaveButton = styled.button`
+  width: 70px;
   font-size: 15px;
   font-family: sans-serif;
   cursor: pointer;
@@ -370,7 +423,7 @@ const CancelButton = styled.button`
   border: none;
   margin: 10px 0px;
   padding: 5px 15px;
-  width: 30%;
+  width: 70px;
   color: ${(props) => props.color || props.theme.containerColors.buttonText};
   background-color: ${(props) =>
     props.color || props.theme.buttons.transparent};
@@ -386,6 +439,45 @@ const CancelButton = styled.button`
     outline: none;
     background-color: rgba(9, 30, 66, 0.08);
     color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  }
+`;
+const CommentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+`;
+const NewCommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin-top: 15px;
+  position: relative;
+  min-height: 20px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  padding: 0px 4px;
+`;
+const NewCommentInput = styled.textarea`
+  flex-grow: 1;
+  font-family: sans-serif;
+  width: 100%;
+  background: #fff;
+  border: none;
+  border-radius: 3px;
+  resize: none;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  min-height: 20px;
+  display: block;
+  overflow: hidden;
+
+  ::placeholder {
+    font-weight: 400;
+    color: #838da1;
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 export default CardView;

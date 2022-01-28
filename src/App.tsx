@@ -46,19 +46,27 @@ const App = () => {
     StorageService.setCards(newCardList);
     setCard(newCardList);
   };
+  const setCommentData = (newComments: CommentsData) => {
+    StorageService.setComment(newComments);
+    setComment(newComments);
+  };
   const updateListTittle = (id: string, listTitle: string) => {
     const cloneList = { ...lists };
     cloneList[id] = { id, listTitle };
     setListData(cloneList);
   };
-  const addCard = (listId: string, cardTitle: string, cardDescription: string = "") => {
+  const addCard = (
+    listId: string,
+    cardTitle: string,
+    cardDescription: string = ""
+  ) => {
     const cloneCards = { ...cards };
     const newCardId = uuid();
     cloneCards[newCardId] = {
       id: newCardId,
       cardTitle: cardTitle,
       listId: listId,
-      cardDescription: cardDescription
+      cardDescription: cardDescription,
     };
     setCardData(cloneCards);
   };
@@ -77,6 +85,32 @@ const App = () => {
     cloneCards[id][cardProperty] = value;
     setCardData(cloneCards);
   };
+
+  const updateComment = (
+    id: string,
+    commentProperty: keyof CommentProps,
+    value: string
+  ) => {
+    const cloneComments = { ...comments };
+    cloneComments[id][commentProperty] = value;
+    setCommentData(cloneComments);
+  };
+  const deleteComment = (id: string) => {
+    const cloneComments = { ...comments };
+    delete cloneComments[id];
+    setCommentData(cloneComments);
+  };
+  const addComment = (cardId: string, author: string, comment: string) => {
+    const cloneComments = { ...comments };
+    const newCommentId = uuid();
+    cloneComments[newCommentId] = {
+      id: newCommentId,
+      cardId: cardId,
+      comment: comment,
+      author: author,
+    };
+    setCommentData(cloneComments);
+  };
   return (
     <>
       {!isPresent && <Popup setIsPresent={setIsPresent}></Popup>}
@@ -90,6 +124,10 @@ const App = () => {
           addCard={addCard}
           deleteCard={deleteCard}
           updateCardTitle={updateCardTitle}
+          updateComment={updateComment}
+          deleteComment={deleteComment}
+          username={UserService.getCurrentUser()}
+          addComment={addComment}
         ></Board>
       </PageWrapper>
     </>

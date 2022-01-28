@@ -5,7 +5,7 @@ export const lists = {
   },
   "2": {
     id: "2",
-    listTitle: "In prgress",
+    listTitle: "In progress",
   },
   "3": {
     id: "3",

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import { patternValidation } from "utils/validate";
 import AddIcon from "../ui-components/AddIcon";
-import { CardProps, CardsData, CommentsData } from "App";
+import { CardProps, CardsData, CommentProps, CommentsData } from "App";
 import { Card, NewCard } from "../Card";
 import { colors } from "styles/colors";
 interface ListProps {
@@ -20,6 +20,14 @@ interface ListProps {
     cardProperty: keyof CardProps,
     value: string
   ) => void;
+  updateComment: (
+    id: string,
+    commentProperty: keyof CommentProps,
+    value: string
+  ) => void;
+  deleteComment: (id: string) => void;
+  username: string;
+  addComment: (cardId: string, author: string, comment: string) => void;
 }
 
 interface InputProps {
@@ -34,6 +42,10 @@ const List: FC<ListProps> = ({
   addCard,
   deleteCard,
   updateCardTitle,
+  updateComment,
+  deleteComment,
+  addComment,
+  username,
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
@@ -104,9 +116,13 @@ const List: FC<ListProps> = ({
               id={card.id}
               deleteCard={deleteCard}
               comments={comments}
-              cardDescription = {card.cardDescription}
+              cardDescription={card.cardDescription}
               listTitle={listTitle}
               updateCardTitle={updateCardTitle}
+              updateComment={updateComment}
+              deleteComment={deleteComment}
+              username={username}
+              addComment={addComment}
             ></Card>
           );
         }
