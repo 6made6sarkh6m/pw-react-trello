@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useRef, useState, useCallback } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import { patternValidation } from "utils/validate";
 import AddIcon from "../ui-components/AddIcon";
-import { CardsData, CommentsData } from "App";
+import { CardProps, CardsData, CommentsData } from "App";
 import { Card, NewCard } from "../Card";
+import { colors } from "styles/colors";
 interface ListProps {
   key: string;
   listTitle: string;
@@ -14,6 +15,11 @@ interface ListProps {
   updateList: (id: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
   deleteCard: (id: string) => void;
+  updateCardTitle: (
+    cardId: string,
+    cardProperty: keyof CardProps,
+    value: string
+  ) => void;
 }
 
 interface InputProps {
@@ -27,6 +33,7 @@ const List: FC<ListProps> = ({
   comments,
   addCard,
   deleteCard,
+  updateCardTitle,
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
@@ -46,9 +53,6 @@ const List: FC<ListProps> = ({
       ref?.current?.blur?.();
     }
   }, [isEditing]);
-  useEffect(() => {
-    console.log(listTitle);
-  }, []);
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -68,9 +72,9 @@ const List: FC<ListProps> = ({
     setIsAddingCard(false);
   };
   return (
-    <ListWrapper>
+    <ListWrapper color={colors.listWrapper}>
       <ListHeader>
-        <ListTitle>{listTitle}</ListTitle>
+        <ListTitle color={colors.listTitle}>{listTitle}</ListTitle>
         {!isEditing && (
           <>
             <EditTitleContainer
@@ -100,6 +104,9 @@ const List: FC<ListProps> = ({
               id={card.id}
               deleteCard={deleteCard}
               comments={comments}
+              cardDescription = {card.cardDescription}
+              listTitle={listTitle}
+              updateCardTitle={updateCardTitle}
             ></Card>
           );
         }
@@ -123,8 +130,7 @@ const List: FC<ListProps> = ({
 };
 const ListWrapper = styled.div`
   width: 272px;
-  background: ${(props) =>
-    props.color || props.theme.containerColors.listWrapper};
+  background: ${(props) => props.color};
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
@@ -141,7 +147,7 @@ const ListHeader = styled.div`
 const ListTitle = styled.h2`
   display: none;
   text-align: start;
-  color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  color: ${(props) => props.color};
   font-size: 14px;
   line-height: 14px;
   font-weight: 600;
@@ -192,11 +198,6 @@ const EditTitleInput = styled.textarea<InputProps>`
   &:focus {
     outline: none;
   }
-`;
-export const CardList = styled.div`
-  min-height: 1px;
-  padding: 0 4px;
-  margin-bottom: 4px;
 `;
 const AddCardButton = styled.button`
   display: flex;

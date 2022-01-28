@@ -6,7 +6,6 @@ import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import Popup from "./components/Popup";
 import Header from "./components/Header/Header";
-
 export interface ListProps {
   id: string;
   listTitle: string;
@@ -15,6 +14,7 @@ export interface CardProps {
   id: string;
   listId: string;
   cardTitle: string;
+  cardDescription: string;
 }
 export interface CommentProps {
   id: string;
@@ -51,19 +51,30 @@ const App = () => {
     cloneList[id] = { id, listTitle };
     setListData(cloneList);
   };
-  const addCard = (listId: string, cardTitle: string) => {
+  const addCard = (listId: string, cardTitle: string, cardDescription: string = "") => {
     const cloneCards = { ...cards };
     const newCardId = uuid();
     cloneCards[newCardId] = {
       id: newCardId,
       cardTitle: cardTitle,
       listId: listId,
+      cardDescription: cardDescription
     };
     setCardData(cloneCards);
   };
   const deleteCard = (id: string) => {
     const cloneCards = { ...cards };
     delete cloneCards[id];
+    setCardData(cloneCards);
+  };
+
+  const updateCardTitle = (
+    id: string,
+    cardProperty: keyof CardProps,
+    value: string
+  ) => {
+    const cloneCards = { ...cards };
+    cloneCards[id][cardProperty] = value;
     setCardData(cloneCards);
   };
   return (
@@ -78,6 +89,7 @@ const App = () => {
           updateList={updateListTittle}
           addCard={addCard}
           deleteCard={deleteCard}
+          updateCardTitle={updateCardTitle}
         ></Board>
       </PageWrapper>
     </>

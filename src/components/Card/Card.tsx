@@ -1,32 +1,62 @@
-import React, { useRef, useState, useEffect, FC } from "react";
+import React, { useState, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "../ui-components/DeleteIcon";
 import CommentIcon from "../ui-components/CommentIcon";
-import { CommentsData } from "../../App";
-interface CardProps {
+import { CommentsData, CardProps } from "../../App";
+import CardView from "./CardView";
+interface Card {
   listId: string;
   title: string;
   key: string;
   id: string;
+  cardDescription: string;
   deleteCard: (cardId: string) => void;
   comments: CommentsData;
+  listTitle: string;
+  updateCardTitle: (
+    cardId: string,
+    cardProperty: keyof CardProps,
+    value: string
+  ) => void;
 }
 
-const Card = ({ title, id, deleteCard, comments }: CardProps) => {
+const Card: FC<Card> = ({
+  title,
+  id,
+  deleteCard,
+  comments,
+  listTitle,
+  updateCardTitle,
+  cardDescription,
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <CardItem>
-      <CardTitle>{title}</CardTitle>
-      <DeleteButton onClick={() => deleteCard(id)}>
-        <DeleteIcon></DeleteIcon>
-      </DeleteButton>
-      <CommentCounter>
-        <CommentIcon></CommentIcon>
-        {
-          Object.values(comments).filter((comment) => comment.cardId === id)
-            .length
-        }
-      </CommentCounter>
-    </CardItem>
+    <>
+      <CardItem onClick={() => setIsOpen(!isOpen)}>
+        <CardTitle>{title}</CardTitle>
+        <DeleteButton onClick={() => deleteCard(id)}>
+          <DeleteIcon></DeleteIcon>
+        </DeleteButton>
+        <CommentCounter>
+          <CommentIcon></CommentIcon>
+          {
+            Object.values(comments).filter((comment) => comment.cardId === id)
+              .length
+          }
+        </CommentCounter>
+      </CardItem>
+      {isOpen && (
+        <CardView
+          onClose={() => setIsOpen(false)}
+          cardId={id}
+          cardTitle={title}
+          comments={comments}
+          listTitle={listTitle}
+          updateCardTitle={updateCardTitle}
+          cardDescription={cardDescription}
+        ></CardView>
+      )}
+    </>
   );
 };
 

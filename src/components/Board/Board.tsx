@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { List } from "components/List";
-import { CardsData, CommentsData, DeskData } from "App";
+import { CardProps, CardsData, CommentsData, DeskData } from "App";
 interface BoardProps {
   lists: DeskData;
   cards: CardsData;
@@ -8,6 +8,7 @@ interface BoardProps {
   updateList: (id: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
   deleteCard: (cardId: string) => void;
+  updateCardTitle:(cardId:string, cardProperty: keyof CardProps, value: string) => void;
 }
 
 const Board: FC<BoardProps> = ({
@@ -17,6 +18,7 @@ const Board: FC<BoardProps> = ({
   comments,
   addCard,
   deleteCard,
+  updateCardTitle
 }) => {
   return (
     <>
@@ -31,6 +33,7 @@ const Board: FC<BoardProps> = ({
             updateList={updateList}
             addCard={addCard}
             deleteCard={deleteCard}
+            updateCardTitle={updateCardTitle}
           ></List>
         );
       })}

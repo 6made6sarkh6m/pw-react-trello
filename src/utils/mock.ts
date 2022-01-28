@@ -22,13 +22,14 @@ export const cards = {
     id: "1",
     listId: "1",
     cardTitle: "Complete trello task",
+    cardDescription: ""
   },
 };
 
 export const comments = {
   "1": {
-    commentId: "1",
     id: "1",
+    cardId: "1",
     author: 'John Doe',
     comment: 'Lorem Ipsum'
   },

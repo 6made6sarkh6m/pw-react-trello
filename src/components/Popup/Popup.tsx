@@ -46,7 +46,7 @@ const Root = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  max-height: 1080px;
+  max-height: 1440px;
   background-color: #000000b5;
   display: flex;
   justify-content: center;
