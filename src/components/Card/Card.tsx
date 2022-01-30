@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { useState, useMemo, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import CommentIcon from "../ui-components/icons/CommentIcon";
@@ -45,6 +45,10 @@ const Card: FC<Card> = ({
   addComment,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const commentCount = useMemo(()=> {
+   return  Object.values(comments).filter((comment) => comment.cardId === id)
+    .length
+  },[comments])
   return (
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
@@ -55,8 +59,7 @@ const Card: FC<Card> = ({
         <CommentCounter>
           <CommentIcon></CommentIcon>
           {
-            Object.values(comments).filter((comment) => comment.cardId === id)
-              .length
+            commentCount
           }
         </CommentCounter>
       </CardItem>

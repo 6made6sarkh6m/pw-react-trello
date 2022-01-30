@@ -1,12 +1,11 @@
 import { CardProps, CommentProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
-import React, { FC, useRef, useState } from "react";
-import { useEffect } from "react";
+import React, { FC, useRef, useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { patternValidation } from "utils/validate";
 import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import { Comment } from "../Comment";
-import {COLORS} from 'styles/colors';
+import { COLORS } from "styles/colors";
 interface CardViewProps {
   onClose?: () => void;
   comments: CommentsData;
@@ -285,9 +284,7 @@ const EditTitleInput = styled.textarea<InputProps>`
   width: 100%;
   color: ${COLORS.listTitle};
   background: ${({ isEditing }) =>
-    isEditing
-      ? COLORS.listWrapper
-      : "transparent"};
+    isEditing ? COLORS.listWrapper : "transparent"};
   border: none;
   border-radius: 3px;
   resize: none;
@@ -391,9 +388,7 @@ const EditDescriptionInput = styled.textarea<InputProps>`
   width: 100%;
   color: #172b4d;
   background: ${({ isEditing }) =>
-    isEditing
-      ? COLORS.whiteBackground
-      : COLORS.listWrapper};
+    isEditing ? COLORS.whiteBackground : COLORS.listWrapper};
   border: none;
   border-radius: 3px;
   resize: none;

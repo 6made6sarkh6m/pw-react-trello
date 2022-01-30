@@ -61,11 +61,9 @@ const PopupInner = styled.div`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  background-color: ${(props) =>
-    props.color || props.theme.containerColors.listWrapper};
+  background-color: ${COLORS.listWrapper};
   border-radius: 3px;
-  box-shadow: ${(props) =>
-    props.color || props.theme.containerColors.boxShadow};
+  box-shadow: ${COLORS.boxShadow};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,8 +78,7 @@ const InputWrapper = styled.div`
 `;
 const UserNameInput = styled.input`
   font-family: sans-serif;
-  background: ${(props) =>
-    props.color || props.theme.containerColors.whiteBackground};
+  background: ${COLORS.whiteBackground};
   border: none;
   border-radius: 3px;
   resize: none;
@@ -91,7 +88,7 @@ const UserNameInput = styled.input`
   margin: 10px;
   ::placeholder {
     font-weight: 400;
-    color: ${(props) => props.color || props.theme.containerColors.placeholder};
+    color: ${COLORS.placeholder};
   }
 
   &:focus {
@@ -100,7 +97,7 @@ const UserNameInput = styled.input`
 `;
 const PopupTitle = styled.h2`
   font-family: sans-serif;
-  color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  color: ${COLORS.listTitle};
   font-size: 14px;
   line-height: 14px;
   font-weight: 600;
@@ -111,7 +108,7 @@ const PopupTitle = styled.h2`
 
 const ErrorTitle = styled.p`
     font-family: sans-serif;
-    color: ${(props) => props.color || props.theme.containerColors.error};
+    color: ${COLORS.error};
     font-size: 15px;
     margin: 0;
     min-height: 20px;

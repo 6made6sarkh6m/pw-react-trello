@@ -89,7 +89,7 @@ const List: FC<ListProps> = ({
   return (
     <Root >
       <ListHeader>
-        <ListTitle color={COLORS.listTitle}>{listTitle}</ListTitle>
+        <ListTitle>{listTitle}</ListTitle>
         {!isEditing && (
             <EditTitleContainer
               onClick={() => {
@@ -147,7 +147,7 @@ const List: FC<ListProps> = ({
 };
 const Root = styled.div`
   width: 272px;
-  background: ${COLORS.listWrapper}
+  background: ${COLORS.listWrapper};
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
