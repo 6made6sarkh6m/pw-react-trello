@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import { patternValidation } from "utils/validate";
 import AddIcon from "../ui-components/icons/AddIcon";
-import { CardProps, CardsData, CommentProps, CommentsData } from "App";
+import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card} from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
@@ -19,12 +19,12 @@ interface ListProps {
   deleteCard: (id: string) => void;
   updateCardTitle: (
     cardId: string,
-    cardProperty: keyof CardProps,
+    cardProperty: keyof CardDataProps,
     value: string
   ) => void;
   updateComment: (
     id: string,
-    commentProperty: keyof CommentProps,
+    commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
   deleteComment: (id: string) => void;

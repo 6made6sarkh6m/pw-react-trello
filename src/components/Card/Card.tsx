@@ -2,10 +2,10 @@ import React, { useState, useMemo, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import CommentIcon from "../ui-components/icons/CommentIcon";
-import { CommentsData, CardProps, CommentProps } from "../../App";
+import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
 import {CardView} from '../CardView'
 import {COLORS} from 'styles/colors';
-interface Card {
+interface CardProps {
   listId: string;
   title: string;
   key: string;
@@ -18,12 +18,12 @@ interface Card {
 
   updateCardTitle: (
     cardId: string,
-    cardProperty: keyof CardProps,
+    cardProperty: keyof CardDataProps,
     value: string
   ) => void;
   updateComment: (
     id: string,
-    commentProperty: keyof CommentProps,
+    commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
   deleteComment: (id: string) => void;
@@ -31,7 +31,7 @@ interface Card {
   addComment: (cardId: string, author: string, comment: string) => void;
 };
 
-const Card: FC<Card> = ({
+const Card: FC<CardProps> = ({
   title,
   id,
   comments,

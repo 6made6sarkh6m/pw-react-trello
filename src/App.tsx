@@ -6,28 +6,28 @@ import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import Popup from "./components/Popup";
 import Header from "./components/Header/Header";
-export interface ListProps {
+export interface ListDataProps {
   id: string;
   listTitle: string;
 }
 
-export interface CardProps {
+export interface CardDataProps {
   id: string;
   listId: string;
   cardTitle: string;
   cardDescription: string;
 }
 
-export interface CommentProps {
+export interface CommentDataProps {
   id: string;
   cardId: string;
   author: string;
   comment: string;
 }
 
-export type DeskData = Record<string, ListProps>;
-export type CardsData = Record<string, CardProps>;
-export type CommentsData = Record<string, CommentProps>;
+export type DeskData = Record<string, ListDataProps>;
+export type CardsData = Record<string, CardDataProps>;
+export type CommentsData = Record<string, CommentDataProps>;
 
 const App = () => {
   const [isPresent, setIsPresent] = useState<boolean>(false);
@@ -82,7 +82,7 @@ const App = () => {
 
   const updateCardTitle = (
     id: string,
-    cardProperty: keyof CardProps,
+    cardProperty: keyof CardDataProps,
     value: string
   ) => {
     const cloneCards = { ...cards };
@@ -92,7 +92,7 @@ const App = () => {
 
   const updateComment = (
     id: string,
-    commentProperty: keyof CommentProps,
+    commentProperty: keyof CommentDataProps,
     value: string
   ) => {
     const cloneComments = { ...comments };

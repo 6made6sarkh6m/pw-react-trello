@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { List } from "components/List";
 import {
-  CardProps,
+  CardDataProps,
   CardsData,
-  CommentProps,
+  CommentDataProps,
   CommentsData,
   DeskData,
 } from "App";
@@ -17,12 +17,12 @@ interface BoardProps {
   deleteCard: (cardId: string) => void;
   updateCardTitle: (
     cardId: string,
-    cardProperty: keyof CardProps,
+    cardProperty: keyof CardDataProps,
     value: string
   ) => void;
   updateComment: (
     id: string,
-    commentProperty: keyof CommentProps,
+    commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
   deleteComment: (id: string) => void;

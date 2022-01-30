@@ -1,4 +1,4 @@
-import { CommentProps } from "App";
+import { CommentDataProps } from "App";
 import DeleteIcon from "components/ui-components/icons/DeleteIcon";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
@@ -10,7 +10,7 @@ interface Comment {
   commentValue: string;
   updateComment: (
     id: string,
-    commentProperty: keyof CommentProps,
+    commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
   deleteComment: (id: string) => void;

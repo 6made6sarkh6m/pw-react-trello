@@ -1,10 +1,11 @@
-import { CardProps, CommentProps, CommentsData } from "App";
+import { CardDataProps, CommentDataProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useRef, useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { patternValidation } from "utils/validate";
 import DeleteIcon from "../ui-components/icons/DeleteIcon";
-import { Comment } from "../Comment";
+import { Comment } from "./components/Comment";
+import { Description } from "./components/Description";
 import { COLORS } from "styles/colors";
 interface CardViewProps {
   onClose?: () => void;
@@ -16,12 +17,12 @@ interface CardViewProps {
   username: string;
   updateCardTitle: (
     cardId: string,
-    cardProperty: keyof CardProps,
+    cardProperty: keyof CardDataProps,
     value: string
   ) => void;
   updateComment: (
     id: string,
-    commentProperty: keyof CommentProps,
+    commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
   deleteComment: (id: string) => void;
@@ -45,24 +46,15 @@ const CardView: FC<CardViewProps> = ({
   addComment,
 }) => {
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
-  const editDescRef = useRef<HTMLTextAreaElement>(null);
+  
 
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
-  const [isEditingDescription, setIsEditingDescription] =
-    useState<boolean>(false);
+  
   const [newComment, setNewComment] = useState<string>("");
-  const [description, setDescription] = useState<string>(cardDescription);
+  
   const [title, setTitle] = useState<string>(cardTitle);
-  const onDescriptionUpdate = () => {
-    if (description.trim() !== "" && !patternValidation(title)) {
-      setIsEditingDescription(false);
-      updateCardTitle(cardId, "cardDescription", description);
-    } else {
-      setIsEditingDescription(false);
-      updateCardTitle(cardId, "cardDescription", "");
-    }
-  };
+  
   const onSaveComment = () => {
     if (newComment.trim() !== "" && !patternValidation(newComment)) {
       addComment(cardId, username, newComment);
@@ -91,25 +83,17 @@ const CardView: FC<CardViewProps> = ({
       setTitle(cardTitle);
     }
   });
-  useClickOutside(editDescRef, ()=> {
-    if (isEditingDescription) {
-      setIsEditingDescription(false);
-      setDescription(description);
-    }
-    
-  })
+  
   useEffect(() => {
     if (isEditingTitle) {
       editTitleRef?.current?.focus?.();
       editTitleRef?.current?.select?.();
     }
-    if (isEditingDescription) {
-      editDescRef?.current?.focus?.();
-    } else {
+     else {
       editTitleRef?.current?.blur?.();
-      editDescRef?.current?.blur?.();
+
     }
-  }, [isEditingTitle, isEditingDescription]);
+  }, [isEditingTitle]);
   useEffect(() => {
     document.addEventListener("keydown", handleCloseView, false);
 
@@ -148,37 +132,12 @@ const CardView: FC<CardViewProps> = ({
             </DeleteButton>
           </Header>
           <ListTitleContainer>
-            <ListTitle>В колонке {listTitle}</ListTitle>
+            <ListTitle>В колонке{listTitle}</ListTitle>
           </ListTitleContainer>
-          <DescriptionContainer>
-            <Title>Description</Title>
-            <EditDescriptionInput
-              onClick={() => setIsEditingDescription(true)}
-              ref={editDescRef}
-              isEditing={isEditingDescription}
-              rows={10}
-              value={description}
-              placeholder="Type your description text"
-              onChange={(e) => setDescription(e.target.value)}
-              onKeyDown={handleOnKeyDown}
-              spellCheck={false}
-            ></EditDescriptionInput>
-          </DescriptionContainer>
-          {isEditingDescription && (
-            <DescriptionControlConteiner>
-              <SaveButton onClick={onDescriptionUpdate}>
-                <span>Add</span>
-              </SaveButton>
-              <CancelButton
-                onClick={() => {
-                  setIsEditingDescription(false);
-                  setDescription(cardDescription);
-                }}
-              >
-                <span>Cancel</span>
-              </CancelButton>
-            </DescriptionControlConteiner>
-          )}
+          <Description
+          cardDescription={cardDescription}
+          cardId={cardId}
+          updateCardTitle={updateCardTitle}></Description>
           <Title>Actions</Title>
           <NewCommentContainer>
             <NewCommentInput
@@ -336,13 +295,6 @@ const ListTitle = styled.span`
   color: ${COLORS.listTitle};
   display: flex;
 `;
-const DescriptionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  padding: 0 4px;
-  margin-top: 30px;
-`;
 const Title = styled.h2`
   text-align: start;
   font-size: 14px;
@@ -354,14 +306,6 @@ const Title = styled.h2`
   font-family: sans-serif;
 `;
 
-const DescriptionControlConteiner = styled.div`
-  display: flex;
-  width: 30%;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 4px;
-  margin-top: 15px;
-`;
 const SaveButton = styled.button`
   width: 70px;
   font-size: 15px;
@@ -380,57 +324,6 @@ const SaveButton = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(rgba(0, 121, 191, 0.08));
-    color: ${COLORS.listTitle};
-  }
-`;
-const EditDescriptionInput = styled.textarea<InputProps>`
-  font-family: sans-serif;
-  width: 100%;
-  color: #172b4d;
-  background: ${({ isEditing }) =>
-    isEditing ? COLORS.whiteBackground : COLORS.listWrapper};
-  border: none;
-  border-radius: 3px;
-  resize: none;
-  font-size: 12px;
-  line-height: 10px;
-  font-weight: 600;
-  min-height: 100px;
-  padding: 4px 8px;
-  margin: 0;
-  display: block;
-  transition: all 0.1s linear;
-
-  ::placeholder {
-    font-weight: 400;
-    color: ${COLORS.placeholder};
-  }
-
-  &:focus {
-    outline: 1px solid #0079bf;
-  }
-`;
-const CancelButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  margin: 10px 0px;
-  padding: 5px 15px;
-  width: 70px;
-  color: ${COLORS.buttonText};
-  background-color: ${COLORS.buttonColors.transparent};
-  border-radius: 3px;
-  font-size: 14px;
-  cursor: pointer;
-  & > span {
-    line-height: 20px;
-    font-family: sans-serif;
-  }
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: rgba(9, 30, 66, 0.08);
     color: ${COLORS.listTitle};
   }
 `;
