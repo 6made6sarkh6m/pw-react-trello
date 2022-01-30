@@ -136,7 +136,7 @@ const CardView: FC<CardViewProps> = ({
             cardId={cardId}
             username={username}
             addComment={addComment}
-          ></NewComment>
+          ></NewComment> 
           <CommentsContainer>
             <Title>Comments</Title>
             {Object.values(comments)
@@ -194,6 +194,9 @@ const CardModal = styled.div`
   min-height: 600px;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    width: 100%%;
+  }
 `;
 
 const Header = styled.div`
