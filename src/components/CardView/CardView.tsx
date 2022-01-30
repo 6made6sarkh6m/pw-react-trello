@@ -1,5 +1,6 @@
 import React, { FC, useRef, useEffect, useState, useMemo } from "react";
 import { Comment } from "./components/Comment";
+import { NewComment } from "./components/NewComment";
 import { Description } from "./components/Description";
 import { CardDataProps, CommentDataProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
@@ -48,20 +49,11 @@ const CardView: FC<CardViewProps> = ({
   addComment,
 }) => {
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
-  
-
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
-  
-  const [newComment, setNewComment] = useState<string>("");
-  
+
   const [title, setTitle] = useState<string>(cardTitle);
-  
-  const onSaveComment = () => {
-    if (newComment.trim() !== "" && !patternValidation(newComment)) {
-      addComment(cardId, username, newComment);
-    }
-  };
+
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -85,15 +77,13 @@ const CardView: FC<CardViewProps> = ({
       setTitle(cardTitle);
     }
   });
-  
+
   useEffect(() => {
     if (isEditingTitle) {
       editTitleRef?.current?.focus?.();
       editTitleRef?.current?.select?.();
-    }
-     else {
+    } else {
       editTitleRef?.current?.blur?.();
-
     }
   }, [isEditingTitle]);
   useEffect(() => {
@@ -134,23 +124,19 @@ const CardView: FC<CardViewProps> = ({
             </DeleteButton>
           </Header>
           <ListTitleContainer>
-            <ListTitle>В колонке{listTitle}</ListTitle>
+            <ListTitle>В колонке {listTitle}</ListTitle>
           </ListTitleContainer>
           <Description
-          cardDescription={cardDescription}
-          cardId={cardId}
-          updateCardTitle={updateCardTitle}></Description>
+            cardDescription={cardDescription}
+            cardId={cardId}
+            updateCardTitle={updateCardTitle}
+          ></Description>
           <Title>Actions</Title>
-          <NewCommentContainer>
-            <NewCommentInput
-              placeholder="Type your comment here"
-              onChange={(e) => setNewComment(e.target.value)}
-              spellCheck={false}
-            ></NewCommentInput>
-            <SaveButton onClick={onSaveComment}>
-              <span>Save</span>
-            </SaveButton>
-          </NewCommentContainer>
+          <NewComment
+            cardId={cardId}
+            username={username}
+            addComment={addComment}
+          ></NewComment>
           <CommentsContainer>
             <Title>Comments</Title>
             {Object.values(comments)
@@ -158,7 +144,7 @@ const CardView: FC<CardViewProps> = ({
               .map((comment) => {
                 return (
                   <>
-                    <Title>By {username}</Title>
+                    <Title key={comment.id}>By {username}</Title>
                     <Comment
                       id={comment.id}
                       key={comment.id}
@@ -307,65 +293,10 @@ const Title = styled.h2`
   margin: 0;
   font-family: sans-serif;
 `;
-
-const SaveButton = styled.button`
-  width: 70px;
-  font-size: 15px;
-  font-family: sans-serif;
-  cursor: pointer;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 5px;
-  border: none;
-  outline: 0;
-  background-color: #0079bf;
-  margin: 10px 0px;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: rgba(rgba(0, 121, 191, 0.08));
-    color: ${COLORS.listTitle};
-  }
-`;
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
 `;
-const NewCommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-  margin-top: 15px;
-  position: relative;
-  min-height: 20px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-  padding: 0px 4px;
-`;
-const NewCommentInput = styled.textarea`
-  flex-grow: 1;
-  font-family: sans-serif;
-  width: 100%;
-  background: #fff;
-  border: none;
-  border-radius: 3px;
-  resize: none;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
-  min-height: 20px;
-  display: block;
-  overflow: hidden;
 
-  ::placeholder {
-    font-weight: 400;
-    color: #838da1;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
 export default CardView;

@@ -82,7 +82,7 @@ const CommentContainer = styled.div`
   display: flex;
   width: 70%;
   min-height: 80px;
-  background-color: #fff;
+  background-color: ${COLORS.listWrapper};
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   padding: 0px 4px;
@@ -102,7 +102,7 @@ export const CommentInput = styled.textarea`
   flex-grow: 1;
   font-family: sans-serif;
   width: 100%;
-  background: ${COLORS.whiteBackground};
+  background: ${COLORS.listWrapper};
   border: none;
   border-radius: 3px;
   resize: none;

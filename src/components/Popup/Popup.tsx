@@ -44,16 +44,19 @@ const Popup: FC<PopupProps> = ({ setIsPresent }) => {
 };
 
 const Root = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  max-height: 1440px;
-  background-color: #000000b5;
   display: flex;
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
 `;
 
 const PopupInner = styled.div`
