@@ -3,16 +3,18 @@ import styled from "styled-components";
 import DeleteIcon from "../ui-components/DeleteIcon";
 import CommentIcon from "../ui-components/CommentIcon";
 import { CommentsData, CardProps, CommentProps } from "../../App";
-import CardView from "./CardView";
+import {CardView} from '../CardView'
 interface Card {
   listId: string;
   title: string;
   key: string;
   id: string;
   cardDescription: string;
-  deleteCard: (cardId: string) => void;
   comments: CommentsData;
   listTitle: string;
+  username: string;
+  deleteCard: (cardId: string) => void;
+
   updateCardTitle: (
     cardId: string,
     cardProperty: keyof CardProps,
@@ -24,22 +26,22 @@ interface Card {
     value: string
   ) => void;
   deleteComment: (id: string) => void;
-  username: string;
+
   addComment: (cardId: string, author: string, comment: string) => void;
-}
+};
 
 const Card: FC<Card> = ({
   title,
   id,
-  deleteCard,
   comments,
   listTitle,
-  updateCardTitle,
   cardDescription,
+  username,
+  deleteCard,
+  updateCardTitle,
   updateComment,
   deleteComment,
-  username,
-  addComment
+  addComment,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
@@ -59,16 +61,16 @@ const Card: FC<Card> = ({
       </CardItem>
       {isOpen && (
         <CardView
-          onClose={() => setIsOpen(false)}
           cardId={id}
           cardTitle={title}
           comments={comments}
           listTitle={listTitle}
-          updateCardTitle={updateCardTitle}
+          username={username}
           cardDescription={cardDescription}
+          onClose={() => setIsOpen(false)}
           updateComment={updateComment}
           deleteComment={deleteComment}
-          username={username}
+          updateCardTitle={updateCardTitle}
           addComment={addComment}
         ></CardView>
       )}

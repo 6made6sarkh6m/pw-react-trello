@@ -10,21 +10,25 @@ export interface ListProps {
   id: string;
   listTitle: string;
 }
+
 export interface CardProps {
   id: string;
   listId: string;
   cardTitle: string;
   cardDescription: string;
 }
+
 export interface CommentProps {
   id: string;
   cardId: string;
   author: string;
   comment: string;
 }
+
 export type DeskData = Record<string, ListProps>;
 export type CardsData = Record<string, CardProps>;
 export type CommentsData = Record<string, CommentProps>;
+
 const App = () => {
   const [isPresent, setIsPresent] = useState<boolean>(false);
   const [lists, setList] = useState<DeskData>(StorageService.getToDoLists());
@@ -32,29 +36,28 @@ const App = () => {
   const [comments, setComment] = useState<CommentsData>(
     StorageService.getComments()
   );
-  useEffect(() => {
-    UserService.getCurrentUser() !== ""
-      ? setIsPresent(true)
-      : setIsPresent(false);
-  }, [isPresent]);
 
   const setListData = (newList: DeskData) => {
     StorageService.setList(newList);
     setList(newList);
   };
+
   const setCardData = (newCardList: CardsData) => {
     StorageService.setCards(newCardList);
     setCard(newCardList);
   };
+
   const setCommentData = (newComments: CommentsData) => {
     StorageService.setComment(newComments);
     setComment(newComments);
   };
+
   const updateListTittle = (id: string, listTitle: string) => {
     const cloneList = { ...lists };
     cloneList[id] = { id, listTitle };
     setListData(cloneList);
   };
+
   const addCard = (
     listId: string,
     cardTitle: string,
@@ -70,6 +73,7 @@ const App = () => {
     };
     setCardData(cloneCards);
   };
+
   const deleteCard = (id: string) => {
     const cloneCards = { ...cards };
     delete cloneCards[id];
@@ -95,11 +99,13 @@ const App = () => {
     cloneComments[id][commentProperty] = value;
     setCommentData(cloneComments);
   };
+
   const deleteComment = (id: string) => {
     const cloneComments = { ...comments };
     delete cloneComments[id];
     setCommentData(cloneComments);
   };
+
   const addComment = (cardId: string, author: string, comment: string) => {
     const cloneComments = { ...comments };
     const newCommentId = uuid();
@@ -109,8 +115,15 @@ const App = () => {
       comment: comment,
       author: author,
     };
+
     setCommentData(cloneComments);
   };
+
+  useEffect(() => {
+    UserService.getCurrentUser() !== ""
+      ? setIsPresent(true)
+      : setIsPresent(false);
+  }, [isPresent]);
   return (
     <>
       {!isPresent && <Popup setIsPresent={setIsPresent}></Popup>}
@@ -120,13 +133,13 @@ const App = () => {
           comments={comments}
           lists={lists}
           cards={cards}
+          username={UserService.getCurrentUser()}
           updateList={updateListTittle}
           addCard={addCard}
           deleteCard={deleteCard}
           updateCardTitle={updateCardTitle}
           updateComment={updateComment}
           deleteComment={deleteComment}
-          username={UserService.getCurrentUser()}
           addComment={addComment}
         ></Board>
       </PageWrapper>

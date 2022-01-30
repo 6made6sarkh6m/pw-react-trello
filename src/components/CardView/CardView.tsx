@@ -12,19 +12,19 @@ interface CardViewProps {
   cardId: string;
   cardTitle: string;
   listTitle: string;
+  cardDescription: string;
+  username: string;
   updateCardTitle: (
     cardId: string,
     cardProperty: keyof CardProps,
     value: string
   ) => void;
-  cardDescription: string;
   updateComment: (
     id: string,
     commentProperty: keyof CommentProps,
     value: string
   ) => void;
   deleteComment: (id: string) => void;
-  username: string;
   addComment: (cardId: string, author: string, comment: string) => void;
 }
 interface InputProps {
@@ -37,14 +37,14 @@ const CardView: FC<CardViewProps> = ({
   cardId,
   cardTitle,
   listTitle,
-  updateCardTitle,
   cardDescription,
+  username,
+  updateCardTitle,
   updateComment,
   deleteComment,
-  username,
   addComment,
 }) => {
-  const ref = useRef<HTMLTextAreaElement>();
+  const ref = useRef<HTMLTextAreaElement>(null);
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isEditingDescription, setIsEditingDescription] =
     useState<boolean>(false);
@@ -62,8 +62,8 @@ const CardView: FC<CardViewProps> = ({
     }
   };
   const onSaveComment = () => {
-      if (newComment.trim() !== "" && !patternValidation(newComment)) {
-        addComment(cardId, username, newComment);
+    if (newComment.trim() !== "" && !patternValidation(newComment)) {
+      addComment(cardId, username, newComment);
     }
   };
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -134,7 +134,7 @@ const CardView: FC<CardViewProps> = ({
                 </>
               )}
               <EditTitleInput
-                ref={ref as any}
+                ref={ref}
                 isEditing={isEditingTitle}
                 rows={1}
                 value={title}
@@ -187,28 +187,28 @@ const CardView: FC<CardViewProps> = ({
               spellCheck={false}
             ></NewCommentInput>
             <SaveButton onClick={onSaveComment}>
-                <span>Save</span>
-              </SaveButton>
+              <span>Save</span>
+            </SaveButton>
           </NewCommentContainer>
           <CommentsContainer>
             <Title>Comments</Title>
-          {Object.values(comments)
-            .filter((comment) => comment.cardId === cardId)
-            .map((comment) => {
-              return (
-                <>
-                <Title>By {username}</Title>
-                <Comment
-                    id={comment.id}
-                    key={comment.id}
-                    updateComment={updateComment}
-                    commentValue={comment.comment}
-                    deleteComment={deleteComment}
-                  ></Comment>
+            {Object.values(comments)
+              .filter((comment) => comment.cardId === cardId)
+              .map((comment) => {
+                return (
+                  <>
+                    <Title>By {username}</Title>
+                    <Comment
+                      id={comment.id}
+                      key={comment.id}
+                      commentValue={comment.comment}
+                      updateComment={updateComment}
+                      deleteComment={deleteComment}
+                    ></Comment>
                   </>
-              );
-            })}
-            </CommentsContainer>
+                );
+              })}
+          </CommentsContainer>
         </CardModal>
       </Container>
     </Root>

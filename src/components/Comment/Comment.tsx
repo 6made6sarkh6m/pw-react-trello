@@ -4,26 +4,26 @@ import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 interface Comment {
-    key: string;
+  key: string;
   id: string;
+  commentValue: string;
   updateComment: (
     id: string,
     commentProperty: keyof CommentProps,
     value: string
   ) => void;
-  commentValue: string;
   deleteComment: (id: string) => void;
 }
 
 const Comment: FC<Comment> = ({
   id,
-  updateComment,
   commentValue,
+  updateComment,
   deleteComment,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [comment, setComment] = useState<string>(commentValue);
-  const ref = useRef<HTMLTextAreaElement>();
+  const ref = useRef<HTMLTextAreaElement>(null);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -61,7 +61,7 @@ const Comment: FC<Comment> = ({
       )}
       {isEditing && (
         <CommentInput
-          ref={ref as any}
+          ref={ref}
           rows={1}
           value={comment}
           spellCheck={false}

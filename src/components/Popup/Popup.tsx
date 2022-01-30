@@ -6,6 +6,7 @@ import { UserService } from "helpers/userService";
 type PopupProps = {
   setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
 const Popup: FC<PopupProps> = ({ setIsPresent }) => {
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
@@ -18,6 +19,7 @@ const Popup: FC<PopupProps> = ({ setIsPresent }) => {
       setIsNotValid(true);
     }
   };
+  
   return (
     <Root>
       <PopupInner>

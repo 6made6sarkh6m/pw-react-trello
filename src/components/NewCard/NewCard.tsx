@@ -7,7 +7,8 @@ interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
   addCard: (listId: string, currentTitle: string) => void;
-}
+};
+
 export const NewCard: FC<NewCardProps> = ({
   listId,
   onCancelAddingCard,
@@ -15,15 +16,8 @@ export const NewCard: FC<NewCardProps> = ({
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
-  const ref = useRef<HTMLTextAreaElement>();
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.style.height = "auto";
-      ref.current.style.height = ref.current.scrollHeight + "px";
-    }
-  }, [currentTitle]);
-
+  
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -41,6 +35,8 @@ export const NewCard: FC<NewCardProps> = ({
     addCard(listId, currentTitle);
     onCancelAddingCard();
   };
+
+
   return (
     <>
       <CardItem>

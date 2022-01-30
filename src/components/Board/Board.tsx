@@ -7,6 +7,7 @@ import {
   CommentsData,
   DeskData,
 } from "App";
+
 interface BoardProps {
   lists: DeskData;
   cards: CardsData;
@@ -27,19 +28,19 @@ interface BoardProps {
   deleteComment: (id: string) => void;
   username: string;
   addComment: (cardId: string, author: string, comment: string) => void;
-}
+};
 
 const Board: FC<BoardProps> = ({
   lists,
-  updateList,
+  username,
   cards,
   comments,
+  updateList,
   addCard,
   deleteCard,
   updateCardTitle,
   updateComment,
   deleteComment,
-  username,
   addComment,
 }) => {
   return (
@@ -52,13 +53,13 @@ const Board: FC<BoardProps> = ({
             id={list.id}
             key={list.id}
             listTitle={list.listTitle}
+            username={username}
             updateList={updateList}
             addCard={addCard}
             deleteCard={deleteCard}
             updateCardTitle={updateCardTitle}
             updateComment={updateComment}
             deleteComment={deleteComment}
-            username={username}
             addComment={addComment}
           ></List>
         );

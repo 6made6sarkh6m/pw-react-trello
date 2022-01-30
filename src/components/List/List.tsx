@@ -4,7 +4,8 @@ import useClickOutside from "../../hooks/useClickOutside";
 import { patternValidation } from "utils/validate";
 import AddIcon from "../ui-components/AddIcon";
 import { CardProps, CardsData, CommentProps, CommentsData } from "App";
-import { Card, NewCard } from "../Card";
+import { Card} from "../Card";
+import { NewCard } from "../NewCard";
 import { colors } from "styles/colors";
 interface ListProps {
   key: string;
@@ -12,6 +13,7 @@ interface ListProps {
   id: string;
   cards: CardsData;
   comments: CommentsData;
+  username: string;
   updateList: (id: string, title: string) => void;
   addCard: (listId: string, cardTitle: string) => void;
   deleteCard: (id: string) => void;
@@ -26,7 +28,6 @@ interface ListProps {
     value: string
   ) => void;
   deleteComment: (id: string) => void;
-  username: string;
   addComment: (cardId: string, author: string, comment: string) => void;
 }
 
@@ -35,40 +36,27 @@ interface InputProps {
 }
 const List: FC<ListProps> = ({
   listTitle,
-  updateList,
   id,
   cards,
   comments,
+  username,
   addCard,
   deleteCard,
   updateCardTitle,
   updateComment,
   deleteComment,
   addComment,
-  username,
+  updateList,
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const ref = useRef<HTMLTextAreaElement>();
-  useClickOutside(ref, () => {
-    if (isEditing) {
-      setIsEditing(false);
-    }
-  });
-
-  useEffect(() => {
-    if (isEditing) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
-    } else {
-      ref?.current?.blur?.();
-    }
-  }, [isEditing]);
+  const ref = useRef<HTMLTextAreaElement>(null);
+  
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (currentTitle.trim() !== "" && !patternValidation(currentTitle)) {
+      if (currentTitle.trim() !== "") {
         setIsEditing(false);
         updateList(id, currentTitle);
       }
@@ -83,21 +71,34 @@ const List: FC<ListProps> = ({
   const onCancelAddingCard = () => {
     setIsAddingCard(false);
   };
+  
+  useClickOutside(ref, () => {
+    if (isEditing) {
+      setIsEditing(false);
+    }
+  });
+
+  useEffect(() => {
+    if (isEditing) {
+      ref?.current?.focus?.();
+      ref?.current?.select?.();
+    } else {
+      ref?.current?.blur?.();
+    }
+  }, [isEditing]);
   return (
-    <ListWrapper color={colors.listWrapper}>
+    <Root color={colors.listWrapper}>
       <ListHeader>
         <ListTitle color={colors.listTitle}>{listTitle}</ListTitle>
         {!isEditing && (
-          <>
             <EditTitleContainer
               onClick={() => {
                 setIsEditing(true);
               }}
             ></EditTitleContainer>
-          </>
         )}
         <EditTitleInput
-          ref={ref as any}
+          ref={ref}
           isEditing={isEditing}
           rows={1}
           value={currentTitle}
@@ -106,32 +107,32 @@ const List: FC<ListProps> = ({
           onKeyDown={handleonKeyDown}
         ></EditTitleInput>
       </ListHeader>
-      {Object.values(cards).map((card) => {
-        if (card.listId === id) {
+      {Object.values(cards)
+        .filter((card) => card.listId === id)
+        .map((card) => {
           return (
             <Card
               listId={id}
               title={card.cardTitle}
               key={card.id}
               id={card.id}
-              deleteCard={deleteCard}
+              username={username}
               comments={comments}
               cardDescription={card.cardDescription}
               listTitle={listTitle}
+              deleteCard={deleteCard}
               updateCardTitle={updateCardTitle}
               updateComment={updateComment}
               deleteComment={deleteComment}
-              username={username}
               addComment={addComment}
             ></Card>
           );
-        }
-      })}
+        })}
       {isAddingCard ? (
         <NewCard
+          listId={id}
           onCancelAddingCard={onCancelAddingCard}
           addCard={addCard}
-          listId={id}
         ></NewCard>
       ) : (
         <AddCardButton onClick={() => setIsAddingCard(!isAddingCard)}>
@@ -141,10 +142,10 @@ const List: FC<ListProps> = ({
           <span>Add card</span>
         </AddCardButton>
       )}
-    </ListWrapper>
+    </Root>
   );
 };
-const ListWrapper = styled.div`
+const Root = styled.div`
   width: 272px;
   background: ${(props) => props.color};
   border-radius: 3px;
