@@ -1,9 +1,10 @@
 import React, { useState, FC } from "react";
 import styled from "styled-components";
-import DeleteIcon from "../ui-components/DeleteIcon";
-import CommentIcon from "../ui-components/CommentIcon";
+import DeleteIcon from "../ui-components/icons/DeleteIcon";
+import CommentIcon from "../ui-components/icons/CommentIcon";
 import { CommentsData, CardProps, CommentProps } from "../../App";
 import {CardView} from '../CardView'
+import {COLORS} from 'styles/colors';
 interface Card {
   listId: string;
   title: string;
@@ -80,12 +81,10 @@ const Card: FC<Card> = ({
 
 const CardItem = styled.div`
   display: flex;
-  background-color: ${(props) =>
-    props.color || props.theme.containerColors.whiteBackground};
+  background-color: ${COLORS.whiteBackground};
   width: 90%;
   min-height: 50px;
-  box-shadow: ${(props) =>
-    props.color || props.theme.containerColors.boxShadow};
+  box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
   padding: 6px 8px;
   margin-bottom: 10px;
@@ -105,10 +104,9 @@ const CardTitle = styled.span`
 const DeleteButton = styled.button`
   align-self: flex-start;
   position: relative;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  color: ${COLORS.buttonText};
   border: none;
-  background-color: ${(props) =>
-    props.color || props.theme.buttons.transparent};
+  background-color: ${COLORS.buttonColors.transparent};
   padding: 4px;
   border-radius: 3px;
   margin-top: -2px;
@@ -117,7 +115,7 @@ const DeleteButton = styled.button`
 
   :hover {
     opacity: 1;
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
     background-color: rgba(9, 30, 66, 0.08);
   }
 `;
@@ -127,6 +125,6 @@ const CommentCounter = styled.span`
   position: absolute;
   margin-left: 10px;
   align-self: flex-end;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  color: ${COLORS.buttonText};
 `;
 export default Card;

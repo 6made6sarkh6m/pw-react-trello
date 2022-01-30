@@ -1,8 +1,9 @@
 import { CommentProps } from "App";
-import DeleteIcon from "components/ui-components/DeleteIcon";
+import DeleteIcon from "components/ui-components/icons/DeleteIcon";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import {COLORS} from 'styles/colors';
 interface Comment {
   key: string;
   id: string;
@@ -101,7 +102,7 @@ export const CommentInput = styled.textarea`
   flex-grow: 1;
   font-family: sans-serif;
   width: 100%;
-  background: #fff;
+  background: ${COLORS.whiteBackground};
   border: none;
   border-radius: 3px;
   resize: none;
@@ -114,7 +115,7 @@ export const CommentInput = styled.textarea`
 
   ::placeholder {
     font-weight: 400;
-    color: #838da1;
+    color: ${COLORS.placeholder};
   }
 
   &:focus {
@@ -133,10 +134,9 @@ export const EditTitleButton = styled.div`
 export const DeleteButton = styled.button`
   align-self: flex-start;
   position: relative;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  color: ${COLORS.buttonText};
   border: none;
-  background-color: ${(props) =>
-    props.color || props.theme.buttons.transparent};
+  background-color: ${COLORS.buttonColors.transparent};
   padding: 4px;
   border-radius: 3px;
   margin-top: -2px;
@@ -145,7 +145,7 @@ export const DeleteButton = styled.button`
 
   :hover {
     opacity: 1;
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
     background-color: rgba(9, 30, 66, 0.08);
   }
 `;

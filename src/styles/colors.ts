@@ -1,4 +1,4 @@
-export const colors = {
+export const COLORS = {
     listWrapper: "#ebecf0",
     listTitle: "#172b4d",
     whiteBackground: "#fff",
@@ -6,6 +6,7 @@ export const colors = {
     placeholder: "#838da1",
     buttonText: "#5e6c84",
     error: "red",
+    
 
     buttonColors: {
         primary: "#0079bf",

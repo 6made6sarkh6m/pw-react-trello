@@ -1,6 +1,7 @@
 import React from "react";
 import { FC } from "react";
 import styled from "styled-components";
+import { COLORS } from "styles/colors";
 
 type HeaderProps = {
   username: string;
@@ -26,7 +27,7 @@ const HeaderContainer = styled.header`
 `;
 const HeaderTitle = styled.h2`
   text-align: start;
-  color: ${(props) => props.color || props.theme.containerColors.listTitle};
+  color: ${COLORS.listTitle};
   font-size: 22px;
   font-family: sans-serif;
   line-height: 14px;

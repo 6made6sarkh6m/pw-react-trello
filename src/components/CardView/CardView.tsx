@@ -4,8 +4,9 @@ import React, { FC, useRef, useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { patternValidation } from "utils/validate";
-import DeleteIcon from "../ui-components/DeleteIcon";
+import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import { Comment } from "../Comment";
+import {COLORS} from 'styles/colors';
 interface CardViewProps {
   onClose?: () => void;
   comments: CommentsData;
@@ -154,7 +155,7 @@ const CardView: FC<CardViewProps> = ({
             <Title>Description</Title>
             <EditDescriptionInput
               onClick={() => setIsEditingDescription(true)}
-              ref={ref as any}
+              ref={ref}
               isEditing={isEditingDescription}
               rows={10}
               value={description}
@@ -235,7 +236,7 @@ const Root = styled.div`
 const Container = styled.div`
   position: relative;
   width: max-content;
-  background-color: white;
+  background-color: ${COLORS.whiteBackground};
   border-radius: 2px;
   padding: 10px;
   margin: 30px 5px 80px;
@@ -282,10 +283,10 @@ const EditTitleInput = styled.textarea<InputProps>`
   overflow-y: hidden;
   font-family: sans-serif;
   width: 100%;
-  color: #172b4d;
+  color: ${COLORS.listTitle};
   background: ${({ isEditing }) =>
     isEditing
-      ? (props) => props.color || props.theme.containerColors.listWrapper
+      ? COLORS.listWrapper
       : "transparent"};
   border: none;
   border-radius: 3px;
@@ -301,7 +302,7 @@ const EditTitleInput = styled.textarea<InputProps>`
 
   ::placeholder {
     font-weight: 400;
-    color: ${(props) => props.color || props.theme.containerColors.placeholder};
+    color: ${COLORS.placeholder};
   }
 
   &:focus {
@@ -311,10 +312,9 @@ const EditTitleInput = styled.textarea<InputProps>`
 const DeleteButton = styled.button`
   align-self: flex-start;
   position: relative;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  color: ${COLORS.buttonText};
   border: none;
-  background-color: ${(props) =>
-    props.color || props.theme.buttons.transparent};
+  background-color: ${COLORS.buttonColors.transparent};
   padding: 0 8px;
   border-radius: 3px;
   margin-top: -2px;
@@ -323,7 +323,7 @@ const DeleteButton = styled.button`
 
   :hover {
     opacity: 1;
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
     background-color: rgba(9, 30, 66, 0.08);
   }
 `;
@@ -336,7 +336,7 @@ const ListTitleContainer = styled.div`
 const ListTitle = styled.span`
   font-size: 12px;
   font-family: sans-serif;
-  color: lightgrey;
+  color: ${COLORS.listTitle};
   display: flex;
 `;
 const DescriptionContainer = styled.div`
@@ -348,7 +348,6 @@ const DescriptionContainer = styled.div`
 `;
 const Title = styled.h2`
   text-align: start;
-  color: ${(props) => props.color};
   font-size: 14px;
   line-height: 14px;
   font-weight: 600;
@@ -384,7 +383,7 @@ const SaveButton = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(rgba(0, 121, 191, 0.08));
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
   }
 `;
 const EditDescriptionInput = styled.textarea<InputProps>`
@@ -393,8 +392,8 @@ const EditDescriptionInput = styled.textarea<InputProps>`
   color: #172b4d;
   background: ${({ isEditing }) =>
     isEditing
-      ? (props) => props.color || props.theme.containerColors.whiteBackground
-      : (props) => props.color || props.theme.containerColors.listWrapper};
+      ? COLORS.whiteBackground
+      : COLORS.listWrapper};
   border: none;
   border-radius: 3px;
   resize: none;
@@ -409,7 +408,7 @@ const EditDescriptionInput = styled.textarea<InputProps>`
 
   ::placeholder {
     font-weight: 400;
-    color: ${(props) => props.color || props.theme.containerColors.placeholder};
+    color: ${COLORS.placeholder};
   }
 
   &:focus {
@@ -424,9 +423,8 @@ const CancelButton = styled.button`
   margin: 10px 0px;
   padding: 5px 15px;
   width: 70px;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
-  background-color: ${(props) =>
-    props.color || props.theme.buttons.transparent};
+  color: ${COLORS.buttonText};
+  background-color: ${COLORS.buttonColors.transparent};
   border-radius: 3px;
   font-size: 14px;
   cursor: pointer;
@@ -438,7 +436,7 @@ const CancelButton = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(9, 30, 66, 0.08);
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
   }
 `;
 const CommentsContainer = styled.div`

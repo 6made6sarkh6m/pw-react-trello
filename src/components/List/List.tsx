@@ -2,11 +2,11 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import { patternValidation } from "utils/validate";
-import AddIcon from "../ui-components/AddIcon";
+import AddIcon from "../ui-components/icons/AddIcon";
 import { CardProps, CardsData, CommentProps, CommentsData } from "App";
 import { Card} from "../Card";
 import { NewCard } from "../NewCard";
-import { colors } from "styles/colors";
+import { COLORS } from "styles/colors";
 interface ListProps {
   key: string;
   listTitle: string;
@@ -87,9 +87,9 @@ const List: FC<ListProps> = ({
     }
   }, [isEditing]);
   return (
-    <Root color={colors.listWrapper}>
+    <Root >
       <ListHeader>
-        <ListTitle color={colors.listTitle}>{listTitle}</ListTitle>
+        <ListTitle color={COLORS.listTitle}>{listTitle}</ListTitle>
         {!isEditing && (
             <EditTitleContainer
               onClick={() => {
@@ -147,7 +147,7 @@ const List: FC<ListProps> = ({
 };
 const Root = styled.div`
   width: 272px;
-  background: ${(props) => props.color};
+  background: ${COLORS.listWrapper}
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
@@ -164,7 +164,7 @@ const ListHeader = styled.div`
 const ListTitle = styled.h2`
   display: none;
   text-align: start;
-  color: ${(props) => props.color};
+  color: ${COLORS.listTitle};
   font-size: 14px;
   line-height: 14px;
   font-weight: 600;
@@ -189,13 +189,13 @@ const EditTitleInput = styled.textarea<InputProps>`
   color: #172b4d;
   background: ${({ isEditing }) =>
     isEditing
-      ? (props) => props.color || props.theme.containerColors.whiteBackground
+      ? () => COLORS.whiteBackground
       : "transparent"};
   border: none;
   border-radius: 3px;
   box-shadow: ${({ isEditing }) =>
     isEditing
-      ? (props) => props.color || props.theme.containerColors.boxShadow
+      ? () => COLORS.boxShadow
       : "none"};
   resize: none;
   font-size: 14px;
@@ -209,7 +209,7 @@ const EditTitleInput = styled.textarea<InputProps>`
 
   ::placeholder {
     font-weight: 400;
-    color: ${(props) => props.color || props.theme.containerColors.placeholder};
+    color: ${COLORS.placeholder};
   }
 
   &:focus {
@@ -221,9 +221,8 @@ const AddCardButton = styled.button`
   align-items: flex-end;
   border: none;
   width: 70%;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
-  background-color: ${(props) =>
-    props.color || props.theme.buttons.transparent};
+  color: ${COLORS.buttonText};
+  background-color: ${COLORS.buttonColors.transparent};
   border-radius: 3px;
   padding: 4px 8px;
   margin: 0 4px;
@@ -237,7 +236,7 @@ const AddCardButton = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(9, 30, 66, 0.08);
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
   }
 `;
 const IconContainer = styled.div`
@@ -245,7 +244,7 @@ const IconContainer = styled.div`
   height: 20px;
   opacity: 0.8;
   display: flex;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
+  color: ${COLORS.buttonText};
 `;
 
 export default List;

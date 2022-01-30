@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import styled from "styled-components";
+import { COLORS } from "styles/colors";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
@@ -60,12 +61,10 @@ export const NewCard: FC<NewCardProps> = ({
 export default NewCard;
 const CardItem = styled.div`
   display: flex;
-  background-color: ${(props) =>
-    props.color || props.theme.containerColors.whiteBackground};
+  background-color: ${COLORS.whiteBackground};
   width: 90%;
   min-height: 50px;
-  box-shadow: ${(props) =>
-    props.color || props.theme.containerColors.boxShadow};
+  box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
   padding: 6px 8px;
   margin-bottom: 10px;
@@ -75,8 +74,7 @@ const CardItem = styled.div`
 const CardTitleInput = styled.textarea`
   font-family: sans-serif;
   width: 100%;
-  background: ${(props) =>
-    props.color || props.theme.containerColors.whiteBackground};
+  background: ${COLORS.whiteBackground};
   border: none;
   border-radius: 3px;
   resize: none;
@@ -90,7 +88,7 @@ const CardTitleInput = styled.textarea`
 
   ::placeholder {
     font-weight: 400;
-    color: ${(props) => props.color || props.theme.containerColors.placeholder};
+    color: ${COLORS.placeholder};
   }
 
   &:focus {
@@ -115,7 +113,7 @@ const AddNewCardButton = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(rgba(0, 121, 191, 0.08));
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
   }
 `;
 const CancelButton = styled.button`
@@ -126,9 +124,8 @@ const CancelButton = styled.button`
   margin: 10px 0px;
   padding: 5px 15px;
   width: 30%;
-  color: ${(props) => props.color || props.theme.containerColors.buttonText};
-  background-color: ${(props) =>
-    props.color || props.theme.buttons.transparent};
+  color: ${COLORS.buttonText};
+  background-color: ${COLORS.buttonColors.transparent};
   border-radius: 3px;
   font-size: 14px;
   cursor: pointer;
@@ -140,7 +137,7 @@ const CancelButton = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(9, 30, 66, 0.08);
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
   }
 `;
 const ButtonContainer = styled.div`

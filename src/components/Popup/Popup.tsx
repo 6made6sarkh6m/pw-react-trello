@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { patternValidation } from "utils/validate";
 import { UserService } from "helpers/userService";
+import { COLORS } from "styles/colors";
 
 type PopupProps = {
   setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -134,7 +135,7 @@ const Button = styled.button`
   &:focus {
     outline: none;
     background-color: rgba(rgba(0, 121, 191, 0.08));
-    color: ${(props) => props.color || props.theme.containerColors.listTitle};
+    color: ${COLORS.listTitle};
   }
 `;
 export default Popup;
