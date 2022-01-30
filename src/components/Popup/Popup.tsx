@@ -4,28 +4,28 @@ import { UserService } from "helpers/userService";
 import { COLORS } from "styles/colors";
 
 type PopupProps = {
-  setIsPresent: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit?: () => void;
 };
 
-const Popup: FC<PopupProps> = ({ setIsPresent }) => {
+const Popup: FC<PopupProps> = ({onSubmit}) => {
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
-  const saveUsername = () => {
-    if (username.trim() !== "") {
+  
+  const handleOnSubmit = () => {
+    if(username.trim() !=="") {
       UserService.setUsername(username);
-      setIsPresent(true);
+      onSubmit?.();
     } else {
       setIsNotValid(true);
     }
-  };
-  
+  }
   return (
     <Root>
       <PopupInner>
         <PopupTitle>What's your name?</PopupTitle>
         <InputWrapper>
-          <form onSubmit={() => saveUsername()}>
+          <form onSubmit={() => handleOnSubmit()}>
             <UserNameInput
               placeholder="Type your name!"
               required
@@ -56,6 +56,11 @@ const Root = styled.div`
     margin: 0;
     padding: 0;
     overflow-y: auto;
+    @media screen and (max-width: 800px){
+      width: 100%;
+      align-items: center;
+
+    }
 `;
 
 const PopupInner = styled.div`
@@ -69,6 +74,12 @@ const PopupInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 800px){
+    width: calc((100% - 100px) / 3);
+    
+    
+  }
+  
 `;
 const InputWrapper = styled.div`
   display: flex;
@@ -77,6 +88,11 @@ const InputWrapper = styled.div`
   max-width: 350px;
   width: 100%;
   justify-content: space-between;
+  @media screen and (max-width: 800px){
+    width: 100%;
+    flex-direction: column;
+    
+  }
 `;
 const UserNameInput = styled.input`
   font-family: sans-serif;

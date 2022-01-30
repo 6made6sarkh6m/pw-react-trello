@@ -31,7 +31,7 @@ export type CardsData = Record<string, CardDataProps>;
 export type CommentsData = Record<string, CommentDataProps>;
 
 const App = () => {
-  const [isPresent, setIsPresent] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [lists, setList] = useState<DeskData>(StorageService.getToDoLists());
   const [cards, setCard] = useState<CardsData>(StorageService.getCards());
   const [comments, setComment] = useState<CommentsData>(
@@ -120,14 +120,15 @@ const App = () => {
     setCommentData(cloneComments);
   };
 
+  const renderPopup = () => {
+    return isOpen && <Popup onSubmit={() => setIsOpen(false)}></Popup>;
+  };
+
   useEffect(() => {
-    UserService.getCurrentUser() !== ""
-      ? setIsPresent(true)
-      : setIsPresent(false);
-  }, [isPresent]);
+    !UserService.getCurrentUser() ? setIsOpen(true) : setIsOpen(false);
+  }, []);
   return (
     <>
-      {!isPresent && <Popup setIsPresent={setIsPresent}></Popup>}
       <Header username={UserService.getCurrentUser()}></Header>
       <PageWrapper>
         <Board
@@ -144,6 +145,7 @@ const App = () => {
           addComment={addComment}
         ></Board>
       </PageWrapper>
+      {renderPopup()}
     </>
   );
 };
@@ -153,6 +155,11 @@ const PageWrapper = styled.div`
   align-items: flex-start;
   width: 1440px;
   padding: 20px;
+  @media screen and (max-width: 800px){
+    width: 100%;
+    flex-direction: column
+    
+  }
 `;
 
 export default App;

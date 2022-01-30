@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect, useState, useMemo } from "react";
+import React, { FC, useRef, useEffect, useState } from "react";
 import { Comment } from "./components/Comment";
 import { NewComment } from "./components/NewComment";
 import { Description } from "./components/Description";
@@ -88,6 +88,7 @@ const CardView: FC<CardViewProps> = ({
       editTitleRef?.current?.blur?.();
     }
   }, [isEditingTitle]);
+
   useEffect(() => {
     document.addEventListener("keydown", handleCloseView, false);
 
@@ -95,6 +96,7 @@ const CardView: FC<CardViewProps> = ({
       document.removeEventListener("keydown", handleCloseView, false);
     };
   }, []);
+
   return (
     <Root>
       <Container>

@@ -4,7 +4,7 @@ import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-interface Comment {
+interface CommentProps {
   key: string;
   id: string;
   commentValue: string;
@@ -16,7 +16,7 @@ interface Comment {
   deleteComment: (id: string) => void;
 }
 
-const Comment: FC<Comment> = ({
+const Comment: FC<CommentProps> = ({
   id,
   commentValue,
   updateComment,

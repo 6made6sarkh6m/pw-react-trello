@@ -24,6 +24,9 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: flex-start;
   padding: 4px;
+  @media screen and (max-width: 800px){
+    width: 100%;
+  }
 `;
 const HeaderTitle = styled.h2`
   text-align: start;
