@@ -3,7 +3,7 @@ import { CardDataProps } from 'App';
 import useClickOutside from 'hooks/useClickOutside';
 import styled from 'styled-components';
 import { COLORS } from 'styles/colors';
-import { CardProperties } from "enum/cardProperties";
+import { CardProperties } from "enum/enum";
 
 interface DescriptionProps {
     cardDescription: string;

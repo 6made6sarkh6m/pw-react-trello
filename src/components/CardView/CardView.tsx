@@ -6,7 +6,7 @@ import useClickOutside from "hooks/useClickOutside";
 import { patternValidation } from "utils/validate";
 import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import styled from "styled-components";
-import { CardProperties } from "enum/cardProperties";
+import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
 
 interface CardViewProps {

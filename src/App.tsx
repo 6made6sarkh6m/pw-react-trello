@@ -6,6 +6,7 @@ import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import Popup from "./components/Popup";
 import Header from "./components/Header/Header";
+import { StorageProperties } from "enum/enum";
 export interface ListDataProps {
   id: string;
   listTitle: string;
@@ -38,17 +39,17 @@ const App = () => {
   );
 
   const setListData = (newList: DeskData) => {
-    StorageService.setList(newList);
+    StorageService.setData(newList, StorageProperties.lists);
     setList(newList);
   };
 
   const setCardData = (newCardList: CardsData) => {
-    StorageService.setCards(newCardList);
+    StorageService.setData(newCardList, StorageProperties.cards);
     setCard(newCardList);
   };
 
   const setCommentData = (newComments: CommentsData) => {
-    StorageService.setComment(newComments);
+    StorageService.setData(newComments, StorageProperties.comments);
     setComment(newComments);
   };
 

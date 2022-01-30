@@ -29,15 +29,7 @@ export class StorageService {
     return JSON.parse(localStorage.getItem("comments") || "");
   }
 
-  static setList(data: any) {
-    localStorage.setItem("lists", JSON.stringify(data));
-  }
-
-  static setCards(data: any) {
-    localStorage.setItem("cards", JSON.stringify(data));
-  }
-
-  static setComment(data: any) {
-    localStorage.setItem("comments", JSON.stringify(data));
+  static setData(data: any, key: string) {
+    localStorage.setItem(key, JSON.stringify(data));
   }
 }
