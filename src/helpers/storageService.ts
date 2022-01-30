@@ -10,7 +10,7 @@ export class StorageService {
     return !!localStorage.getItem("comments");
   }
   static getToDoLists() {
-    if (!this.hasToDolists()) {
+    if (!this.hasToDolists) {
       localStorage.setItem("lists", JSON.stringify(lists));
     }
     return JSON.parse(localStorage.getItem("lists") || "");

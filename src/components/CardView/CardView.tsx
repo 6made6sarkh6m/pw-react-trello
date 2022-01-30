@@ -44,12 +44,14 @@ const CardView: FC<CardViewProps> = ({
   deleteComment,
   addComment,
 }) => {
-  const ref = useRef<HTMLTextAreaElement>(null);
+  const editTitleRef = useRef<HTMLTextAreaElement>(null);
+  const editDescRef = useRef<HTMLTextAreaElement>(null);
+
+
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isEditingDescription, setIsEditingDescription] =
     useState<boolean>(false);
   const [newComment, setNewComment] = useState<string>("");
-  const [isAddingComment, setIsAddingComment] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(cardDescription);
   const [title, setTitle] = useState<string>(cardTitle);
   const onDescriptionUpdate = () => {
@@ -83,33 +85,31 @@ const CardView: FC<CardViewProps> = ({
       onClose?.();
     }
   };
-  useClickOutside(ref, () => {
+  useClickOutside(editTitleRef, () => {
     if (isEditingTitle) {
       setIsEditingTitle(false);
       setTitle(cardTitle);
     }
+  });
+  useClickOutside(editDescRef, ()=> {
     if (isEditingDescription) {
       setIsEditingDescription(false);
+      setDescription(description);
     }
-    if (isAddingComment) {
-      setIsAddingComment(false);
-    }
-  });
+    
+  })
   useEffect(() => {
     if (isEditingTitle) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
-    }
-    if (isAddingComment) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
+      editTitleRef?.current?.focus?.();
+      editTitleRef?.current?.select?.();
     }
     if (isEditingDescription) {
-      ref?.current?.focus?.();
+      editDescRef?.current?.focus?.();
     } else {
-      ref?.current?.blur?.();
+      editTitleRef?.current?.blur?.();
+      editDescRef?.current?.blur?.();
     }
-  }, [isEditingTitle, isEditingDescription, isAddingComment]);
+  }, [isEditingTitle, isEditingDescription]);
   useEffect(() => {
     document.addEventListener("keydown", handleCloseView, false);
 
@@ -134,7 +134,7 @@ const CardView: FC<CardViewProps> = ({
                 </>
               )}
               <EditTitleInput
-                ref={ref}
+                ref={editTitleRef}
                 isEditing={isEditingTitle}
                 rows={1}
                 value={title}
@@ -154,7 +154,7 @@ const CardView: FC<CardViewProps> = ({
             <Title>Description</Title>
             <EditDescriptionInput
               onClick={() => setIsEditingDescription(true)}
-              ref={ref}
+              ref={editDescRef}
               isEditing={isEditingDescription}
               rows={10}
               value={description}
