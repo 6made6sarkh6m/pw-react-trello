@@ -3,7 +3,7 @@ import DeleteIcon from "components/ui-components/icons/DeleteIcon";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import {COLORS} from 'styles/colors';
+import { COLORS } from "styles/colors";
 interface Comment {
   key: string;
   id: string;
@@ -28,8 +28,13 @@ const Comment: FC<Comment> = ({
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
+      if(comment.trim() !== ""){
       setIsEditing(false);
       updateComment(id, "comment", comment);
+      } else {
+        setIsEditing(false);
+        setComment(commentValue);
+      }
     }
     if (e.key === "Escape") {
       setIsEditing(false);
@@ -49,35 +54,35 @@ const Comment: FC<Comment> = ({
     }
   }, [isEditing]);
   return (
-    <CommentContainer>
-      {!isEditing && (
-        <>
-          <EditTitleButton
-            onClick={() => {
-              setIsEditing(true);
-            }}
+    <>
+      <CommentContainer>
+        {
+          !isEditing && (
+            <CommentContent>{comment}</CommentContent>
+          )
+        }
+         
+        {isEditing && (
+          <CommentInput
+            ref={ref}
+            rows={1}
+            value={comment}
+            spellCheck={false}
+            onKeyDown={handleOnKeyDown}
+            onChange={(e) => setComment(e.target.value)}
           />
-          <CommentContent>{comment}</CommentContent>
-        </>
-      )}
-      {isEditing && (
-        <CommentInput
-          ref={ref}
-          rows={1}
-          value={comment}
-          spellCheck={false}
-          onKeyDown={handleOnKeyDown}
-          onChange={(e) => setComment(e.target.value)}
-        />
-      )}
-      <DeleteButton onClick={() => deleteComment(id)}>
-        <DeleteIcon />
-      </DeleteButton>
-    </CommentContainer>
+        )}
+        <DeleteButton onClick={() => deleteComment(id)}>
+          <DeleteIcon />
+        </DeleteButton>
+      </CommentContainer>
+      <EditCommentButton href="#" onClick={() => setIsEditing(true)}>
+        Edit
+      </EditCommentButton>
+    </>
   );
 };
 const CommentContainer = styled.div`
-  margin-top: 15px;
   position: relative;
   display: flex;
   width: 70%;
@@ -131,6 +136,15 @@ export const EditTitleButton = styled.div`
   left: 0;
   right: 0;
 `;
+
+export const EditCommentButton = styled.a`
+  text-decoration: underline;
+  font-family: sans-serif;
+  background-color: transparent;
+  font-size: 13px;
+  color: ${COLORS.buttonText}
+`;
+
 export const DeleteButton = styled.button`
   align-self: flex-start;
   position: relative;

@@ -4,7 +4,6 @@ import { NewComment } from "./components/NewComment";
 import { Description } from "./components/Description";
 import { CardDataProps, CommentDataProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
-import { patternValidation } from "utils/validate";
 import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import styled from "styled-components";
 import { CardProperties } from "enum/enum";
@@ -57,9 +56,12 @@ const CardView: FC<CardViewProps> = ({
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (title.trim() !== "" && !patternValidation(title)) {
+      if (title.trim() !== "") {
         setIsEditingTitle(false);
         updateCardTitle(cardId, CardProperties.title, title);
+      } else {
+        setTitle(cardTitle);
+        setIsEditingTitle(false);
       }
     }
   };
@@ -144,7 +146,7 @@ const CardView: FC<CardViewProps> = ({
               .map((comment) => {
                 return (
                   <>
-                    <Title key={comment.id}>By {username}</Title>
+                    <Title key={comment.id}>{username}</Title>
                     <Comment
                       id={comment.id}
                       key={comment.id}
@@ -225,7 +227,7 @@ const EditTitleContainer = styled.div`
   left: 0;
   right: 0;
   margin: 0 4px;
-  cursor: pointer;
+  cursor: text;
   width: 90%;
 `;
 const EditTitleInput = styled.textarea<InputProps>`
@@ -283,7 +285,7 @@ const ListTitleContainer = styled.div`
 const ListTitle = styled.span`
   font-size: 12px;
   font-family: sans-serif;
-  color: ${COLORS.listTitle};
+  color: ${COLORS.buttonText};
   display: flex;
 `;
 const Title = styled.h2`

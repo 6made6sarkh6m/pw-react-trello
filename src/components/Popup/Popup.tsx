@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { patternValidation } from "utils/validate";
 import { UserService } from "helpers/userService";
 import { COLORS } from "styles/colors";
 
@@ -13,7 +12,7 @@ const Popup: FC<PopupProps> = ({ setIsPresent }) => {
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
   const saveUsername = () => {
-    if (username.trim() !== "" && !patternValidation(username)) {
+    if (username.trim() !== "") {
       UserService.setUsername(username);
       setIsPresent(true);
     } else {

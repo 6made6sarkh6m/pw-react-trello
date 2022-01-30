@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
-import { patternValidation } from "utils/validate";
 import AddIcon from "../ui-components/icons/AddIcon";
 import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card} from "../Card";
