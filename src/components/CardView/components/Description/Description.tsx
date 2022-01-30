@@ -1,8 +1,9 @@
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { CardDataProps } from 'App';
 import useClickOutside from 'hooks/useClickOutside';
-import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from 'styles/colors';
+import { CardProperties } from "enum/cardProperties";
 
 interface DescriptionProps {
     cardDescription: string;
@@ -16,7 +17,7 @@ interface DescriptionProps {
 interface InputProps {
     readonly isEditing: boolean;
   }
-  
+
 const Description:FC <DescriptionProps> = ({cardDescription, cardId, updateCardTitle}) => {
     const editDescRef = useRef<HTMLTextAreaElement>(null);
     const [isEditingDescription, setIsEditingDescription] =
@@ -25,7 +26,7 @@ const Description:FC <DescriptionProps> = ({cardDescription, cardId, updateCardT
     const onDescriptionUpdate = () => {
         if (description.trim() !== " ") {
           setIsEditingDescription(false);
-          updateCardTitle(cardId, "cardDescription", description);
+          updateCardTitle(cardId, CardProperties.description, description);
         } else {
           setIsEditingDescription(false);
           setDescription(cardDescription);

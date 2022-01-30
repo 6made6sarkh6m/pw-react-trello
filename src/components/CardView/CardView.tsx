@@ -1,12 +1,14 @@
-import { CardDataProps, CommentDataProps, CommentsData } from "App";
-import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useRef, useEffect, useState, useMemo } from "react";
-import styled from "styled-components";
-import { patternValidation } from "utils/validate";
-import DeleteIcon from "../ui-components/icons/DeleteIcon";
 import { Comment } from "./components/Comment";
 import { Description } from "./components/Description";
+import { CardDataProps, CommentDataProps, CommentsData } from "App";
+import useClickOutside from "hooks/useClickOutside";
+import { patternValidation } from "utils/validate";
+import DeleteIcon from "../ui-components/icons/DeleteIcon";
+import styled from "styled-components";
+import { CardProperties } from "enum/cardProperties";
 import { COLORS } from "styles/colors";
+
 interface CardViewProps {
   onClose?: () => void;
   comments: CommentsData;
@@ -65,7 +67,7 @@ const CardView: FC<CardViewProps> = ({
       e.preventDefault();
       if (title.trim() !== "" && !patternValidation(title)) {
         setIsEditingTitle(false);
-        updateCardTitle(cardId, "cardTitle", title);
+        updateCardTitle(cardId, CardProperties.title, title);
       }
     }
   };
