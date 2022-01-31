@@ -7,7 +7,7 @@ import { Board } from "components/Board";
 import Popup from "./components/Popup";
 import Header from "./components/Header/Header";
 import { StorageProperties } from "enum/enum";
-import { lists as listData, cards as cardData, comments as commentData } from "utils/mock"
+import { defaultLists, defaultCards, defaultComments } from "utils/mock";
 export interface ListDataProps {
   id: string;
   listTitle: string;
@@ -33,10 +33,14 @@ export type CommentsData = Record<string, CommentDataProps>;
 
 const App = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [lists, setList] = useState<DeskData>(StorageService.getData(listData, StorageProperties.lists));
-  const [cards, setCard] = useState<CardsData>(StorageService.getData(cardData, StorageProperties.cards));
+  const [lists, setList] = useState<DeskData>(
+    StorageService.getData(defaultLists, StorageProperties.lists)
+  );
+  const [cards, setCard] = useState<CardsData>(
+    StorageService.getData(defaultCards, StorageProperties.cards)
+  );
   const [comments, setComment] = useState<CommentsData>(
-    StorageService.getData(commentData, StorageProperties.comments)
+    StorageService.getData(defaultComments, StorageProperties.comments)
   );
 
   const setListData = (newList: DeskData) => {
@@ -156,10 +160,9 @@ const PageWrapper = styled.div`
   align-items: flex-start;
   width: 1440px;
   padding: 20px;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     width: 100%;
-    flex-direction: column
-    
+    flex-direction: column;
   }
 `;
 

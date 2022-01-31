@@ -1,4 +1,4 @@
-export const lists = {
+export const defaultLists = {
   "1": {
     id: "1",
     listTitle: "To do",
@@ -17,7 +17,7 @@ export const lists = {
   },
 };
 
-export const cards = {
+export const defaultCards = {
   "1": {
     id: "1",
     listId: "1",
@@ -26,7 +26,7 @@ export const cards = {
   },
 };
 
-export const comments = {
+export const defaultComments = {
   "1": {
     id: "1",
     cardId: "1",

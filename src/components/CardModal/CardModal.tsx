@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect, useState } from "react";
+import React, { FC, useRef, useEffect, useState, useMemo } from "react";
 import { Comment } from "./components/Comment";
 import { NewComment } from "./components/NewComment";
 import { Description } from "./components/Description";
@@ -8,7 +8,7 @@ import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
-import {EditTitleInput, DeleteButton} from "../ui/components/InputComponents";
+import { EditTitleInput, DeleteButton } from "../ui/components/InputComponents";
 
 interface CardViewProps {
   onClose?: () => void;
@@ -99,6 +99,12 @@ const CardModal: FC<CardViewProps> = ({
     };
   }, []);
 
+  const filteredComments = useMemo(
+    () =>
+      Object.values(comments).filter((comment) => comment.cardId === cardId),
+    [comments]
+  );
+
   return (
     <Root>
       <Container>
@@ -142,25 +148,23 @@ const CardModal: FC<CardViewProps> = ({
             cardId={cardId}
             username={username}
             addComment={addComment}
-          ></NewComment> 
+          ></NewComment>
           <CommentsContainer>
             <Title>Comments</Title>
-            {Object.values(comments)
-              .filter((comment) => comment.cardId === cardId)
-              .map((comment) => {
-                return (
-                  <>
-                    <Title key={comment.id}>{username}</Title>
-                    <Comment
-                      id={comment.id}
-                      key={comment.id}
-                      commentValue={comment.comment}
-                      updateComment={updateComment}
-                      deleteComment={deleteComment}
-                    ></Comment>
-                  </>
-                );
-              })}
+            {filteredComments.map((comment) => {
+              return (
+                <>
+                  <Title key={comment.id}>{username}</Title>
+                  <Comment
+                    id={comment.id}
+                    key={comment.id}
+                    commentValue={comment.comment}
+                    updateComment={updateComment}
+                    deleteComment={deleteComment}
+                  ></Comment>
+                </>
+              );
+            })}
           </CommentsContainer>
         </Modal>
       </Container>
@@ -234,7 +238,6 @@ const EditTitleContainer = styled.div`
   cursor: text;
   width: 90%;
 `;
-
 
 const ListTitleContainer = styled.div`
   display: flex;
