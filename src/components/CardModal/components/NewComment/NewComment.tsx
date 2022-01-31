@@ -11,7 +11,8 @@ const NewComment: FC<NewCommentProps> = ({ cardId, username, addComment }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [newComment, setNewComment] = useState<string>("");
   const onSaveComment = () => {
-    if (newComment.trim() !== "") {
+    const trimmedComment = newComment.trim();
+    if (trimmedComment) {
       addComment(cardId, username, newComment);
       setNewComment("");
         ref?.current?.blur?.();

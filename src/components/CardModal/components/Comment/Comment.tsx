@@ -29,7 +29,8 @@ const Comment: FC<CommentProps> = ({
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      if(comment.trim() !== ""){
+      const trimmedComment = comment.trim();
+      if(trimmedComment){
       setIsEditing(false);
       updateComment(id, "comment", comment);
       } else {

@@ -14,9 +14,6 @@ interface DescriptionProps {
         value: string
       ) => void;
 }
-interface InputProps {
-    readonly isEditing: boolean;
-  }
 
 const Description:FC <DescriptionProps> = ({cardDescription, cardId, updateCardTitle}) => {
     const editDescRef = useRef<HTMLTextAreaElement>(null);
@@ -24,7 +21,9 @@ const Description:FC <DescriptionProps> = ({cardDescription, cardId, updateCardT
     useState<boolean>(false);
     const [description, setDescription] = useState<string>(cardDescription);
     const onDescriptionUpdate = () => {
-        if (description.trim() !== " ") {
+        
+        const trimmedDescription = description.trim();
+        if (trimmedDescription) {
           setIsEditingDescription(false);
           updateCardTitle(cardId, CardProperties.description, description);
         } else {

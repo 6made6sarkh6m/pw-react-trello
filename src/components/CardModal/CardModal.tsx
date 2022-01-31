@@ -57,7 +57,8 @@ const CardModal: FC<CardViewProps> = ({
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (title.trim() !== "") {
+      const trimmedTitle = title.trim();
+      if (trimmedTitle) {
         setIsEditingTitle(false);
         updateCardTitle(cardId, CardProperties.title, title);
       } else {

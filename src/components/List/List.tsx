@@ -54,7 +54,8 @@ const List: FC<ListProps> = ({
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (currentTitle.trim() !== "") {
+      const trimmedTitle = currentTitle.trim();
+      if (trimmedTitle) {
         setIsEditing(false);
         updateList(id, currentTitle);
       }

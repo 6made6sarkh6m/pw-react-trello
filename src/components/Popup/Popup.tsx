@@ -13,7 +13,8 @@ const Popup: FC<PopupProps> = ({onSubmit}) => {
 
   
   const handleOnSubmit = () => {
-    if(username.trim() !=="") {
+    const trimmedUsername = username.trim();
+    if(trimmedUsername) {
       UserService.setUsername(username);
       onSubmit?.();
     } else {
