@@ -4,7 +4,7 @@ import useClickOutside from 'hooks/useClickOutside';
 import styled from 'styled-components';
 import { COLORS } from 'styles/colors';
 import { CardProperties } from "enum/enum";
-import {SaveButton} from 'components/ui/components/SaveButton';
+import {SaveButton, CancelButton, EditDescriptionInput} from 'components/ui/components/InputComponents';
 interface DescriptionProps {
     cardDescription: string;
     cardId: string;
@@ -108,56 +108,7 @@ const DescriptionControlConteiner = styled.div`
   margin-top: 15px;
 `;
 
-const EditDescriptionInput = styled.textarea<InputProps>`
-  font-family: sans-serif;
-  width: 100%;
-  color: #172b4d;
-  background: ${({ isEditing }) =>
-    isEditing ? COLORS.whiteBackground : COLORS.listWrapper};
-  border: none;
-  border-radius: 3px;
-  resize: none;
-  font-size: 12px;
-  line-height: 10px;
-  font-weight: 600;
-  min-height: 100px;
-  padding: 4px 8px;
-  margin: 0;
-  display: block;
-  transition: all 0.1s linear;
 
-  ::placeholder {
-    font-weight: 400;
-    color: ${COLORS.placeholder};
-  }
 
-  &:focus {
-    outline: 1px solid #0079bf;
-  }
-`;
-const CancelButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  margin: 10px 0px;
-  padding: 5px 15px;
-  width: 70px;
-  color: ${COLORS.buttonText};
-  background-color: ${COLORS.buttonColors.transparent};
-  border-radius: 3px;
-  font-size: 14px;
-  cursor: pointer;
-  & > span {
-    line-height: 20px;
-    font-family: sans-serif;
-  }
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: rgba(9, 30, 66, 0.08);
-    color: ${COLORS.listTitle};
-  }
-`;
 
 export default Description;

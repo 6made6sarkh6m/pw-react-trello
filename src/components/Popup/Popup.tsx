@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { UserService } from "helpers/userService";
 import { COLORS } from "styles/colors";
-
+import {UserNameInput, Button} from 'components/ui/components/InputComponents';
 type PopupProps = {
   onSubmit?: () => void;
 };
@@ -94,25 +94,7 @@ const InputWrapper = styled.div`
     
   }
 `;
-const UserNameInput = styled.input`
-  font-family: sans-serif;
-  background: ${COLORS.whiteBackground};
-  border: none;
-  border-radius: 3px;
-  resize: none;
-  font-size: 14px;
-  font-weight: 400;
-  padding: 10px;
-  margin: 10px;
-  ::placeholder {
-    font-weight: 400;
-    color: ${COLORS.placeholder};
-  }
 
-  &:focus {
-    outline: none;
-  }
-`;
 const PopupTitle = styled.h2`
   font-family: sans-serif;
   color: ${COLORS.listTitle};
@@ -133,24 +115,5 @@ const ErrorTitle = styled.p`
     }
 `;
 
-const Button = styled.button`
-  font-size: 15px;
-  font-family: sans-serif;
-  cursor: pointer;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 5px;
-  border: none;
-  outline: 0;
-  background-color: #0079bf;
-  margin: 10px 0px;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: rgba(rgba(0, 121, 191, 0.08));
-    color: ${COLORS.listTitle};
-  }
-`;
+
 export default Popup;

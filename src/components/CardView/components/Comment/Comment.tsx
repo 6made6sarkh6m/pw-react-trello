@@ -4,6 +4,7 @@ import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
+import {CommentInput, DeleteButton} from '../../../ui/components/InputComponents';
 interface CommentProps {
   key: string;
   id: string;
@@ -93,7 +94,7 @@ const CommentContainer = styled.div`
   padding: 0px 4px;
   overflow: hidden;
 `;
-export const CommentContent = styled.span`
+const CommentContent = styled.span`
   font-family: sans-serif;
   font-size: 14px;
   flex-grow: 1;
@@ -103,32 +104,8 @@ export const CommentContent = styled.span`
   word-break: break-all;
 `;
 
-export const CommentInput = styled.textarea`
-  flex-grow: 1;
-  font-family: sans-serif;
-  width: 100%;
-  background: ${COLORS.listWrapper};
-  border: none;
-  border-radius: 3px;
-  resize: none;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
-  min-height: 20px;
-  display: block;
-  overflow: hidden;
 
-  ::placeholder {
-    font-weight: 400;
-    color: ${COLORS.placeholder};
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const EditTitleButton = styled.div`
+const EditTitleButton = styled.div`
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -137,7 +114,7 @@ export const EditTitleButton = styled.div`
   right: 0;
 `;
 
-export const EditCommentButton = styled.a`
+const EditCommentButton = styled.a`
   text-decoration: underline;
   font-family: sans-serif;
   background-color: transparent;
@@ -145,23 +122,6 @@ export const EditCommentButton = styled.a`
   color: ${COLORS.buttonText}
 `;
 
-export const DeleteButton = styled.button`
-  align-self: flex-start;
-  position: relative;
-  color: ${COLORS.buttonText};
-  border: none;
-  background-color: ${COLORS.buttonColors.transparent};
-  padding: 4px;
-  border-radius: 3px;
-  margin-top: -2px;
-  margin-right: -4px;
-  opacity: 0.8;
 
-  :hover {
-    opacity: 1;
-    color: ${COLORS.listTitle};
-    background-color: rgba(9, 30, 66, 0.08);
-  }
-`;
 
 export default Comment;

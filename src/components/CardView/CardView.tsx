@@ -8,6 +8,7 @@ import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
+import {EditTitleInput, DeleteButton} from "../ui/components/InputComponents";
 
 interface CardViewProps {
   onClose?: () => void;
@@ -232,52 +233,7 @@ const EditTitleContainer = styled.div`
   cursor: text;
   width: 90%;
 `;
-const EditTitleInput = styled.textarea<InputProps>`
-  overflow-y: hidden;
-  font-family: sans-serif;
-  width: 100%;
-  color: ${COLORS.listTitle};
-  background: ${({ isEditing }) =>
-    isEditing ? COLORS.listWrapper : "transparent"};
-  border: none;
-  border-radius: 3px;
-  resize: none;
-  font-size: 16px;
-  line-height: 12px;
-  font-weight: 600;
-  min-height: 30px;
-  padding: 4px 8px;
-  margin: 0;
-  display: block;
-  transition: all 0.1s linear;
 
-  ::placeholder {
-    font-weight: 400;
-    color: ${COLORS.placeholder};
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-const DeleteButton = styled.button`
-  align-self: flex-start;
-  position: relative;
-  color: ${COLORS.buttonText};
-  border: none;
-  background-color: ${COLORS.buttonColors.transparent};
-  padding: 0 8px;
-  border-radius: 3px;
-  margin-top: -2px;
-  margin-right: -4px;
-  opacity: 0.8;
-
-  :hover {
-    opacity: 1;
-    color: ${COLORS.listTitle};
-    background-color: rgba(9, 30, 66, 0.08);
-  }
-`;
 
 const ListTitleContainer = styled.div`
   display: flex;

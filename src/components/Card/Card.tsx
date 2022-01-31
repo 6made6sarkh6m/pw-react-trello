@@ -5,6 +5,7 @@ import CommentIcon from "../ui/icons/CommentIcon";
 import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
 import {CardView} from '../CardView'
 import {COLORS} from 'styles/colors';
+import {DeleteButton} from '../ui/components/InputComponents';
 interface CardProps {
   listId: string;
   title: string;
@@ -104,24 +105,7 @@ const CardTitle = styled.span`
   font-family: sans-serif;
 `;
 
-const DeleteButton = styled.button`
-  align-self: flex-start;
-  position: relative;
-  color: ${COLORS.buttonText};
-  border: none;
-  background-color: ${COLORS.buttonColors.transparent};
-  padding: 4px;
-  border-radius: 3px;
-  margin-top: -2px;
-  margin-right: -4px;
-  opacity: 0.8;
 
-  :hover {
-    opacity: 1;
-    color: ${COLORS.listTitle};
-    background-color: rgba(9, 30, 66, 0.08);
-  }
-`;
 const CommentCounter = styled.span`
   font-family: monospace;
   font-size: 13px;

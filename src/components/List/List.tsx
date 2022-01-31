@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
+import { EditTitleInput, AddCardButton } from "components/ui/components/InputComponents";
 import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card} from "../Card";
 import { NewCard } from "../NewCard";
@@ -30,9 +31,7 @@ interface ListProps {
   addComment: (cardId: string, author: string, comment: string) => void;
 }
 
-interface InputProps {
-  readonly isEditing: boolean;
-}
+
 const List: FC<ListProps> = ({
   listTitle,
   id,
@@ -185,62 +184,7 @@ const EditTitleContainer = styled.div`
   margin: 0 4px;
   cursor: pointer;
 `;
-const EditTitleInput = styled.textarea<InputProps>`
-  font-family: sans-serif;
-  width: 100%;
-  color: #172b4d;
-  background: ${({ isEditing }) =>
-    isEditing
-      ? () => COLORS.whiteBackground
-      : "transparent"};
-  border: none;
-  border-radius: 3px;
-  box-shadow: ${({ isEditing }) =>
-    isEditing
-      ? () => COLORS.boxShadow
-      : "none"};
-  resize: none;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-  min-height: 20px;
-  padding: 4px 8px;
-  margin: 0;
-  display: block;
-  transition: all 0.1s linear;
 
-  ::placeholder {
-    font-weight: 400;
-    color: ${COLORS.placeholder};
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-const AddCardButton = styled.button`
-  display: flex;
-  align-items: flex-end;
-  border: none;
-  width: 70%;
-  color: ${COLORS.buttonText};
-  background-color: ${COLORS.buttonColors.transparent};
-  border-radius: 3px;
-  padding: 4px 8px;
-  margin: 0 4px;
-  font-size: 14px;
-  cursor: pointer;
-  & > span {
-    line-height: 20px;
-    font-family: sans-serif;
-  }
-  &:hover,
-  &:focus {
-    outline: none;
-    background-color: rgba(9, 30, 66, 0.08);
-    color: ${COLORS.listTitle};
-  }
-`;
 const IconContainer = styled.div`
   margin-right: 4px;
   height: 20px;

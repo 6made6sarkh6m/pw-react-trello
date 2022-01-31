@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from "react";
 import styled from "styled-components";
-import { SaveButton } from "components/ui/components/SaveButton";
+import { SaveButton } from "components/ui/components/InputComponents";
 import { COLORS } from "styles/colors";
 interface NewCommentProps {
   cardId: string;
