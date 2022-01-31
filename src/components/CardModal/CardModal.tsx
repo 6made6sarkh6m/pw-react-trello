@@ -35,7 +35,7 @@ interface InputProps {
   readonly isEditing: boolean;
 }
 
-const CardView: FC<CardViewProps> = ({
+const CardModal: FC<CardViewProps> = ({
   onClose,
   comments,
   cardId,
@@ -101,7 +101,7 @@ const CardView: FC<CardViewProps> = ({
   return (
     <Root>
       <Container>
-        <CardModal>
+        <Modal>
           <Header>
             <div style={{ width: "90%" }}>
               <CardTitle>{cardTitle}</CardTitle>
@@ -161,7 +161,7 @@ const CardView: FC<CardViewProps> = ({
                 );
               })}
           </CommentsContainer>
-        </CardModal>
+        </Modal>
       </Container>
     </Root>
   );
@@ -194,7 +194,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const CardModal = styled.div`
+const Modal = styled.div`
   width: 768px;
   min-height: 600px;
   display: flex;
@@ -262,4 +262,4 @@ const CommentsContainer = styled.div`
   margin-top: 30px;
 `;
 
-export default CardView;
+export default CardModal;

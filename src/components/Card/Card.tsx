@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DeleteIcon from "../ui/icons/DeleteIcon";
 import CommentIcon from "../ui/icons/CommentIcon";
 import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
-import {CardView} from '../CardView'
+import {CardModal} from '../CardModal'
 import {COLORS} from 'styles/colors';
 import {DeleteButton} from '../ui/components/InputComponents';
 interface CardProps {
@@ -65,7 +65,7 @@ const Card: FC<CardProps> = ({
         </CommentCounter>
       </CardItem>
       {isOpen && (
-        <CardView
+        <CardModal
           cardId={id}
           cardTitle={title}
           comments={comments}
@@ -77,7 +77,7 @@ const Card: FC<CardProps> = ({
           deleteComment={deleteComment}
           updateCardTitle={updateCardTitle}
           addComment={addComment}
-        ></CardView>
+        ></CardModal>
       )}
     </>
   );
