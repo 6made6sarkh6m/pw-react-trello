@@ -4,7 +4,7 @@ import { NewComment } from "./components/NewComment";
 import { Description } from "./components/Description";
 import { CardDataProps, CommentDataProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
-import DeleteIcon from "../ui-components/icons/DeleteIcon";
+import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";

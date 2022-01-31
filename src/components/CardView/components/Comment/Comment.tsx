@@ -1,5 +1,5 @@
 import { CommentDataProps } from "App";
-import DeleteIcon from "components/ui-components/icons/DeleteIcon";
+import DeleteIcon from "components/ui/icons/DeleteIcon";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";

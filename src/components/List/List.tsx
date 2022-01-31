@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
-import AddIcon from "../ui-components/icons/AddIcon";
+import AddIcon from "../ui/icons/AddIcon";
 import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card} from "../Card";
 import { NewCard } from "../NewCard";

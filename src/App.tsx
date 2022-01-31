@@ -7,6 +7,7 @@ import { Board } from "components/Board";
 import Popup from "./components/Popup";
 import Header from "./components/Header/Header";
 import { StorageProperties } from "enum/enum";
+import { lists as listData, cards as cardData, comments as commentData } from "utils/mock"
 export interface ListDataProps {
   id: string;
   listTitle: string;
@@ -32,10 +33,10 @@ export type CommentsData = Record<string, CommentDataProps>;
 
 const App = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [lists, setList] = useState<DeskData>(StorageService.getToDoLists());
-  const [cards, setCard] = useState<CardsData>(StorageService.getCards());
+  const [lists, setList] = useState<DeskData>(StorageService.getData(listData, StorageProperties.lists));
+  const [cards, setCard] = useState<CardsData>(StorageService.getData(cardData, StorageProperties.cards));
   const [comments, setComment] = useState<CommentsData>(
-    StorageService.getComments()
+    StorageService.getData(commentData, StorageProperties.comments)
   );
 
   const setListData = (newList: DeskData) => {

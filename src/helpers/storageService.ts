@@ -1,35 +1,17 @@
-import { lists, cards, comments } from "../utils/mock";
 export class StorageService {
-  static hasToDolists() {
-    return !!localStorage.getItem("lists");
-  }
-  static hasCards() {
-    return !!localStorage.getItem("cards");
-  }
-  static hasComments() {
-    return !!localStorage.getItem("comments");
-  }
-  static getToDoLists() {
-    if (!this.hasToDolists) {
-      localStorage.setItem("lists", JSON.stringify(lists));
-    }
-    return JSON.parse(localStorage.getItem("lists") || "");
-  }
-
-  static getCards() {
-    if(!this.hasCards()) {
-      localStorage.setItem("cards", JSON.stringify(cards));
-    }
-    return JSON.parse(localStorage.getItem("cards") || "");
-  }
-  static getComments() {
-    if(!this.hasComments()) {
-      localStorage.setItem("comments", JSON.stringify(comments));
-    }
-    return JSON.parse(localStorage.getItem("comments") || "");
-  }
-
+  
   static setData(data: any, key: string) {
     localStorage.setItem(key, JSON.stringify(data));
+  }
+  static getData(data: any, key: string) {
+    const storedData =  JSON.parse(localStorage.getItem(key) || '{}');
+    if(Object.keys(storedData).length !== 0) {
+      return storedData;
+    } else {
+      localStorage.setItem(key, JSON.stringify(data));
+      return JSON.parse(localStorage.getItem(key) || '{}');
+    }
+
+
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, FC } from "react";
 import styled from "styled-components";
-import DeleteIcon from "../ui-components/icons/DeleteIcon";
-import CommentIcon from "../ui-components/icons/CommentIcon";
+import DeleteIcon from "../ui/icons/DeleteIcon";
+import CommentIcon from "../ui/icons/CommentIcon";
 import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
 import {CardView} from '../CardView'
 import {COLORS} from 'styles/colors';
