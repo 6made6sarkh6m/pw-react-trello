@@ -47,21 +47,22 @@ const Board: FC<BoardProps> = ({
     <>
       {Object.values(lists).map((list) => {
         return (
-          <CardList
-            cards={cards}
-            comments={comments}
-            id={list.id}
-            key={list.id}
-            listTitle={list.listTitle}
-            username={username}
-            onUpdateList={onUpdateList}
-            onAddCard={onAddCard}
-            onDeleteCard={onDeleteCard}
-            onUpdateCard={onUpdateCard}
-            onUpdateComment={onUpdateComment}
-            onDeleteComment={onDeleteComment}
-            onAddComment={onAddComment}
-          ></CardList>
+          <li key={list.id}>
+            <CardList
+              cards={cards}
+              comments={comments}
+              id={list.id}
+              listTitle={list.listTitle}
+              username={username}
+              onUpdateList={onUpdateList}
+              onAddCard={onAddCard}
+              onDeleteCard={onDeleteCard}
+              onUpdateCard={onUpdateCard}
+              onUpdateComment={onUpdateComment}
+              onDeleteComment={onDeleteComment}
+              onAddComment={onAddComment}
+            ></CardList>
+          </li>
         );
       })}
     </>

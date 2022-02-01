@@ -9,7 +9,6 @@ import { DeleteButton } from "../ui/components/DeleteButton";
 interface CardProps {
   listId: string;
   title: string;
-  key: string;
   id: string;
   cardDescription: string;
   comments: CommentsData;

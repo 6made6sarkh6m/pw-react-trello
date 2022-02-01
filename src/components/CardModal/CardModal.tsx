@@ -146,20 +146,21 @@ const CardModal: FC<CardViewProps> = ({
           ></NewComment>
           <CommentsContainer>
             <Title>Comments</Title>
-            {filteredComments.map((comment) => {
-              return (
-                <>
-                  <Title key={comment.id}>{username}</Title>
-                  <Comment
-                    id={comment.id}
-                    key={comment.id}
-                    commentValue={comment.comment}
-                    onUpdateComment={onUpdateComment}
-                    onDeleteComment={onDeleteComment}
-                  ></Comment>
-                </>
-              );
-            })}
+            <ul>
+              {filteredComments.map((comment) => {
+                return (
+                  <li key={comment.id}>
+                    <Title>{username}</Title>
+                    <Comment
+                      id={comment.id}
+                      commentValue={comment.comment}
+                      onUpdateComment={onUpdateComment}
+                      onDeleteComment={onDeleteComment}
+                    ></Comment>
+                  </li>
+                );
+              })}
+            </ul>
           </CommentsContainer>
         </Modal>
       </Container>

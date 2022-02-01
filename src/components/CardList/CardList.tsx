@@ -9,7 +9,6 @@ import { Card } from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
 interface ListProps {
-  key: string;
   listTitle: string;
   id: string;
   cards: CardsData;
@@ -105,27 +104,30 @@ const CardList: FC<ListProps> = ({
           onKeyDown={handleonKeyDown}
         ></Textarea>
       </Header>
-      {Object.values(cards)
-        .filter((card) => card.listId === id)
-        .map((card) => {
-          return (
-            <Card
-              listId={id}
-              title={card.cardTitle}
-              key={card.id}
-              id={card.id}
-              username={username}
-              comments={comments}
-              cardDescription={card.cardDescription}
-              listTitle={listTitle}
-              onDeleteCard={onDeleteCard}
-              onUpdateCard={onUpdateCard}
-              onUpdateComment={onUpdateComment}
-              onDeleteComment={onDeleteComment}
-              onAddComment={onAddComment}
-            ></Card>
-          );
-        })}
+      <ul>
+        {Object.values(cards)
+          .filter((card) => card.listId === id)
+          .map((card) => {
+            return (
+              <li key={card.id}>
+                <Card
+                  listId={id}
+                  title={card.cardTitle}
+                  id={card.id}
+                  username={username}
+                  comments={comments}
+                  cardDescription={card.cardDescription}
+                  listTitle={listTitle}
+                  onDeleteCard={onDeleteCard}
+                  onUpdateCard={onUpdateCard}
+                  onUpdateComment={onUpdateComment}
+                  onDeleteComment={onDeleteComment}
+                  onAddComment={onAddComment}
+                ></Card>
+              </li>
+            );
+          })}
+      </ul>
       {isAddingCard ? (
         <NewCard
           listId={id}

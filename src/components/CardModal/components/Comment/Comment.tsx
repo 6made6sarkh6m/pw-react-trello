@@ -7,7 +7,6 @@ import { COLORS } from "styles/colors";
 import { DeleteButton } from "components/ui/components/DeleteButton";
 import { Textarea } from "components/ui/components/Textarea";
 interface CommentProps {
-  key: string;
   id: string;
   commentValue: string;
   onUpdateComment: (
