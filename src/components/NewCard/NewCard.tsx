@@ -38,7 +38,7 @@ export const NewCard: FC<NewCardProps> = ({
     <>
       <CardItem>
         <Textarea
-          autofocus={true}
+          autoFocus={true}
           rows={2}
           placeholder="Set card name"
           onKeyDown={handleonKeyDown}
