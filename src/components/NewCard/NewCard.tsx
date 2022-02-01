@@ -1,7 +1,7 @@
 import React, { FC,useState } from "react";
 import styled from "styled-components";
-import { AddNewCardButton, CancelButton, CardTitleInput } from "components/ui/components/InputComponents";
-
+import {CancelButton, CardTitleInput } from "components/ui/components/InputComponents";
+import { Button } from "components/ui/components/Button";
 import { COLORS } from "styles/colors";
 interface NewCardProps {
   listId: string;
@@ -47,9 +47,7 @@ export const NewCard: FC<NewCardProps> = ({
         ></CardTitleInput>
       </CardItem>
       <ButtonContainer>
-        <AddNewCardButton onClick={() => onAddCard()}>
-          <span>Add card</span>
-        </AddNewCardButton>
+        <StyledButton onClick={onAddCard}><span>Add</span></StyledButton>
         <CancelButton onClick={() => onCancelAddingCard()}>
           <span>Cancel</span>
         </CancelButton>
@@ -76,3 +74,6 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+const StyledButton = styled(Button)`
+  width: 30%;
+`
