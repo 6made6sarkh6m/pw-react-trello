@@ -83,7 +83,7 @@ const CommentContainer = styled.div`
   position: relative;
   display: flex;
   width: 70%;
-  min-height: 80px;
+  min-height: 40px;
   background-color: ${COLORS.lightGrey};
   border-radius: 3px;
   box-shadow: 0 1px 0 ${COLORS.greyShadowed};
