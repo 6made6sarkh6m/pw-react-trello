@@ -8,8 +8,8 @@ import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
-import { EditTitleInput, DeleteButton } from "../ui/components/InputComponents";
-
+import { DeleteButton } from "../ui/components/InputComponents";
+import { Textarea } from "../ui/components/Textarea";
 interface CardViewProps {
   onClose?: () => void;
   comments: CommentsData;
@@ -31,10 +31,6 @@ interface CardViewProps {
   deleteComment: (id: string) => void;
   addComment: (cardId: string, author: string, comment: string) => void;
 }
-interface InputProps {
-  readonly isEditing: boolean;
-}
-
 const CardModal: FC<CardViewProps> = ({
   onClose,
   comments,
@@ -121,15 +117,14 @@ const CardModal: FC<CardViewProps> = ({
                   ></EditTitleContainer>
                 </>
               )}
-              <EditTitleInput
-                ref={editTitleRef}
+              <Textarea
                 isEditing={isEditingTitle}
                 rows={1}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 onKeyDown={handleOnKeyDown}
                 spellCheck={false}
-              ></EditTitleInput>
+              ></Textarea>
             </div>
             <DeleteButton onClick={onClose}>
               <DeleteIcon></DeleteIcon>
@@ -192,7 +187,7 @@ const Root = styled.div`
 const Container = styled.div`
   position: relative;
   width: max-content;
-  background-color: ${COLORS.whiteBackground};
+  background-color: ${COLORS.blindingWhite};
   border-radius: 2px;
   padding: 10px;
   margin: 30px 5px 80px;

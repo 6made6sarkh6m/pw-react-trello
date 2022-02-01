@@ -2,13 +2,9 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { CardDataProps } from "App";
 import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
-import { COLORS } from "styles/colors";
+import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
 import { CardProperties } from "enum/enum";
-import {
-  SaveButton,
-  CancelButton,
-  EditDescriptionInput,
-} from "components/ui/components/InputComponents";
 interface DescriptionProps {
   cardDescription: string;
   cardId: string;
@@ -38,7 +34,7 @@ const Description: FC<DescriptionProps> = ({
       setDescription(cardDescription);
     }
   };
-  
+
   useClickOutside(editDescRef, () => {
     if (isEditingDescription) {
       setIsEditingDescription(false);
@@ -57,31 +53,31 @@ const Description: FC<DescriptionProps> = ({
     <>
       <DescriptionContainer>
         <Title>Description</Title>
-        <EditDescriptionInput
+        <Textarea
           onClick={() => setIsEditingDescription(true)}
-          ref={editDescRef}
           isEditing={isEditingDescription}
-          rows={10}
+          rows={8}
           value={description}
           placeholder="Type your description text"
           onChange={(e) => setDescription(e.target.value)}
           spellCheck={false}
-        ></EditDescriptionInput>
+        ></Textarea>
       </DescriptionContainer>
 
       {isEditingDescription && (
         <DescriptionControlConteiner>
-          <SaveButton onClick={onDescriptionUpdate}>
+          <StyledButton primary={true} onClick={onDescriptionUpdate}>
             <span>Add</span>
-          </SaveButton>
-          <CancelButton
+          </StyledButton>
+          <StyledButton
+            primary={false}
             onClick={() => {
               setIsEditingDescription(false);
               setDescription(cardDescription);
             }}
           >
             <span>Cancel</span>
-          </CancelButton>
+          </StyledButton>
         </DescriptionControlConteiner>
       )}
     </>
@@ -112,6 +108,10 @@ const DescriptionControlConteiner = styled.div`
   justify-content: space-between;
   padding: 0 4px;
   margin-top: 15px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 30%;
 `;
 
 export default Description;

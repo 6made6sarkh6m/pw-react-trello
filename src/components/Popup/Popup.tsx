@@ -2,40 +2,39 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { UserService } from "helpers/userService";
 import { COLORS } from "styles/colors";
-import {UserNameInput, Button} from 'components/ui/components/InputComponents';
+import { UserNameInput } from "components/ui/components/InputComponents";
+import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
 type PopupProps = {
   onSubmit?: () => void;
 };
 
-const Popup: FC<PopupProps> = ({onSubmit}) => {
+const Popup: FC<PopupProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
-  
   const handleOnSubmit = () => {
     const trimmedUsername = username.trim();
-    if(trimmedUsername) {
+    if (trimmedUsername) {
       UserService.setUsername(username);
       onSubmit?.();
     } else {
       setIsNotValid(true);
     }
-  }
+  };
   return (
     <Root>
       <PopupInner>
         <PopupTitle>What's your name?</PopupTitle>
         <InputWrapper>
-          <form onSubmit={() => handleOnSubmit()}>
-            <UserNameInput
-              placeholder="Type your name!"
-              required
-              onChange={(e) => setUsername(e.target.value)}
-            ></UserNameInput>
-            <Button type="submit">
-              <samp>SAVE</samp>
-            </Button>
-          </form>
+          <Textarea
+            rows={1}
+            placeholder="Type your name!"
+            onChange={(e) => setUsername(e.target.value)}
+          ></Textarea>
+          <StyledButton primary={true} onClick={handleOnSubmit}>
+            <samp>SAVE</samp>
+          </StyledButton>
         </InputWrapper>
         {isNotValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>
@@ -45,23 +44,22 @@ const Popup: FC<PopupProps> = ({onSubmit}) => {
 
 const Root = styled.div`
   display: flex;
-    justify-content: center;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  @media screen and (max-width: 800px) {
+    width: 100%;
     align-items: center;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto;
-    @media screen and (max-width: 800px){
-      width: 100%;
-      align-items: center;
-
-    }
+  }
 `;
 
 const PopupInner = styled.div`
@@ -69,18 +67,15 @@ const PopupInner = styled.div`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  background-color: ${COLORS.listWrapper};
+  background-color: ${COLORS.lightGrey};
   border-radius: 3px;
   box-shadow: ${COLORS.boxShadow};
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     width: calc((100% - 100px) / 3);
-    
-    
   }
-  
 `;
 const InputWrapper = styled.div`
   display: flex;
@@ -89,16 +84,15 @@ const InputWrapper = styled.div`
   max-width: 350px;
   width: 100%;
   justify-content: space-between;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     width: 100%;
     flex-direction: column;
-    
   }
 `;
 
 const PopupTitle = styled.h2`
   font-family: sans-serif;
-  color: ${COLORS.listTitle};
+  color: ${COLORS.deepBlue};
   font-size: 14px;
   line-height: 14px;
   font-weight: 600;
@@ -115,6 +109,8 @@ const ErrorTitle = styled.p`
     min-height: 20px;
     }
 `;
-
+const StyledButton = styled(Button)`
+  width: 70px;
+`;
 
 export default Popup;

@@ -2,9 +2,13 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
-import { EditTitleInput, AddCardButton } from "components/ui/components/InputComponents";
+import {
+  EditTitleInput,
+  AddCardButton,
+} from "components/ui/components/InputComponents";
+import { Button } from "components/ui/components/Button";
 import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
-import { Card} from "../Card";
+import { Card } from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
 interface ListProps {
@@ -31,7 +35,6 @@ interface ListProps {
   addComment: (cardId: string, author: string, comment: string) => void;
 }
 
-
 const List: FC<ListProps> = ({
   listTitle,
   id,
@@ -50,7 +53,7 @@ const List: FC<ListProps> = ({
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
-  
+
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -70,7 +73,7 @@ const List: FC<ListProps> = ({
   const onCancelAddingCard = () => {
     setIsAddingCard(false);
   };
-  
+
   useClickOutside(ref, () => {
     if (isEditing) {
       setIsEditing(false);
@@ -86,15 +89,15 @@ const List: FC<ListProps> = ({
     }
   }, [isEditing]);
   return (
-    <Root >
+    <Root>
       <ListHeader>
         <ListTitle>{listTitle}</ListTitle>
         {!isEditing && (
-            <EditTitleContainer
-              onClick={() => {
-                setIsEditing(true);
-              }}
-            ></EditTitleContainer>
+          <EditTitleContainer
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          ></EditTitleContainer>
         )}
         <EditTitleInput
           ref={ref}
@@ -134,26 +137,29 @@ const List: FC<ListProps> = ({
           addCard={addCard}
         ></NewCard>
       ) : (
-        <AddCardButton onClick={() => setIsAddingCard(!isAddingCard)}>
+        <StyledButton
+          onClick={() => setIsAddingCard(!isAddingCard)}
+          primary={false}
+        >
           <IconContainer>
             <AddIcon></AddIcon>
           </IconContainer>
           <span>Add card</span>
-        </AddCardButton>
+        </StyledButton>
       )}
     </Root>
   );
 };
 const Root = styled.div`
   width: 272px;
-  background: ${COLORS.listWrapper};
+  background: ${COLORS.lightGrey};
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
   padding: 0 4px 8px;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     width: 100%;
   }
 `;
@@ -166,7 +172,7 @@ const ListHeader = styled.div`
 const ListTitle = styled.h2`
   display: none;
   text-align: start;
-  color: ${COLORS.listTitle};
+  color: ${COLORS.deepBlue};
   font-size: 14px;
   line-height: 14px;
   font-weight: 600;
@@ -192,6 +198,10 @@ const IconContainer = styled.div`
   opacity: 0.8;
   display: flex;
   color: ${COLORS.buttonText};
+`;
+
+const StyledButton = styled(Button)`
+  width: 70%;
 `;
 
 export default List;

@@ -24,13 +24,13 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: flex-start;
   padding: 4px;
-  @media screen and (max-width: 800px){
+  @media screen and (max-width: 800px) {
     width: 100%;
   }
 `;
 const HeaderTitle = styled.h2`
   text-align: start;
-  color: ${COLORS.listTitle};
+  color: ${COLORS.deepBlue};
   font-size: 22px;
   font-family: sans-serif;
   line-height: 14px;

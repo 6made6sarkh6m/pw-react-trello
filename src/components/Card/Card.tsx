@@ -3,9 +3,9 @@ import styled from "styled-components";
 import DeleteIcon from "../ui/icons/DeleteIcon";
 import CommentIcon from "../ui/icons/CommentIcon";
 import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
-import {CardModal} from '../CardModal'
-import {COLORS} from 'styles/colors';
-import {DeleteButton} from '../ui/components/InputComponents';
+import { CardModal } from "../CardModal";
+import { COLORS } from "styles/colors";
+import { DeleteButton } from "../ui/components/InputComponents";
 interface CardProps {
   listId: string;
   title: string;
@@ -30,7 +30,7 @@ interface CardProps {
   deleteComment: (id: string) => void;
 
   addComment: (cardId: string, author: string, comment: string) => void;
-};
+}
 
 const Card: FC<CardProps> = ({
   title,
@@ -46,10 +46,10 @@ const Card: FC<CardProps> = ({
   addComment,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const commentCount = useMemo(()=> {
-   return  Object.values(comments).filter((comment) => comment.cardId === id)
-    .length
-  },[comments])
+  const commentCount = useMemo(() => {
+    return Object.values(comments).filter((comment) => comment.cardId === id)
+      .length;
+  }, [comments]);
   return (
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
@@ -59,9 +59,7 @@ const Card: FC<CardProps> = ({
         </DeleteButton>
         <CommentCounter>
           <CommentIcon></CommentIcon>
-          {
-            commentCount
-          }
+          {commentCount}
         </CommentCounter>
       </CardItem>
       {isOpen && (
@@ -85,7 +83,7 @@ const Card: FC<CardProps> = ({
 
 const CardItem = styled.div`
   display: flex;
-  background-color: ${COLORS.whiteBackground};
+  background-color: ${COLORS.blindingWhite};
   width: 90%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
@@ -104,7 +102,6 @@ const CardTitle = styled.span`
   word-break: break-all;
   font-family: sans-serif;
 `;
-
 
 const CommentCounter = styled.span`
   font-family: monospace;

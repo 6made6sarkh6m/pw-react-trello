@@ -28,7 +28,7 @@ interface BoardProps {
   deleteComment: (id: string) => void;
   username: string;
   addComment: (cardId: string, author: string, comment: string) => void;
-};
+}
 
 const Board: FC<BoardProps> = ({
   lists,

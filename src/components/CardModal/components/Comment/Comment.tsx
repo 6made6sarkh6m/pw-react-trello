@@ -4,7 +4,8 @@ import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import {CommentInput, DeleteButton} from '../../../ui/components/InputComponents';
+import { DeleteButton } from "components/ui/components/DeleteButton";
+import { Textarea } from "components/ui/components/Textarea";
 interface CommentProps {
   key: string;
   id: string;
@@ -30,9 +31,9 @@ const Comment: FC<CommentProps> = ({
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       const trimmedComment = comment.trim();
-      if(trimmedComment){
-      setIsEditing(false);
-      updateComment(id, "comment", comment);
+      if (trimmedComment) {
+        setIsEditing(false);
+        updateComment(id, "comment", comment);
       } else {
         setIsEditing(false);
         setComment(commentValue);
@@ -58,15 +59,10 @@ const Comment: FC<CommentProps> = ({
   return (
     <>
       <CommentContainer>
-        {
-          !isEditing && (
-            <CommentContent>{comment}</CommentContent>
-          )
-        }
-         
+        {!isEditing && <CommentContent>{comment}</CommentContent>}
+
         {isEditing && (
-          <CommentInput
-            ref={ref}
+          <Textarea
             rows={1}
             value={comment}
             spellCheck={false}
@@ -89,7 +85,7 @@ const CommentContainer = styled.div`
   display: flex;
   width: 70%;
   min-height: 80px;
-  background-color: ${COLORS.listWrapper};
+  background-color: ${COLORS.lightGrey};
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   padding: 0px 4px;
@@ -105,7 +101,6 @@ const CommentContent = styled.span`
   word-break: break-all;
 `;
 
-
 const EditTitleButton = styled.div`
   cursor: pointer;
   position: absolute;
@@ -120,9 +115,7 @@ const EditCommentButton = styled.a`
   font-family: sans-serif;
   background-color: transparent;
   font-size: 13px;
-  color: ${COLORS.buttonText}
+  color: ${COLORS.buttonText};
 `;
-
-
 
 export default Comment;

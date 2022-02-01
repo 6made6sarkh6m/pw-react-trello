@@ -1,13 +1,16 @@
-import React, { FC,useState } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
-import {CancelButton, CardTitleInput } from "components/ui/components/InputComponents";
+import {
+  CancelButton,
+  CardTitleInput,
+} from "components/ui/components/InputComponents";
 import { Button } from "components/ui/components/Button";
 import { COLORS } from "styles/colors";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
   addCard: (listId: string, currentTitle: string) => void;
-};
+}
 
 export const NewCard: FC<NewCardProps> = ({
   listId,
@@ -16,8 +19,6 @@ export const NewCard: FC<NewCardProps> = ({
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
-
-  
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -36,7 +37,6 @@ export const NewCard: FC<NewCardProps> = ({
     onCancelAddingCard();
   };
 
-
   return (
     <>
       <CardItem>
@@ -47,10 +47,12 @@ export const NewCard: FC<NewCardProps> = ({
         ></CardTitleInput>
       </CardItem>
       <ButtonContainer>
-        <StyledButton onClick={onAddCard}><span>Add</span></StyledButton>
-        <CancelButton onClick={() => onCancelAddingCard()}>
+        <StyledButton primary={true} onClick={onAddCard}>
+          <span>Add</span>
+        </StyledButton>
+        <StyledButton primary={false} onClick={() => onCancelAddingCard()}>
           <span>Cancel</span>
-        </CancelButton>
+        </StyledButton>
       </ButtonContainer>
     </>
   );
@@ -58,7 +60,7 @@ export const NewCard: FC<NewCardProps> = ({
 export default NewCard;
 const CardItem = styled.div`
   display: flex;
-  background-color: ${COLORS.whiteBackground};
+  background-color: ${COLORS.blindingWhite};
   width: 90%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
@@ -76,4 +78,4 @@ const ButtonContainer = styled.div`
 `;
 const StyledButton = styled(Button)`
   width: 30%;
-`
+`;
