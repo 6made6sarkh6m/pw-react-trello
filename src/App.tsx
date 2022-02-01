@@ -5,7 +5,7 @@ import { UserService } from "./helpers/userService";
 import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import Popup from "./components/Popup";
-import Header from "./components/Header/Header";
+import { Header } from "./components/Header";
 import { StorageProperties } from "enum/enum";
 import { defaultLists, defaultCards, defaultComments } from "utils/mock";
 export interface ListDataProps {

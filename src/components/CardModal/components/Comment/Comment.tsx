@@ -87,7 +87,7 @@ const CommentContainer = styled.div`
   min-height: 80px;
   background-color: ${COLORS.lightGrey};
   border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  box-shadow: 0 1px 0 ${COLORS.greyShadowed};
   padding: 0px 4px;
   overflow: hidden;
 `;
@@ -115,7 +115,7 @@ const EditCommentButton = styled.a`
   font-family: sans-serif;
   background-color: transparent;
   font-size: 13px;
-  color: ${COLORS.buttonText};
+  color: ${COLORS.deepGrey};
 `;
 
 export default Comment;

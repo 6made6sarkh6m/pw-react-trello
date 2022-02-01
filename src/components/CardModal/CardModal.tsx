@@ -8,7 +8,7 @@ import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/InputComponents";
+import { DeleteButton } from "../ui/components/DeleteButton";
 import { Textarea } from "../ui/components/Textarea";
 interface CardViewProps {
   onClose?: () => void;
@@ -176,7 +176,7 @@ const Root = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: ${COLORS.shadowed};
     z-index: 10;
     margin: 0;
     padding: 0;
@@ -242,7 +242,7 @@ const ListTitleContainer = styled.div`
 const ListTitle = styled.span`
   font-size: 12px;
   font-family: sans-serif;
-  color: ${COLORS.buttonText};
+  color: ${COLORS.deepGrey};
   display: flex;
 `;
 const Title = styled.h2`

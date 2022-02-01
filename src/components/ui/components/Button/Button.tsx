@@ -33,17 +33,20 @@ const StyledButton = styled.button<StyledProps>`
   border: none;
   outline: 0;
   margin: 5px 4px;
-  box-shadow: ${(props) => (props.primary ? "0px 2px 2px lightgray" : "none")};
+  box-shadow: ${(props) =>
+    props.primary ? `0px 2px 2px ${COLORS.lightGrey}` : `none`};
   transition: ease background-color 250ms;
-  background: ${(props) => (props.primary ? "#0079bf" : "transparent")};
-  color: ${(props) => (props.primary ? "white" : "#5e6c84")};
+  background: ${(props) =>
+    props.primary
+      ? `${COLORS.buttonColors.primary}`
+      : `${COLORS.buttonColors.transparent}`};
+  color: ${(props) =>
+    props.primary ? `${COLORS.blindingWhite}` : `${COLORS.deepGrey}`};
   &:hover,
   &:focus {
     outline: none;
     background-color: ${(props) =>
-      props.primary
-        ? "rgba(rgba(0, 121, 191, 0.08))"
-        : "rgba(9, 30, 66, 0.08)"};
+      props.primary ? `${COLORS.focusShadowed}` : `${COLORS.greyShadowed}`};
     color: ${COLORS.deepBlue};
   }
 `;

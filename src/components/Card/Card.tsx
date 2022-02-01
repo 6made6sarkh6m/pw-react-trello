@@ -5,7 +5,7 @@ import CommentIcon from "../ui/icons/CommentIcon";
 import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
 import { CardModal } from "../CardModal";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/InputComponents";
+import { DeleteButton } from "../ui/components/DeleteButton";
 interface CardProps {
   listId: string;
   title: string;
@@ -109,6 +109,6 @@ const CommentCounter = styled.span`
   position: absolute;
   margin-left: 10px;
   align-self: flex-end;
-  color: ${COLORS.buttonText};
+  color: ${COLORS.deepGrey};
 `;
 export default Card;

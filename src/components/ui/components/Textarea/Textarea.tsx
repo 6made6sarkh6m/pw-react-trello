@@ -61,7 +61,7 @@ const StyledTextarea = styled.textarea<StyledProps>`
 
   ::placeholder {
     font-weight: 400;
-    color: ${COLORS.placeholder};
+    color: ${COLORS.mildGrey};
   }
 
   &:focus {

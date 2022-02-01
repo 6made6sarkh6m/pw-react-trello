@@ -6,14 +6,14 @@ interface DeleteButtonProps {
   onClick?: () => void;
 }
 
-const DeleteButton: FC<DeleteButtonProps> = ({ children }) => {
-  return <StyledDeleteButton>{children}</StyledDeleteButton>;
+const DeleteButton: FC<DeleteButtonProps> = ({ children, onClick }) => {
+  return <StyledDeleteButton onClick={onClick}>{children}</StyledDeleteButton>;
 };
 
 const StyledDeleteButton = styled.button`
   align-self: flex-start;
   position: relative;
-  color: ${COLORS.buttonText};
+  color: ${COLORS.deepGrey};
   border: none;
   background-color: ${COLORS.buttonColors.transparent};
   padding: 4px;
@@ -25,7 +25,7 @@ const StyledDeleteButton = styled.button`
   :hover {
     opacity: 1;
     color: ${COLORS.deepBlue};
-    background-color: rgba(9, 30, 66, 0.08);
+    background-color: ${COLORS.greyShadowed};
   }
 `;
 export default DeleteButton;

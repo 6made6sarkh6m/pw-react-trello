@@ -2,11 +2,8 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "../../hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
-import {
-  EditTitleInput,
-  AddCardButton,
-} from "components/ui/components/InputComponents";
 import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
 import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card } from "../Card";
 import { NewCard } from "../NewCard";
@@ -99,15 +96,14 @@ const List: FC<ListProps> = ({
             }}
           ></EditTitleContainer>
         )}
-        <EditTitleInput
-          ref={ref}
+        <Textarea
           isEditing={isEditing}
           rows={1}
           value={currentTitle}
           spellCheck={false}
           onChange={(e) => setCurrentTitle(e.target.value)}
           onKeyDown={handleonKeyDown}
-        ></EditTitleInput>
+        ></Textarea>
       </ListHeader>
       {Object.values(cards)
         .filter((card) => card.listId === id)
@@ -197,7 +193,7 @@ const IconContainer = styled.div`
   height: 20px;
   opacity: 0.8;
   display: flex;
-  color: ${COLORS.buttonText};
+  color: ${COLORS.deepGrey};
 `;
 
 const StyledButton = styled(Button)`

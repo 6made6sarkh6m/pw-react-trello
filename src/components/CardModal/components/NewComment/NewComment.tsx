@@ -1,5 +1,6 @@
 import React, { FC, useRef, useState } from "react";
 import styled from "styled-components";
+import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 interface NewCommentProps {
@@ -52,7 +53,7 @@ const NewCommentContainer = styled.div`
   margin-top: 15px;
   position: relative;
   min-height: 20px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  box-shadow: 0 1px 0 ${COLORS.greyShadowed};
   padding: 0px 4px;
 `;
 const StyledButton = styled(Button)`

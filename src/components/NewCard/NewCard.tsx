@@ -1,10 +1,7 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import {
-  CancelButton,
-  CardTitleInput,
-} from "components/ui/components/InputComponents";
 import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
 import { COLORS } from "styles/colors";
 interface NewCardProps {
   listId: string;
@@ -40,11 +37,12 @@ export const NewCard: FC<NewCardProps> = ({
   return (
     <>
       <CardItem>
-        <CardTitleInput
+        <Textarea
+          rows={2}
           placeholder="Set card name"
           onKeyDown={handleonKeyDown}
           onChange={(e) => setCurrentTitle(e.target.value)}
-        ></CardTitleInput>
+        ></Textarea>
       </CardItem>
       <ButtonContainer>
         <StyledButton primary={true} onClick={onAddCard}>

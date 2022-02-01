@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { UserService } from "helpers/userService";
 import { COLORS } from "styles/colors";
-import { UserNameInput } from "components/ui/components/InputComponents";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 type PopupProps = {
@@ -51,7 +50,7 @@ const Root = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${COLORS.shadowed};
   z-index: 10;
   margin: 0;
   padding: 0;

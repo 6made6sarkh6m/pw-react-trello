@@ -19,7 +19,7 @@ const HeaderContainer = styled.header`
   width: 100%;
   min-width: 1440px;
   background: inherit !important;
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: ${COLORS.glassEffect} !important;
   margin-bottom: 12px;
   display: flex;
   justify-content: flex-start;
