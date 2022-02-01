@@ -62,6 +62,7 @@ const Comment: FC<CommentProps> = ({
 
         {isEditing && (
           <Textarea
+            autoFocus={true}
             rows={1}
             value={comment}
             spellCheck={false}

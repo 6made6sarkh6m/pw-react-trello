@@ -23,10 +23,10 @@ const Textarea: FC<TextareaProps> = ({
   spellCheck,
   rows,
   placeholder,
+  autoFocus,
   onChange,
   onKeyDown,
   onClick,
-  autoFocus,
 }) => {
   return (
     <StyledTextarea

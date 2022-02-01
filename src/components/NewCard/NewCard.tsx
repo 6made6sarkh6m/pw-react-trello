@@ -19,7 +19,8 @@ export const NewCard: FC<NewCardProps> = ({
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (currentTitle) {
+      const trimmedCurrentTitle = currentTitle.trim();
+      if (trimmedCurrentTitle) {
         onAddCard(listId, currentTitle);
         onCancelAddingCard();
       }
@@ -30,8 +31,11 @@ export const NewCard: FC<NewCardProps> = ({
   };
 
   const handleAddCard = () => {
-    onAddCard(listId, currentTitle);
-    onCancelAddingCard();
+    const trimmedCurrentTitle = currentTitle.trim();
+    if (trimmedCurrentTitle) {
+      onAddCard(listId, currentTitle);
+      onCancelAddingCard();
+    }
   };
 
   return (
@@ -47,10 +51,10 @@ export const NewCard: FC<NewCardProps> = ({
       </CardItem>
       <ButtonContainer>
         <StyledButton primary={true} onClick={handleAddCard}>
-          <span>Add</span>
+          Add
         </StyledButton>
         <StyledButton primary={false} onClick={() => onCancelAddingCard()}>
-          <span>Cancel</span>
+          Cancel
         </StyledButton>
       </ButtonContainer>
     </>
