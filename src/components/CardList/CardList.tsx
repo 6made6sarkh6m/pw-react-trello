@@ -140,7 +140,7 @@ const CardList: FC<ListProps> = ({
           <IconContainer>
             <AddIcon></AddIcon>
           </IconContainer>
-          <span>Add card</span>
+          Add card
         </StyledButton>
       )}
     </Root>

@@ -44,7 +44,7 @@ const NewComment: FC<NewCommentProps> = ({
         spellCheck={false}
       ></Textarea>
       <StyledButton primary={true} onClick={onSaveComment}>
-        <span>Add</span>
+        Add
       </StyledButton>
     </NewCommentContainer>
   );

@@ -32,7 +32,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
             onChange={(e) => setUsername(e.target.value)}
           ></Textarea>
           <StyledButton primary={true} onClick={handleOnSubmit}>
-            <samp>SAVE</samp>
+            SAVE
           </StyledButton>
         </InputWrapper>
         {isNotValid && <ErrorTitle>Please, type your name!</ErrorTitle>}

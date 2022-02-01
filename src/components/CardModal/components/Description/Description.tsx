@@ -67,7 +67,7 @@ const Description: FC<DescriptionProps> = ({
       {isEditingDescription && (
         <DescriptionControlConteiner>
           <StyledButton primary={true} onClick={onDescriptionUpdate}>
-            <span>Save</span>
+            Save
           </StyledButton>
           <StyledButton
             primary={false}
@@ -76,7 +76,7 @@ const Description: FC<DescriptionProps> = ({
               setDescription(cardDescription);
             }}
           >
-            <span>Cancel</span>
+            Cancel
           </StyledButton>
         </DescriptionControlConteiner>
       )}
