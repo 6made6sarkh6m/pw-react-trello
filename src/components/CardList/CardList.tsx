@@ -69,7 +69,10 @@ const CardList: FC<ListProps> = ({
   const handleCancelAddingCard = () => {
     setIsAddingCard(false);
   };
-
+  const handleAddingCard = () => {
+    setIsAddingCard(false);
+    setIsAddingCard(true);
+  };
   useClickOutside(ref, () => {
     if (isEditing) {
       setIsEditing(false);
@@ -136,7 +139,7 @@ const CardList: FC<ListProps> = ({
         ></NewCard>
       ) : (
         <StyledButton
-          onClick={() => setIsAddingCard(!isAddingCard)}
+          onClick={() => setIsAddingCard((prevState) => !prevState)}
           primary={false}
         >
           <IconContainer>
