@@ -15,21 +15,21 @@ interface CardProps {
   comments: CommentsData;
   listTitle: string;
   username: string;
-  deleteCard: (cardId: string) => void;
+  onDeleteCard: (cardId: string) => void;
 
-  updateCardTitle: (
+  onUpdateCard: (
     cardId: string,
     cardProperty: keyof CardDataProps,
     value: string
   ) => void;
-  updateComment: (
+  onUpdateComment: (
     id: string,
     commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
-  deleteComment: (id: string) => void;
+  onDeleteComment: (id: string) => void;
 
-  addComment: (cardId: string, author: string, comment: string) => void;
+  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 
 const Card: FC<CardProps> = ({
@@ -39,11 +39,11 @@ const Card: FC<CardProps> = ({
   listTitle,
   cardDescription,
   username,
-  deleteCard,
-  updateCardTitle,
-  updateComment,
-  deleteComment,
-  addComment,
+  onDeleteCard,
+  onUpdateCard,
+  onUpdateComment,
+  onDeleteComment,
+  onAddComment,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const commentCount = useMemo(() => {
@@ -54,7 +54,7 @@ const Card: FC<CardProps> = ({
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
         <CardTitle>{title}</CardTitle>
-        <DeleteButton onClick={() => deleteCard(id)}>
+        <DeleteButton onClick={() => onDeleteCard(id)}>
           <DeleteIcon></DeleteIcon>
         </DeleteButton>
         <CommentCounter>
@@ -71,10 +71,10 @@ const Card: FC<CardProps> = ({
           username={username}
           cardDescription={cardDescription}
           onClose={() => setIsOpen(false)}
-          updateComment={updateComment}
-          deleteComment={deleteComment}
-          updateCardTitle={updateCardTitle}
-          addComment={addComment}
+          onUpdateComment={onUpdateComment}
+          onDeleteComment={onDeleteComment}
+          onUpdateCard={onUpdateCard}
+          onAddComment={onAddComment}
         ></CardModal>
       )}
     </>

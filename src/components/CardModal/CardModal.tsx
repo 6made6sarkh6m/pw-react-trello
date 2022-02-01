@@ -18,18 +18,18 @@ interface CardViewProps {
   listTitle: string;
   cardDescription: string;
   username: string;
-  updateCardTitle: (
+  onUpdateCard: (
     cardId: string,
     cardProperty: keyof CardDataProps,
     value: string
   ) => void;
-  updateComment: (
+  onUpdateComment: (
     id: string,
     commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
-  deleteComment: (id: string) => void;
-  addComment: (cardId: string, author: string, comment: string) => void;
+  onDeleteComment: (id: string) => void;
+  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 const CardModal: FC<CardViewProps> = ({
   onClose,
@@ -39,10 +39,10 @@ const CardModal: FC<CardViewProps> = ({
   listTitle,
   cardDescription,
   username,
-  updateCardTitle,
-  updateComment,
-  deleteComment,
-  addComment,
+  onUpdateCard,
+  onUpdateComment,
+  onDeleteComment,
+  onAddComment,
 }) => {
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
 
@@ -56,7 +56,7 @@ const CardModal: FC<CardViewProps> = ({
       const trimmedTitle = title.trim();
       if (trimmedTitle) {
         setIsEditingTitle(false);
-        updateCardTitle(cardId, CardProperties.title, title);
+        onUpdateCard(cardId, CardProperties.title, title);
       } else {
         setTitle(cardTitle);
         setIsEditingTitle(false);
@@ -136,13 +136,13 @@ const CardModal: FC<CardViewProps> = ({
           <Description
             cardDescription={cardDescription}
             cardId={cardId}
-            updateCardTitle={updateCardTitle}
+            onUpdateCard={onUpdateCard}
           ></Description>
           <Title>Actions</Title>
           <NewComment
             cardId={cardId}
             username={username}
-            addComment={addComment}
+            onAddComment={onAddComment}
           ></NewComment>
           <CommentsContainer>
             <Title>Comments</Title>
@@ -154,8 +154,8 @@ const CardModal: FC<CardViewProps> = ({
                     id={comment.id}
                     key={comment.id}
                     commentValue={comment.comment}
-                    updateComment={updateComment}
-                    deleteComment={deleteComment}
+                    onUpdateComment={onUpdateComment}
+                    onDeleteComment={onDeleteComment}
                   ></Comment>
                 </>
               );

@@ -6,5 +6,6 @@ export enum CardProperties {
 export enum StorageProperties {
     lists = 'lists',
     cards = 'cards',
-    comments = 'comments'
+    comments = 'comments',
+    user = 'user'
 }

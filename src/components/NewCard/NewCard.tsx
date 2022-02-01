@@ -6,13 +6,13 @@ import { COLORS } from "styles/colors";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
-  addCard: (listId: string, currentTitle: string) => void;
+  onAddCard: (listId: string, currentTitle: string) => void;
 }
 
 export const NewCard: FC<NewCardProps> = ({
   listId,
   onCancelAddingCard,
-  addCard,
+  onAddCard,
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
@@ -20,7 +20,7 @@ export const NewCard: FC<NewCardProps> = ({
     if (e.key === "Enter") {
       e.preventDefault();
       if (currentTitle) {
-        addCard(listId, currentTitle);
+        onAddCard(listId, currentTitle);
         onCancelAddingCard();
       }
     }
@@ -29,8 +29,8 @@ export const NewCard: FC<NewCardProps> = ({
     }
   };
 
-  const onAddCard = () => {
-    addCard(listId, currentTitle);
+  const handleAddCard = () => {
+    onAddCard(listId, currentTitle);
     onCancelAddingCard();
   };
 
@@ -45,7 +45,7 @@ export const NewCard: FC<NewCardProps> = ({
         ></Textarea>
       </CardItem>
       <ButtonContainer>
-        <StyledButton primary={true} onClick={onAddCard}>
+        <StyledButton primary={true} onClick={handleAddCard}>
           <span>Add</span>
         </StyledButton>
         <StyledButton primary={false} onClick={() => onCancelAddingCard()}>

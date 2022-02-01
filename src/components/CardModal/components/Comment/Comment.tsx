@@ -10,19 +10,19 @@ interface CommentProps {
   key: string;
   id: string;
   commentValue: string;
-  updateComment: (
+  onUpdateComment: (
     id: string,
     commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
-  deleteComment: (id: string) => void;
+  onDeleteComment: (id: string) => void;
 }
 
 const Comment: FC<CommentProps> = ({
   id,
   commentValue,
-  updateComment,
-  deleteComment,
+  onUpdateComment,
+  onDeleteComment,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [comment, setComment] = useState<string>(commentValue);
@@ -33,7 +33,7 @@ const Comment: FC<CommentProps> = ({
       const trimmedComment = comment.trim();
       if (trimmedComment) {
         setIsEditing(false);
-        updateComment(id, "comment", comment);
+        onUpdateComment(id, "comment", comment);
       } else {
         setIsEditing(false);
         setComment(commentValue);
@@ -70,7 +70,7 @@ const Comment: FC<CommentProps> = ({
             onChange={(e) => setComment(e.target.value)}
           />
         )}
-        <DeleteButton onClick={() => deleteComment(id)}>
+        <DeleteButton onClick={() => onDeleteComment(id)}>
           <DeleteIcon />
         </DeleteButton>
       </CommentContainer>
@@ -91,6 +91,7 @@ const CommentContainer = styled.div`
   padding: 0px 4px;
   overflow: hidden;
 `;
+
 const CommentContent = styled.span`
   font-family: sans-serif;
   font-size: 14px;
@@ -101,16 +102,8 @@ const CommentContent = styled.span`
   word-break: break-all;
 `;
 
-const EditTitleButton = styled.div`
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
 const EditCommentButton = styled.a`
+  margin: 8px 4px;
   text-decoration: underline;
   font-family: sans-serif;
   background-color: transparent;

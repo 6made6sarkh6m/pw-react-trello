@@ -50,4 +50,5 @@ const StyledButton = styled.button<StyledProps>`
     color: ${COLORS.deepBlue};
   }
 `;
+
 export default Button;

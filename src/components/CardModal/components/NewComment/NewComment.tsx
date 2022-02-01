@@ -6,15 +6,19 @@ import { Textarea } from "components/ui/components/Textarea";
 interface NewCommentProps {
   cardId: string;
   username: string;
-  addComment: (cardId: string, author: string, comment: string) => void;
+  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
-const NewComment: FC<NewCommentProps> = ({ cardId, username, addComment }) => {
+const NewComment: FC<NewCommentProps> = ({
+  cardId,
+  username,
+  onAddComment,
+}) => {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [newComment, setNewComment] = useState<string>("");
   const onSaveComment = () => {
     const trimmedComment = newComment.trim();
     if (trimmedComment) {
-      addComment(cardId, username, newComment);
+      onAddComment(cardId, username, newComment);
       setNewComment("");
       ref?.current?.blur?.();
     }
@@ -23,7 +27,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId, username, addComment }) => {
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       if (newComment.trim() !== "") {
-        addComment(cardId, username, newComment);
+        onAddComment(cardId, username, newComment);
         setNewComment("");
         ref?.current?.blur?.();
       }
@@ -40,7 +44,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId, username, addComment }) => {
         spellCheck={false}
       ></Textarea>
       <StyledButton primary={true} onClick={onSaveComment}>
-        <span>Save</span>
+        <span>Add</span>
       </StyledButton>
     </NewCommentContainer>
   );
@@ -58,5 +62,6 @@ const NewCommentContainer = styled.div`
 `;
 const StyledButton = styled(Button)`
   width: 70px;
+  align-items: center;
 `;
 export default NewComment;

@@ -8,7 +8,7 @@ type PopupProps = {
   onSubmit?: () => void;
 };
 
-const Popup: FC<PopupProps> = ({ onSubmit }) => {
+const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
@@ -112,4 +112,4 @@ const StyledButton = styled(Button)`
   width: 70px;
 `;
 
-export default Popup;
+export default UsernameModal;

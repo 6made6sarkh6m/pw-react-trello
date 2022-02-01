@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { List } from "components/List";
+import { CardList } from "components/CardList";
 import {
   CardDataProps,
   CardsData,
@@ -12,22 +12,22 @@ interface BoardProps {
   lists: DeskData;
   cards: CardsData;
   comments: CommentsData;
-  updateList: (id: string, title: string) => void;
-  addCard: (listId: string, cardTitle: string) => void;
-  deleteCard: (cardId: string) => void;
-  updateCardTitle: (
+  onUpdateList: (id: string, title: string) => void;
+  onAddCard: (listId: string, cardTitle: string) => void;
+  onDeleteCard: (cardId: string) => void;
+  onUpdateCard: (
     cardId: string,
     cardProperty: keyof CardDataProps,
     value: string
   ) => void;
-  updateComment: (
+  onUpdateComment: (
     id: string,
     commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
-  deleteComment: (id: string) => void;
+  onDeleteComment: (id: string) => void;
   username: string;
-  addComment: (cardId: string, author: string, comment: string) => void;
+  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 
 const Board: FC<BoardProps> = ({
@@ -35,33 +35,33 @@ const Board: FC<BoardProps> = ({
   username,
   cards,
   comments,
-  updateList,
-  addCard,
-  deleteCard,
-  updateCardTitle,
-  updateComment,
-  deleteComment,
-  addComment,
+  onUpdateList,
+  onAddCard,
+  onDeleteCard,
+  onUpdateCard,
+  onUpdateComment,
+  onDeleteComment,
+  onAddComment,
 }) => {
   return (
     <>
       {Object.values(lists).map((list) => {
         return (
-          <List
+          <CardList
             cards={cards}
             comments={comments}
             id={list.id}
             key={list.id}
             listTitle={list.listTitle}
             username={username}
-            updateList={updateList}
-            addCard={addCard}
-            deleteCard={deleteCard}
-            updateCardTitle={updateCardTitle}
-            updateComment={updateComment}
-            deleteComment={deleteComment}
-            addComment={addComment}
-          ></List>
+            onUpdateList={onUpdateList}
+            onAddCard={onAddCard}
+            onDeleteCard={onDeleteCard}
+            onUpdateCard={onUpdateCard}
+            onUpdateComment={onUpdateComment}
+            onDeleteComment={onDeleteComment}
+            onAddComment={onAddComment}
+          ></CardList>
         );
       })}
     </>

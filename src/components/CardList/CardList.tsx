@@ -15,36 +15,36 @@ interface ListProps {
   cards: CardsData;
   comments: CommentsData;
   username: string;
-  updateList: (id: string, title: string) => void;
-  addCard: (listId: string, cardTitle: string) => void;
-  deleteCard: (id: string) => void;
-  updateCardTitle: (
+  onUpdateList: (id: string, title: string) => void;
+  onAddCard: (listId: string, cardTitle: string) => void;
+  onDeleteCard: (id: string) => void;
+  onUpdateCard: (
     cardId: string,
     cardProperty: keyof CardDataProps,
     value: string
   ) => void;
-  updateComment: (
+  onUpdateComment: (
     id: string,
     commentProperty: keyof CommentDataProps,
     value: string
   ) => void;
-  deleteComment: (id: string) => void;
-  addComment: (cardId: string, author: string, comment: string) => void;
+  onDeleteComment: (id: string) => void;
+  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 
-const List: FC<ListProps> = ({
+const CardList: FC<ListProps> = ({
   listTitle,
   id,
   cards,
   comments,
   username,
-  addCard,
-  deleteCard,
-  updateCardTitle,
-  updateComment,
-  deleteComment,
-  addComment,
-  updateList,
+  onAddCard,
+  onDeleteCard,
+  onUpdateCard,
+  onUpdateComment,
+  onDeleteComment,
+  onAddComment,
+  onUpdateList,
 }) => {
   const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
@@ -57,7 +57,7 @@ const List: FC<ListProps> = ({
       const trimmedTitle = currentTitle.trim();
       if (trimmedTitle) {
         setIsEditing(false);
-        updateList(id, currentTitle);
+        onUpdateList(id, currentTitle);
       }
     }
 
@@ -67,7 +67,7 @@ const List: FC<ListProps> = ({
     }
   };
 
-  const onCancelAddingCard = () => {
+  const handleCancelAddingCard = () => {
     setIsAddingCard(false);
   };
 
@@ -87,8 +87,8 @@ const List: FC<ListProps> = ({
   }, [isEditing]);
   return (
     <Root>
-      <ListHeader>
-        <ListTitle>{listTitle}</ListTitle>
+      <Header>
+        <Title>{listTitle}</Title>
         {!isEditing && (
           <EditTitleContainer
             onClick={() => {
@@ -104,7 +104,7 @@ const List: FC<ListProps> = ({
           onChange={(e) => setCurrentTitle(e.target.value)}
           onKeyDown={handleonKeyDown}
         ></Textarea>
-      </ListHeader>
+      </Header>
       {Object.values(cards)
         .filter((card) => card.listId === id)
         .map((card) => {
@@ -118,19 +118,19 @@ const List: FC<ListProps> = ({
               comments={comments}
               cardDescription={card.cardDescription}
               listTitle={listTitle}
-              deleteCard={deleteCard}
-              updateCardTitle={updateCardTitle}
-              updateComment={updateComment}
-              deleteComment={deleteComment}
-              addComment={addComment}
+              onDeleteCard={onDeleteCard}
+              onUpdateCard={onUpdateCard}
+              onUpdateComment={onUpdateComment}
+              onDeleteComment={onDeleteComment}
+              onAddComment={onAddComment}
             ></Card>
           );
         })}
       {isAddingCard ? (
         <NewCard
           listId={id}
-          onCancelAddingCard={onCancelAddingCard}
-          addCard={addCard}
+          onCancelAddingCard={handleCancelAddingCard}
+          onAddCard={onAddCard}
         ></NewCard>
       ) : (
         <StyledButton
@@ -160,12 +160,12 @@ const Root = styled.div`
   }
 `;
 
-const ListHeader = styled.div`
+const Header = styled.div`
   padding: 8px 4px;
   position: relative;
   display: flex;
 `;
-const ListTitle = styled.h2`
+const Title = styled.h2`
   display: none;
   text-align: start;
   color: ${COLORS.deepBlue};
@@ -200,4 +200,4 @@ const StyledButton = styled(Button)`
   width: 70%;
 `;
 
-export default List;
+export default CardList;

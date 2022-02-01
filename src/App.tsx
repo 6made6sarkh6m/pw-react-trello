@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { UserService } from "./helpers/userService";
 import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
-import Popup from "./components/Popup";
+import { UsernameModal } from "components/UsernameModal";
 import { Header } from "./components/Header";
 import { StorageProperties } from "enum/enum";
 import { defaultLists, defaultCards, defaultComments } from "utils/mock";
@@ -58,13 +58,13 @@ const App = () => {
     setComment(newComments);
   };
 
-  const updateListTittle = (id: string, listTitle: string) => {
+  const handleUpdateListTittle = (id: string, listTitle: string) => {
     const cloneList = { ...lists };
     cloneList[id] = { id, listTitle };
     setListData(cloneList);
   };
 
-  const addCard = (
+  const handleAddCard = (
     listId: string,
     cardTitle: string,
     cardDescription: string = ""
@@ -80,13 +80,13 @@ const App = () => {
     setCardData(cloneCards);
   };
 
-  const deleteCard = (id: string) => {
+  const handleDeleteCard = (id: string) => {
     const cloneCards = { ...cards };
     delete cloneCards[id];
     setCardData(cloneCards);
   };
 
-  const updateCardTitle = (
+  const handleUpdateCard = (
     id: string,
     cardProperty: keyof CardDataProps,
     value: string
@@ -96,7 +96,7 @@ const App = () => {
     setCardData(cloneCards);
   };
 
-  const updateComment = (
+  const handleUpdateComment = (
     id: string,
     commentProperty: keyof CommentDataProps,
     value: string
@@ -106,13 +106,17 @@ const App = () => {
     setCommentData(cloneComments);
   };
 
-  const deleteComment = (id: string) => {
+  const handleDeleteComment = (id: string) => {
     const cloneComments = { ...comments };
     delete cloneComments[id];
     setCommentData(cloneComments);
   };
 
-  const addComment = (cardId: string, author: string, comment: string) => {
+  const handleAddComment = (
+    cardId: string,
+    author: string,
+    comment: string
+  ) => {
     const cloneComments = { ...comments };
     const newCommentId = uuid();
     cloneComments[newCommentId] = {
@@ -126,31 +130,38 @@ const App = () => {
   };
 
   const renderPopup = () => {
-    return isOpen && <Popup onSubmit={() => setIsOpen(false)}></Popup>;
+    return (
+      isOpen && (
+        <UsernameModal onSubmit={() => setIsOpen(false)}></UsernameModal>
+      )
+    );
   };
-
+  const currentUser = localStorage.getItem(StorageProperties.user);
   useEffect(() => {
-    !UserService.getCurrentUser() ? setIsOpen(true) : setIsOpen(false);
+    !currentUser ? setIsOpen(true) : setIsOpen(false);
   }, []);
   return (
     <>
-      <Header username={UserService.getCurrentUser()}></Header>
-      <PageWrapper>
-        <Board
-          comments={comments}
-          lists={lists}
-          cards={cards}
-          username={UserService.getCurrentUser()}
-          updateList={updateListTittle}
-          addCard={addCard}
-          deleteCard={deleteCard}
-          updateCardTitle={updateCardTitle}
-          updateComment={updateComment}
-          deleteComment={deleteComment}
-          addComment={addComment}
-        ></Board>
-      </PageWrapper>
-      {renderPopup()}
+      <Header username={currentUser || ""}></Header>
+      <main>
+        <PageWrapper>
+          <Board
+            comments={comments}
+            lists={lists}
+            cards={cards}
+            username={currentUser || ""}
+            onUpdateList={handleUpdateListTittle}
+            onAddCard={handleAddCard}
+            onDeleteCard={handleDeleteCard}
+            onUpdateCard={handleUpdateCard}
+            onUpdateComment={handleUpdateComment}
+            onDeleteComment={handleDeleteComment}
+            onAddComment={handleAddComment}
+          ></Board>
+        </PageWrapper>
+
+        {renderPopup()}
+      </main>
     </>
   );
 };

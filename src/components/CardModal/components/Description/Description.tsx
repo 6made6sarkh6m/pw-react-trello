@@ -8,7 +8,7 @@ import { CardProperties } from "enum/enum";
 interface DescriptionProps {
   cardDescription: string;
   cardId: string;
-  updateCardTitle: (
+  onUpdateCard: (
     cardId: string,
     cardProperty: keyof CardDataProps,
     value: string
@@ -18,7 +18,7 @@ interface DescriptionProps {
 const Description: FC<DescriptionProps> = ({
   cardDescription,
   cardId,
-  updateCardTitle,
+  onUpdateCard,
 }) => {
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] =
@@ -28,7 +28,7 @@ const Description: FC<DescriptionProps> = ({
     const trimmedDescription = description.trim();
     if (trimmedDescription) {
       setIsEditingDescription(false);
-      updateCardTitle(cardId, CardProperties.description, description);
+      onUpdateCard(cardId, CardProperties.description, description);
     } else {
       setIsEditingDescription(false);
       setDescription(cardDescription);
@@ -67,7 +67,7 @@ const Description: FC<DescriptionProps> = ({
       {isEditingDescription && (
         <DescriptionControlConteiner>
           <StyledButton primary={true} onClick={onDescriptionUpdate}>
-            <span>Add</span>
+            <span>Save</span>
           </StyledButton>
           <StyledButton
             primary={false}
@@ -112,6 +112,7 @@ const DescriptionControlConteiner = styled.div`
 
 const StyledButton = styled(Button)`
   width: 30%;
+  align-items: center;
 `;
 
 export default Description;

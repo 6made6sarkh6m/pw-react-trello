@@ -8,18 +8,17 @@ type HeaderProps = {
 };
 const Header: FC<HeaderProps> = ({ username }) => {
   return (
-    <HeaderContainer>
-      <HeaderTitle>Hello, {username}</HeaderTitle>
-    </HeaderContainer>
+    <Container>
+      <Title>Hello, {username}</Title>
+    </Container>
   );
 };
 
-const HeaderContainer = styled.header`
+const Container = styled.header`
   height: 40px;
   width: 100%;
-  min-width: 1440px;
-  background: inherit !important;
-  background-color: ${COLORS.glassEffect} !important;
+  background: inherit;
+  background-color: ${COLORS.glassEffect};
   margin-bottom: 12px;
   display: flex;
   justify-content: flex-start;
@@ -28,7 +27,7 @@ const HeaderContainer = styled.header`
     width: 100%;
   }
 `;
-const HeaderTitle = styled.h2`
+const Title = styled.h2`
   text-align: start;
   color: ${COLORS.deepBlue};
   font-size: 22px;

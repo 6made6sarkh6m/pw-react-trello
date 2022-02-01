@@ -6,7 +6,6 @@ export class StorageService {
 
   static getData(defaultMockData: any, key: string) {
     const storedData = localStorage.getItem(key);
-    //const storedData =  JSON.parse(localStorage.getItem(key) || '{}');
     if(storedData) {
       return JSON.parse(storedData);
     } else {
