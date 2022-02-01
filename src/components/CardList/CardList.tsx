@@ -174,6 +174,7 @@ const Header = styled.div`
   position: relative;
   display: flex;
 `;
+
 const Title = styled.h2`
   display: none;
   text-align: start;

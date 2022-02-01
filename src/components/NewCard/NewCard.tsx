@@ -60,7 +60,7 @@ export const NewCard: FC<NewCardProps> = ({
     </>
   );
 };
-export default NewCard;
+
 const CardItem = styled.div`
   display: flex;
   background-color: ${COLORS.blindingWhite};
@@ -79,6 +79,9 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+
 const StyledButton = styled(Button)`
   width: 30%;
 `;
+
+export default NewCard;

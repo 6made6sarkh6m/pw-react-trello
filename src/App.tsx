@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
-import { UserService } from "./helpers/userService";
 import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import { UsernameModal } from "components/UsernameModal";

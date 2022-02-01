@@ -28,4 +28,5 @@ const StyledDeleteButton = styled.button`
     background-color: ${COLORS.greyShadowed};
   }
 `;
+
 export default DeleteButton;
