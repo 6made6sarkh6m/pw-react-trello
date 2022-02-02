@@ -1,5 +1,4 @@
-import React from "react";
-import { FC } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 
@@ -27,6 +26,7 @@ const Container = styled.header`
     width: 100%;
   }
 `;
+
 const Title = styled.h2`
   text-align: start;
   color: ${COLORS.deepBlue};
@@ -38,4 +38,5 @@ const Title = styled.h2`
   padding: 8px;
   margin: 0;
 `;
+
 export default Header;

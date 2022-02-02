@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
-import { UserService } from "./helpers/userService";
 import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import { UsernameModal } from "components/UsernameModal";
 import { Header } from "./components/Header";
 import { StorageProperties } from "enum/enum";
-import { defaultLists, defaultCards, defaultComments } from "utils/mock";
+import { defaultLists, defaultCards, defaultComments, defaultUser } from "utils/mock";
 export interface ListDataProps {
   id: string;
   listTitle: string;
@@ -136,20 +135,20 @@ const App = () => {
       )
     );
   };
-  const currentUser = localStorage.getItem(StorageProperties.user);
+  const currentUser = StorageService.getData(defaultUser, StorageProperties.user);
   useEffect(() => {
-    !currentUser ? setIsOpen(true) : setIsOpen(false);
+    !currentUser.name ? setIsOpen(true) : setIsOpen(false);
   }, []);
   return (
     <>
-      <Header username={currentUser || ""}></Header>
+      <Header username={currentUser.name || ""}></Header>
       <main>
         <PageWrapper>
           <Board
             comments={comments}
             lists={lists}
             cards={cards}
-            username={currentUser || ""}
+            username={currentUser.name || ""}
             onUpdateList={handleUpdateListTittle}
             onAddCard={handleAddCard}
             onDeleteCard={handleDeleteCard}

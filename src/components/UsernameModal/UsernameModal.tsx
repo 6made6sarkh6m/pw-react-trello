@@ -1,9 +1,10 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { UserService } from "helpers/userService";
+import { StorageService } from "helpers/storageService";
 import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
+import { StorageProperties } from "enum/enum";
 type PopupProps = {
   onSubmit?: () => void;
 };
@@ -12,15 +13,33 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
+  const userData = {
+    name: ""
+  };
+
   const handleOnSubmit = () => {
     const trimmedUsername = username.trim();
     if (trimmedUsername) {
-      UserService.setUsername(username);
+      userData.name = trimmedUsername;
+      StorageService.setData(userData, StorageProperties.user);
       onSubmit?.();
     } else {
       setIsNotValid(true);
     }
   };
+
+  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const trimmedUsername = username.trim();
+      if (trimmedUsername) {
+        userData.name = trimmedUsername;
+        StorageService.setData(userData, StorageProperties.user);
+        onSubmit?.();
+      }
+    }
+  };
+
   return (
     <Root>
       <PopupInner>
@@ -30,6 +49,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
             rows={1}
             placeholder="Type your name!"
             onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={handleonKeyDown}
           ></Textarea>
           <StyledButton primary={true} onClick={handleOnSubmit}>
             SAVE
@@ -76,6 +96,7 @@ const PopupInner = styled.div`
     width: calc((100% - 100px) / 3);
   }
 `;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -108,6 +129,7 @@ const ErrorTitle = styled.p`
     min-height: 20px;
     }
 `;
+
 const StyledButton = styled(Button)`
   width: 70px;
 `;

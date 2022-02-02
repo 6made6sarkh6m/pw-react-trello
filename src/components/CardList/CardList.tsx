@@ -49,7 +49,14 @@ const CardList: FC<ListProps> = ({
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
+  const [isAddingCardOnColumn, setAddingCardOnColumn] = useState<string>("");
 
+  let isAddingNewCard = false;
+
+  const handleOnAddNewCard = (id: string) => {
+    setAddingCardOnColumn(id);
+    isAddingNewCard = isAddingCardOnColumn === id;
+  };
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -69,7 +76,6 @@ const CardList: FC<ListProps> = ({
   const handleCancelAddingCard = () => {
     setIsAddingCard(false);
   };
-  
   useClickOutside(ref, () => {
     if (isEditing) {
       setIsEditing(false);
@@ -167,6 +173,7 @@ const Header = styled.div`
   position: relative;
   display: flex;
 `;
+
 const Title = styled.h2`
   display: none;
   text-align: start;

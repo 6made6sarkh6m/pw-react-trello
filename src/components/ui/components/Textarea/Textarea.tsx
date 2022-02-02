@@ -8,14 +8,14 @@ interface TextareaProps {
   spellCheck?: boolean;
   placeholder?: string;
   rows: number;
-  autofocus?: boolean;
+  autoFocus?: boolean;
   onChange?: (e: any) => void;
   onKeyDown?: (e: any) => void;
   onClick?: () => void;
 }
 interface StyledProps {
   isEditing?: boolean;
-  autofocus?: boolean;
+  autoFocus?: boolean;
 }
 const Textarea: FC<TextareaProps> = ({
   isEditing,
@@ -23,14 +23,14 @@ const Textarea: FC<TextareaProps> = ({
   spellCheck,
   rows,
   placeholder,
+  autoFocus,
   onChange,
   onKeyDown,
   onClick,
-  autofocus,
 }) => {
   return (
     <StyledTextarea
-      autofocus={autofocus}
+      autoFocus={autoFocus}
       value={value}
       isEditing={isEditing}
       placeholder={placeholder}

@@ -34,3 +34,7 @@ export const defaultComments = {
     comment: 'Lorem Ipsum'
   },
 };
+
+export const defaultUser = {
+  name: ""
+};

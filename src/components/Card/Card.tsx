@@ -92,6 +92,7 @@ const CardItem = styled.div`
   border-radius: 3px;
   overflow: hidden;
 `;
+
 const CardTitle = styled.span`
   font-size: 14px;
   flex-grow: 1;
@@ -110,4 +111,5 @@ const CommentCounter = styled.span`
   align-self: flex-end;
   color: ${COLORS.deepGrey};
 `;
+
 export default Card;

@@ -240,12 +240,14 @@ const ListTitleContainer = styled.div`
   align-self: flex-start;
   padding: 0 12px;
 `;
+
 const ListTitle = styled.span`
   font-size: 12px;
   font-family: sans-serif;
   color: ${COLORS.deepGrey};
   display: flex;
 `;
+
 const Title = styled.h2`
   text-align: start;
   font-size: 14px;
@@ -256,6 +258,7 @@ const Title = styled.h2`
   margin: 0;
   font-family: sans-serif;
 `;
+
 const CommentsContainer = styled.div`
   display: flex;
   flex-direction: column;

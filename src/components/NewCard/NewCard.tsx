@@ -19,7 +19,8 @@ export const NewCard: FC<NewCardProps> = ({
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (currentTitle) {
+      const trimmedCurrentTitle = currentTitle.trim();
+      if (trimmedCurrentTitle) {
         onAddCard(listId, currentTitle);
         onCancelAddingCard();
       }
@@ -30,15 +31,18 @@ export const NewCard: FC<NewCardProps> = ({
   };
 
   const handleAddCard = () => {
-    onAddCard(listId, currentTitle);
-    onCancelAddingCard();
+    const trimmedCurrentTitle = currentTitle.trim();
+    if (trimmedCurrentTitle) {
+      onAddCard(listId, currentTitle);
+      onCancelAddingCard();
+    }
   };
 
   return (
     <>
       <CardItem>
         <Textarea
-          autofocus={true}
+          autoFocus={true}
           rows={2}
           placeholder="Set card name"
           onKeyDown={handleonKeyDown}
@@ -47,16 +51,16 @@ export const NewCard: FC<NewCardProps> = ({
       </CardItem>
       <ButtonContainer>
         <StyledButton primary={true} onClick={handleAddCard}>
-          <span>Add</span>
+          Add
         </StyledButton>
         <StyledButton primary={false} onClick={() => onCancelAddingCard()}>
-          <span>Cancel</span>
+          Cancel
         </StyledButton>
       </ButtonContainer>
     </>
   );
 };
-export default NewCard;
+
 const CardItem = styled.div`
   display: flex;
   background-color: ${COLORS.blindingWhite};
@@ -75,6 +79,9 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+
 const StyledButton = styled(Button)`
   width: 30%;
 `;
+
+export default NewCard;
