@@ -47,6 +47,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
         <InputWrapper>
           <Textarea
             rows={1}
+            autoFocus={true}
             placeholder="Type your name!"
             onChange={(e) => setUsername(e.target.value)}
             onKeyDown={handleonKeyDown}

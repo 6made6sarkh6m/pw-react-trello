@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import styled from 'styled-components';
 import { CardList } from "components/CardList";
 import {
   CardDataProps,
@@ -44,7 +45,7 @@ const Board: FC<BoardProps> = ({
   onAddComment,
 }) => {
   return (
-    <>
+    <Root>
       {Object.values(lists).map((list) => {
         return (
           <li key={list.id}>
@@ -65,8 +66,11 @@ const Board: FC<BoardProps> = ({
           </li>
         );
       })}
-    </>
+    </Root>
   );
 };
+const Root = styled.ul`
+  display: flex;
+`
 
 export default Board;
