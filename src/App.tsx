@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
-import { StorageService } from "./helpers/storageService";
-import { Board } from "components/Board";
-import { UsernameModal } from "components/UsernameModal";
-import { Header } from "./components/Header";
-import { StorageProperties } from "enum/enum";
-import { defaultLists, defaultCards, defaultComments, defaultUser } from "utils/mock";
+import { StorageService } from "./app/views/helpers/storageService";
+import { Board } from "app/views/components/Board";
+import { UsernameModal } from "app/views/components/UsernameModal";
+import { Header } from "./app/views/components/Header";
+import { StorageProperties } from "app/views/enum/enum";
+import {
+  defaultLists,
+  defaultCards,
+  defaultComments,
+  defaultUser,
+} from "app/views/utils/mock";
+import { useSelector } from "react-redux";
+import { selectCard, selectCardList } from "app/state/store";
 export interface ListDataProps {
   id: string;
   listTitle: string;
@@ -31,6 +38,8 @@ export type CardsData = Record<string, CardDataProps>;
 export type CommentsData = Record<string, CommentDataProps>;
 
 const App = () => {
+  const desks = useSelector(selectCardList);
+  const card = useSelector(selectCard);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [lists, setList] = useState<DeskData>(
     StorageService.getData(defaultLists, StorageProperties.lists)
@@ -135,9 +144,14 @@ const App = () => {
       )
     );
   };
-  const currentUser = StorageService.getData(defaultUser, StorageProperties.user);
+  const currentUser = StorageService.getData(
+    defaultUser,
+    StorageProperties.user
+  );
   useEffect(() => {
     !currentUser.name ? setIsOpen(true) : setIsOpen(false);
+    console.log(desks);
+    console.log(card);
   }, []);
   return (
     <>
