@@ -1,10 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultCards } from "app/views/utils/mock";
 import { v4 as uuid } from "uuid";
+import { StorageProperties } from "app/views/enum/enum";
+import { StorageService } from "app/views/helpers/storageService";
+
+export interface CardDataProps {
+  id: string;
+  listId: string;
+  cardTitle: string;
+  cardDescription: string;
+};
 
 export type CardsData = Record<string, CardDataProps>;
 
-export const initialCardState: CardsData = defaultCards;
+export const initialCardState: CardsData = StorageService.getData(defaultCards, StorageProperties.cards);
 
 export const CardSlice = createSlice({
   name: "cards",
@@ -19,20 +28,20 @@ export const CardSlice = createSlice({
         listId: action.payload.listId,
         cardDescription: action.payload.cardDescription,
       };
+      StorageService.setData(cloneState, StorageProperties.cards);
+
     },
+
     deleteCard(state, action: PayloadAction<CardDataProps>) {
       const cloneState = { ...state };
       delete cloneState[action.payload.id];
+      StorageService.setData(cloneState, StorageProperties.cards);
     },
+
     updateCard(state, action: PayloadAction<CardDataProps>) {
       const cloneState = { ...state };
     },
   },
 });
-export interface CardDataProps {
-  id: string;
-  listId: string;
-  cardTitle: string;
-  cardDescription: string;
-}
+
 export default CardSlice.reducer;
