@@ -10,40 +10,25 @@ import { CardProperties } from "app/views/enum/enum";
 import { COLORS } from "app/views/styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { Textarea } from "../ui/components/Textarea";
+import { useDispatch, useSelector } from "react-redux";
+import { selectComment } from "app/state/store";
+import { updateCard } from "app/state/ducks/Card/reducers";
 interface CardViewProps {
   onClose?: () => void;
-  comments: CommentsData;
   cardId: string;
   cardTitle: string;
   listTitle: string;
   cardDescription: string;
-  username: string;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 const CardModal: FC<CardViewProps> = ({
   onClose,
-  comments,
   cardId,
   cardTitle,
   listTitle,
   cardDescription,
-  username,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
 }) => {
+  const dispatch = useDispatch();
+  const comments = useSelector(selectComment);
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
@@ -53,10 +38,10 @@ const CardModal: FC<CardViewProps> = ({
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedTitle = title.trim();
-      if (trimmedTitle) {
+      const value = title.trim();
+      if (value) {
         setIsEditingTitle(false);
-        onUpdateCard(cardId, CardProperties.title, title);
+
       } else {
         setTitle(cardTitle);
         setIsEditingTitle(false);
@@ -95,11 +80,11 @@ const CardModal: FC<CardViewProps> = ({
     };
   }, []);
 
-  const filteredComments = useMemo(
-    () =>
-      Object.values(comments).filter((comment) => comment.cardId === cardId),
-    [comments]
-  );
+  // const filteredComments = useMemo(
+  //   () =>
+  //     Object.values(comments).filter((comment) => comment.cardId === cardId),
+  //   [comments]
+  // );
 
   return (
     <Root>
@@ -136,14 +121,12 @@ const CardModal: FC<CardViewProps> = ({
           <Description
             cardDescription={cardDescription}
             cardId={cardId}
-            onUpdateCard={onUpdateCard}
           ></Description>
           <Title>Actions</Title>
           <NewComment
             cardId={cardId}
-            username={username}
-            onAddComment={onAddComment}
           ></NewComment>
+           {/*
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>
@@ -161,7 +144,7 @@ const CardModal: FC<CardViewProps> = ({
                 );
               })}
             </ul>
-          </CommentsContainer>
+          </CommentsContainer> */}
         </Modal>
       </Container>
     </Root>

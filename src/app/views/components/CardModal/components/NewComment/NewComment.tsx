@@ -3,22 +3,26 @@ import styled from "styled-components";
 import { COLORS } from "app/views/styles/colors";
 import { Button } from "app/views/components/ui/components/Button";
 import { Textarea } from "app/views/components/ui/components/Textarea";
+import { useDispatch } from "react-redux";
+import { addComment } from "app/state/ducks/Comments/reducers";
+import { StorageService } from "app/views/helpers/storageService";
+import { defaultUser } from "app/views/utils/mock";
+import { StorageProperties } from "app/views/enum/enum";
 interface NewCommentProps {
   cardId: string;
-  username: string;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 const NewComment: FC<NewCommentProps> = ({
-  cardId,
-  username,
-  onAddComment,
+  cardId
 }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
+  const authorData = StorageService.getData(defaultUser, StorageProperties.user);
+  const author = authorData.name;
+  const dispatch = useDispatch();
   const [newComment, setNewComment] = useState<string>("");
   const onSaveComment = () => {
-    const trimmedComment = newComment.trim();
-    if (trimmedComment) {
-      onAddComment(cardId, username, newComment);
+    const comment = newComment.trim();
+    if (comment) {
+      dispatch(addComment({cardId, comment, author}));
       setNewComment("");
       ref?.current?.blur?.();
     }
@@ -26,8 +30,9 @@ const NewComment: FC<NewCommentProps> = ({
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      if (newComment.trim() !== "") {
-        onAddComment(cardId, username, newComment);
+      const comment = newComment.trim();
+      if (comment) {
+        dispatch(addComment({cardId, comment, author}));
         setNewComment("");
         ref?.current?.blur?.();
       }

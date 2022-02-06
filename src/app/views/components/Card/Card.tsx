@@ -6,75 +6,54 @@ import { CommentsData, CardDataProps, CommentDataProps } from "../../../../App";
 import { CardModal } from "../CardModal";
 import { COLORS } from "app/views/styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCard } from "app/state/ducks/Card/reducers";
+import { CommentReducer } from "app/state/ducks/Comments";
+import { selectComment } from "app/state/store";
 interface CardProps {
   listId: string;
   title: string;
   id: string;
   cardDescription: string;
-  comments: CommentsData;
   listTitle: string;
-  username: string;
-  onDeleteCard: (cardId: string) => void;
-
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 
 const Card: FC<CardProps> = ({
   title,
   id,
-  comments,
   listTitle,
   cardDescription,
-  username,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
 }) => {
+  const dispatch = useDispatch();
+  const comments  = useSelector(selectComment);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const commentCount = useMemo(() => {
-    return Object.values(comments).filter((comment) => comment.cardId === id)
-      .length;
-  }, [comments]);
+  // const commentCount = useMemo(() => {
+  //   return Object.values(comments).filter((comment) => comment.cardId === id)
+  //     .length;
+  // }, [comments]);
+  const handleOnDelete = (id : string) => {
+    dispatch(deleteCard({id}))
+  }
   return (
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
         <CardTitle>{title}</CardTitle>
-        <DeleteButton onClick={() => onDeleteCard(id)}>
+        <DeleteButton onClick={ ()=>{handleOnDelete(id)}}>
           <DeleteIcon></DeleteIcon>
         </DeleteButton>
         <CommentCounter>
           <CommentIcon></CommentIcon>
-          {commentCount}
+          {/* {commentCount} */}
         </CommentCounter>
       </CardItem>
       {isOpen && (
         <CardModal
           cardId={id}
           cardTitle={title}
-          comments={comments}
           listTitle={listTitle}
-          username={username}
           cardDescription={cardDescription}
           onClose={() => setIsOpen(false)}
-          onUpdateComment={onUpdateComment}
-          onDeleteComment={onDeleteComment}
-          onUpdateCard={onUpdateCard}
-          onAddComment={onAddComment}
-        ></CardModal>
+        ></CardModal> 
       )}
     </>
   );

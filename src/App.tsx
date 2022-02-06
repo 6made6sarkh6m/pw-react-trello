@@ -13,7 +13,7 @@ import {
   defaultUser,
 } from "app/views/utils/mock";
 import { useSelector } from "react-redux";
-import { selectCard, selectCardList } from "app/state/store";
+import { selectCard, selectCardList, selectComment } from "app/state/store";
 export interface ListDataProps {
   id: string;
   listTitle: string;
@@ -150,8 +150,6 @@ const App = () => {
   );
   useEffect(() => {
     !currentUser.name ? setIsOpen(true) : setIsOpen(false);
-    console.log(desks);
-    console.log(card);
   }, []);
   return (
     <>
@@ -159,17 +157,6 @@ const App = () => {
       <main>
         <PageWrapper>
           <Board
-            comments={comments}
-            lists={lists}
-            cards={cards}
-            username={currentUser.name || ""}
-            onUpdateList={handleUpdateListTittle}
-            onAddCard={handleAddCard}
-            onDeleteCard={handleDeleteCard}
-            onUpdateCard={handleUpdateCard}
-            onUpdateComment={handleUpdateComment}
-            onDeleteComment={handleDeleteComment}
-            onAddComment={handleAddComment}
           ></Board>
         </PageWrapper>
 

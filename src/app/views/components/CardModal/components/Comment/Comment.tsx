@@ -9,19 +9,11 @@ import { Textarea } from "app/views/components/ui/components/Textarea";
 interface CommentProps {
   id: string;
   commentValue: string;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
 }
 
 const Comment: FC<CommentProps> = ({
   id,
   commentValue,
-  onUpdateComment,
-  onDeleteComment,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [comment, setComment] = useState<string>(commentValue);
@@ -32,7 +24,6 @@ const Comment: FC<CommentProps> = ({
       const trimmedComment = comment.trim();
       if (trimmedComment) {
         setIsEditing(false);
-        onUpdateComment(id, "comment", comment);
       } else {
         setIsEditing(false);
         setComment(commentValue);
@@ -70,7 +61,7 @@ const Comment: FC<CommentProps> = ({
             onChange={(e) => setComment(e.target.value)}
           />
         )}
-        <DeleteButton onClick={() => onDeleteComment(id)}>
+        <DeleteButton>
           <DeleteIcon />
         </DeleteButton>
       </CommentContainer>

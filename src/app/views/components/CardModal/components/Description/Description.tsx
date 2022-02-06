@@ -8,17 +8,11 @@ import { CardProperties } from "app/views/enum/enum";
 interface DescriptionProps {
   cardDescription: string;
   cardId: string;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
 }
 
 const Description: FC<DescriptionProps> = ({
   cardDescription,
   cardId,
-  onUpdateCard,
 }) => {
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] =
@@ -28,7 +22,6 @@ const Description: FC<DescriptionProps> = ({
     const trimmedDescription = description.trim();
     if (trimmedDescription) {
       setIsEditingDescription(false);
-      onUpdateCard(cardId, CardProperties.description, description);
     } else {
       setIsEditingDescription(false);
       setDescription(cardDescription);

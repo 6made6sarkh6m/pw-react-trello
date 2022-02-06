@@ -4,47 +4,39 @@ import useClickOutside from "../../hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
 import { Button } from "app/views/components/ui/components/Button";
 import { Textarea } from "app/views/components/ui/components/Textarea";
-import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card } from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "app/views/styles/colors";
-interface ListProps {
-  listTitle: string;
-  id: string;
-  cards: CardsData;
-  comments: CommentsData;
-  username: string;
-  onUpdateList: (id: string, title: string) => void;
-  onAddCard: (listId: string, cardTitle: string) => void;
-  onDeleteCard: (id: string) => void;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { CardReducer } from "app/state/ducks/Card";
+import { selectCard } from "app/state/store";
+import { updateCardList } from "app/state/ducks/CardList/reducers";
+ interface ListProps {
+   listTitle: string;
+    id: string;
+//   cards: CardsData;
+//   comments: CommentsData;
+//   username: string;
+//   onUpdateList: (id: string, title: string) => void;
+//   onAddCard: (listId: string, cardTitle: string) => void;
+//   onDeleteCard: (id: string) => void;
+//   onUpdateCard: (
+//     cardId: string,
+//     cardProperty: keyof CardDataProps,
+//     value: string
+//   ) => void;
+//   onUpdateComment: (
+//     id: string,
+//     commentProperty: keyof CommentDataProps,
+//     value: string
+//   ) => void;
+//   onDeleteComment: (id: string) => void;
+//   onAddComment: (cardId: string, author: string, comment: string) => void;
+ }
 
-const CardList: FC<ListProps> = ({
-  listTitle,
-  id,
-  cards,
-  comments,
-  username,
-  onAddCard,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
-  onUpdateList,
-}) => {
+const CardList: FC<ListProps> = ({listTitle, id}) => {
+  const cards = useSelector(selectCard);
+  const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -60,10 +52,10 @@ const CardList: FC<ListProps> = ({
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedTitle = currentTitle.trim();
-      if (trimmedTitle) {
+      const listTitle = currentTitle.trim();
+      if (listTitle) {
         setIsEditing(false);
-        onUpdateList(id, currentTitle);
+        dispatch(updateCardList({id, listTitle}));
       }
     }
 
@@ -120,15 +112,8 @@ const CardList: FC<ListProps> = ({
                   listId={id}
                   title={card.cardTitle}
                   id={card.id}
-                  username={username}
-                  comments={comments}
                   cardDescription={card.cardDescription}
                   listTitle={listTitle}
-                  onDeleteCard={onDeleteCard}
-                  onUpdateCard={onUpdateCard}
-                  onUpdateComment={onUpdateComment}
-                  onDeleteComment={onDeleteComment}
-                  onAddComment={onAddComment}
                 ></Card>
               </li>
             );
@@ -138,7 +123,6 @@ const CardList: FC<ListProps> = ({
         <NewCard
           listId={id}
           onCancelAddingCard={handleCancelAddingCard}
-          onAddCard={onAddCard}
         ></NewCard>
       ) : (
         <StyledButton

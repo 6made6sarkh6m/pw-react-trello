@@ -8,60 +8,41 @@ import {
   CommentsData,
   DeskData,
 } from "App";
+import { useSelector } from "react-redux";
+import { selectCardList } from "app/state/store";
 
-interface BoardProps {
-  lists: DeskData;
-  cards: CardsData;
-  comments: CommentsData;
-  onUpdateList: (id: string, title: string) => void;
-  onAddCard: (listId: string, cardTitle: string) => void;
-  onDeleteCard: (cardId: string) => void;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  username: string;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
-}
+// interface BoardProps {
+//   lists: DeskData;
+//   cards: CardsData;
+//   comments: CommentsData;
+//   onUpdateList: (id: string, title: string) => void;
+//   onAddCard: (listId: string, cardTitle: string) => void;
+//   onDeleteCard: (cardId: string) => void;
+//   onUpdateCard: (
+//     cardId: string,
+//     cardProperty: keyof CardDataProps,
+//     value: string
+//   ) => void;
+//   onUpdateComment: (
+//     id: string,
+//     commentProperty: keyof CommentDataProps,
+//     value: string
+//   ) => void;
+//   onDeleteComment: (id: string) => void;
+//   username: string;
+//   onAddComment: (cardId: string, author: string, comment: string) => void;
+// }
 
-const Board: FC<BoardProps> = ({
-  lists,
-  username,
-  cards,
-  comments,
-  onUpdateList,
-  onAddCard,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
-}) => {
+const Board: FC = () => {
+  const lists = useSelector(selectCardList);
   return (
     <Root>
       {Object.values(lists).map((list) => {
         return (
           <li key={list.id}>
             <CardList
-              cards={cards}
-              comments={comments}
-              id={list.id}
               listTitle={list.listTitle}
-              username={username}
-              onUpdateList={onUpdateList}
-              onAddCard={onAddCard}
-              onDeleteCard={onDeleteCard}
-              onUpdateCard={onUpdateCard}
-              onUpdateComment={onUpdateComment}
-              onDeleteComment={onDeleteComment}
-              onAddComment={onAddComment}
+              id = {list.id}
             ></CardList>
           </li>
         );

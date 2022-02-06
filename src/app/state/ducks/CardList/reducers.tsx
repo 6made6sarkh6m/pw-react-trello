@@ -7,7 +7,10 @@ export interface ListDataProps {
   id: string;
   listTitle: string;
 };
-
+export interface onUpdateCardList {
+  id: string;
+  title: string;
+}
 export type CardListData = Record<string, ListDataProps>;
 
 export const initialDeskState: CardListData = StorageService.getData(defaultLists, StorageProperties.lists);
@@ -18,13 +21,16 @@ export const CardListSlice = createSlice({
   reducers: {
     updateCardList(state, action: PayloadAction<ListDataProps>) {
       const {
-        payload: { id, listTitle },
+        payload: {id, listTitle}
       } = action;
       const cloneState = { ...state };
-      cloneState[id] = { id, listTitle };
+      cloneState[action.payload.id] = {id,listTitle};
       StorageService.setData(cloneState, StorageProperties.lists);
+      return cloneState;
     },
   },
 });
+
+export const {updateCardList} = CardListSlice.actions;
 
 export default CardListSlice.reducer;
