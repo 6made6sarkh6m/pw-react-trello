@@ -8,54 +8,28 @@ import { Card } from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "app/views/styles/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { CardReducer } from "app/state/ducks/Card";
 import { selectCard } from "app/state/store";
 import { updateCardList } from "app/state/ducks/CardList/reducers";
- interface ListProps {
-   listTitle: string;
-    id: string;
-//   cards: CardsData;
-//   comments: CommentsData;
-//   username: string;
-//   onUpdateList: (id: string, title: string) => void;
-//   onAddCard: (listId: string, cardTitle: string) => void;
-//   onDeleteCard: (id: string) => void;
-//   onUpdateCard: (
-//     cardId: string,
-//     cardProperty: keyof CardDataProps,
-//     value: string
-//   ) => void;
-//   onUpdateComment: (
-//     id: string,
-//     commentProperty: keyof CommentDataProps,
-//     value: string
-//   ) => void;
-//   onDeleteComment: (id: string) => void;
-//   onAddComment: (cardId: string, author: string, comment: string) => void;
- }
+interface ListProps {
+  listTitle: string;
+  id: string;
+}
 
-const CardList: FC<ListProps> = ({listTitle, id}) => {
+const CardList: FC<ListProps> = ({ listTitle, id }) => {
   const cards = useSelector(selectCard);
   const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
   const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
-  const [isAddingCardOnColumn, setAddingCardOnColumn] = useState<string>("");
 
-  let isAddingNewCard = false;
-
-  const handleOnAddNewCard = (id: string) => {
-    setAddingCardOnColumn(id);
-    isAddingNewCard = isAddingCardOnColumn === id;
-  };
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const listTitle = currentTitle.trim();
       if (listTitle) {
         setIsEditing(false);
-        dispatch(updateCardList({id, listTitle}));
+        dispatch(updateCardList({ id, listTitle }));
       }
     }
 
