@@ -15,7 +15,7 @@ export interface CardDataProps {
   }
   
   export interface UpdateCardPayload {
-    id: string;
+    cardId: string;
     title: string;
   }
   

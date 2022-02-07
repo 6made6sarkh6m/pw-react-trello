@@ -6,8 +6,11 @@ import { UsernameModal } from "components/UsernameModal";
 import { Header } from "./components/Header";
 import { StorageProperties } from "./enum/enum";
 import { defaultUser } from "./utils/mock";
+import { useSelector } from "react-redux";
+import { selectUser } from "redux/store";
 
 const App = () => {
+  const user = useSelector(selectUser);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const renderPopup = () => {
@@ -17,16 +20,12 @@ const App = () => {
       )
     );
   };
-  const currentUser = StorageService.getData(
-    defaultUser,
-    StorageProperties.user
-  );
   useEffect(() => {
-    !currentUser.name ? setIsOpen(true) : setIsOpen(false);
+    !user.name ? setIsOpen(true) : setIsOpen(false);
   }, []);
   return (
     <>
-      <Header username={currentUser.name || ""}></Header>
+      <Header username={user.name || ""}></Header>
       <main>
         <PageWrapper>
           <Board></Board>

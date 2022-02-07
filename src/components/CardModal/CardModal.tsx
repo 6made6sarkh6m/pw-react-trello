@@ -35,13 +35,14 @@ const CardModal: FC<CardViewProps> = ({
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
 
-  const [title, setTitle] = useState<string>(cardTitle);
+  const [newtitle, setTitle] = useState<string>(cardTitle);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const value = title.trim();
-      if (value) {
+      const title = newtitle.trim();
+      if (title) {
+        dispatch(updateCard({cardId, title}));
         setIsEditingTitle(false);
 
       } else {
@@ -107,7 +108,7 @@ const CardModal: FC<CardViewProps> = ({
               <Textarea
                 isEditing={isEditingTitle}
                 rows={1}
-                value={title}
+                value={newtitle}
                 onChange={(e) => setTitle(e.target.value)}
                 onKeyDown={handleOnKeyDown}
                 spellCheck={false}

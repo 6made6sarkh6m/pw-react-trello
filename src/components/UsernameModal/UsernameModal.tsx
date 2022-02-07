@@ -5,23 +5,22 @@ import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { StorageProperties } from "enum/enum";
+import { useDispatch } from "react-redux";
+import { saveUser } from "redux/ducks/User/reducer";
 type PopupProps = {
   onSubmit?: () => void;
 };
 
 const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
-  const userData = {
-    name: "",
-  };
 
   const handleOnSubmit = () => {
-    const trimmedUsername = username.trim();
-    if (trimmedUsername) {
-      userData.name = trimmedUsername;
-      StorageService.setData(userData, StorageProperties.user);
+    const name = username.trim();
+    if (name) {
+      dispatch(saveUser({name}));
       onSubmit?.();
     } else {
       setIsNotValid(true);
@@ -31,10 +30,9 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedUsername = username.trim();
-      if (trimmedUsername) {
-        userData.name = trimmedUsername;
-        StorageService.setData(userData, StorageProperties.user);
+      const name = username.trim();
+      if (name) {
+        dispatch(saveUser({name}));
         onSubmit?.();
       }
     }

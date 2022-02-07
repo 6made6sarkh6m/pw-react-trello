@@ -44,9 +44,9 @@ export const CardSlice = createSlice({
 
     updateCard(state, action: PayloadAction<UpdateCardPayload>) {
       const {
-        payload: {id, title}
+        payload: {cardId, title}
       } = action;
-      state[id].cardTitle = title;
+      state[cardId].cardTitle = title;
       StorageService.setData(state, StorageProperties.cards);
       return state; 
     },
