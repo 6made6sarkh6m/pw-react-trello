@@ -26,10 +26,10 @@ const Card: FC<CardProps> = ({
   const dispatch = useDispatch();
   const comments  = useSelector(selectComment);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const commentCount = useMemo(() => {
-  //   return Object.values(comments).filter((comment) => comment.cardId === id)
-  //     .length;
-  // }, [comments]);
+  const commentCount = useMemo(() => {
+    return Object.values(comments).filter((comment) => comment.cardId === id)
+      .length;
+  }, [comments]);
   const handleOnDelete = (id : string) => {
     dispatch(deleteCard({id}))
   }
@@ -42,7 +42,7 @@ const Card: FC<CardProps> = ({
         </DeleteButton>
         <CommentCounter>
           <CommentIcon></CommentIcon>
-          {/* {commentCount} */}
+          {commentCount}
         </CommentCounter>
       </CardItem>
       {isOpen && (

@@ -16,9 +16,13 @@ export interface AddCommentPayload {
   author: string;
 }
 
+export interface DeleteCommentPayload {
+  id: string;
+}
+
 export type CommentsData = Record<string, CommentDataProps>;
 
-export const initialCommentState = StorageService.getData(
+export const initialCommentState: CommentsData = StorageService.getData(
   defaultComments,
   StorageProperties.comments
 );
@@ -42,9 +46,12 @@ export const CommentSlice = createSlice({
       StorageService.setData(cloneState, StorageProperties.comments);
       return cloneState;
     },
-    deleteComment(state, action: PayloadAction<CommentDataProps>) {
+    deleteComment(state, action: PayloadAction<DeleteCommentPayload>) {
+      const {
+        payload: {id}
+      } = action;
       const cloneState = { ...state };
-      delete cloneState[action.payload.id];
+      delete cloneState[id];
       StorageService.setData(cloneState, StorageProperties.comments);
       return cloneState;
     },

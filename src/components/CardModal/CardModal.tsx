@@ -11,6 +11,9 @@ import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment } from "redux/store";
 import { updateCard } from "redux/ducks/Card/reducers";
+import { StorageService } from "helpers/storageService";
+import { defaultUser } from "utils/mock";
+import { StorageProperties } from "enum/enum";
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -27,6 +30,7 @@ const CardModal: FC<CardViewProps> = ({
 }) => {
   const dispatch = useDispatch();
   const comments = useSelector(selectComment);
+  const username = StorageService.getData(defaultUser, StorageProperties.user).name;
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
@@ -78,11 +82,11 @@ const CardModal: FC<CardViewProps> = ({
     };
   }, []);
 
-  // const filteredComments = useMemo(
-  //   () =>
-  //     Object.values(comments).filter((comment) => comment.cardId === cardId),
-  //   [comments]
-  // );
+  const filteredComments = useMemo(
+    () =>
+      Object.values(comments).filter((comment) => comment.cardId === cardId),
+    [comments]
+  );
 
   return (
     <Root>
@@ -124,7 +128,7 @@ const CardModal: FC<CardViewProps> = ({
           <NewComment
             cardId={cardId}
           ></NewComment>
-           {/*
+           
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>
@@ -135,14 +139,12 @@ const CardModal: FC<CardViewProps> = ({
                     <Comment
                       id={comment.id}
                       commentValue={comment.comment}
-                      onUpdateComment={onUpdateComment}
-                      onDeleteComment={onDeleteComment}
                     ></Comment>
                   </li>
                 );
               })}
             </ul>
-          </CommentsContainer> */}
+          </CommentsContainer>
         </Modal>
       </Container>
     </Root>
