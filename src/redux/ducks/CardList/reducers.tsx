@@ -2,15 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultLists } from "utils/mock";
 import { StorageProperties } from "enum/enum";
 import { StorageService } from "helpers/storageService";
+import { ListDataProps } from "./types";
 
-export interface ListDataProps {
-  id: string;
-  listTitle: string;
-};
-export interface onUpdateCardList {
-  id: string;
-  title: string;
-}
+
 export type CardListData = Record<string, ListDataProps>;
 
 export const initialDeskState: CardListData = StorageService.getData(defaultLists, StorageProperties.lists);

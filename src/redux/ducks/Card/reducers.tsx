@@ -3,32 +3,9 @@ import { defaultCards } from "utils/mock";
 import { v4 as uuid } from "uuid";
 import { StorageProperties } from "enum/enum";
 import { StorageService } from "helpers/storageService";
+import { AddCardPayload, CardDataProps, DeleteCardPayload, updateCardDescriptionPayload, UpdateCardPayload } from "./types";
 
-export interface CardDataProps {
-  id: string;
-  listId: string;
-  cardTitle: string;
-  cardDescription: string;
-}
 
-export interface AddCardPayload {
-  cardTitle: string;
-  listId: string;
-}
-
-export interface DeleteCardPayload {
-  id: string;
-}
-
-export interface UpdateCardPayload {
-  id: string;
-  title: string;
-}
-
-export interface updateCardDescriptionPayload {
-  id: string;
-  descriptionCard: string;
-}
 
 export type CardsData = Record<string, CardDataProps>;
 
