@@ -1,11 +1,10 @@
-import { CommentDataProps } from "App";
-import DeleteIcon from "app/views/components/ui/icons/DeleteIcon";
-import useClickOutside from "app/views/hooks/useClickOutside";
+import DeleteIcon from "views/components/ui/icons/DeleteIcon";
+import useClickOutside from "views/hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { COLORS } from "app/views/styles/colors";
-import { DeleteButton } from "app/views/components/ui/components/DeleteButton";
-import { Textarea } from "app/views/components/ui/components/Textarea";
+import { COLORS } from "views/styles/colors";
+import { DeleteButton } from "views/components/ui/components/DeleteButton";
+import { Textarea } from "views/components/ui/components/Textarea";
 interface CommentProps {
   id: string;
   commentValue: string;

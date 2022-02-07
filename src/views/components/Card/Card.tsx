@@ -2,14 +2,13 @@ import React, { useState, useMemo, FC } from "react";
 import styled from "styled-components";
 import DeleteIcon from "../ui/icons/DeleteIcon";
 import CommentIcon from "../ui/icons/CommentIcon";
-import { CommentsData, CardDataProps, CommentDataProps } from "../../../../App";
 import { CardModal } from "../CardModal";
-import { COLORS } from "app/views/styles/colors";
+import { COLORS } from "views/styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCard } from "app/state/ducks/Card/reducers";
-import { CommentReducer } from "app/state/ducks/Comments";
-import { selectComment } from "app/state/store";
+import { deleteCard } from "redux/ducks/Card/reducers";
+import { CommentReducer } from "redux/ducks/Comments";
+import { selectComment } from "redux/store";
 interface CardProps {
   listId: string;
   title: string;

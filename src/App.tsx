@@ -6,28 +6,6 @@ import { UsernameModal } from "app/views/components/UsernameModal";
 import { Header } from "./app/views/components/Header";
 import { StorageProperties } from "app/views/enum/enum";
 import { defaultUser } from "app/views/utils/mock";
-export interface ListDataProps {
-  id: string;
-  listTitle: string;
-}
-
-export interface CardDataProps {
-  id: string;
-  listId: string;
-  cardTitle: string;
-  cardDescription: string;
-}
-
-export interface CommentDataProps {
-  id: string;
-  cardId: string;
-  author: string;
-  comment: string;
-}
-
-export type DeskData = Record<string, ListDataProps>;
-export type CardsData = Record<string, CardDataProps>;
-export type CommentsData = Record<string, CommentDataProps>;
 
 const App = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

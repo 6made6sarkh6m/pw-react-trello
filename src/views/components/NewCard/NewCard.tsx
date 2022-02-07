@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { Button } from "app/views/components/ui/components/Button";
-import { Textarea } from "app/views/components/ui/components/Textarea";
-import { COLORS } from "app/views/styles/colors";
+import { Button } from "views/components/ui/components/Button";
+import { Textarea } from "views/components/ui/components/Textarea";
+import { COLORS } from "views/styles/colors";
 import { useDispatch } from "react-redux";
-import { addCard } from "app/state/ducks/Card/reducers";
+import { addCard } from "redux/ducks/Card/reducers";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;

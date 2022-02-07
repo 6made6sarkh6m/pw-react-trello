@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { CardDataProps } from "App";
-import useClickOutside from "app/views/hooks/useClickOutside";
+import useClickOutside from "views/hooks/useClickOutside";
 import styled from "styled-components";
-import { Button } from "app/views/components/ui/components/Button";
-import { Textarea } from "app/views/components/ui/components/Textarea";
-import { CardProperties } from "app/views/enum/enum";
+import { Button } from "views/components/ui/components/Button";
+import { Textarea } from "views/components/ui/components/Textarea";
+import { CardProperties } from "views/enum/enum";
 interface DescriptionProps {
   cardDescription: string;
   cardId: string;
