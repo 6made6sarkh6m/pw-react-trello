@@ -20,6 +20,11 @@ export interface DeleteCommentPayload {
   id: string;
 }
 
+export interface UpdateCommentPayload {
+  id: string;
+  comment: string;
+}
+
 export type CommentsData = Record<string, CommentDataProps>;
 
 export const initialCommentState: CommentsData = StorageService.getData(
@@ -36,26 +41,31 @@ export const CommentSlice = createSlice({
         payload: {cardId, comment, author}
       } = action;
       const newCommentId = uuid();
-      const cloneState = { ...state };
-      cloneState[newCommentId] = {
+      state[newCommentId] = {
         id: newCommentId,
         cardId: cardId,
         comment: comment,
         author: author,
       };
-      StorageService.setData(cloneState, StorageProperties.comments);
-      return cloneState;
+      StorageService.setData(state, StorageProperties.comments);
+      return state;
     },
     deleteComment(state, action: PayloadAction<DeleteCommentPayload>) {
       const {
         payload: {id}
       } = action;
-      const cloneState = { ...state };
-      delete cloneState[id];
-      StorageService.setData(cloneState, StorageProperties.comments);
-      return cloneState;
+      delete  state[id];
+      StorageService.setData(state, StorageProperties.comments);
+      return state;
     },
-    updateComment(state, action: PayloadAction<CommentDataProps>) {},
+    updateComment(state, action: PayloadAction<CommentDataProps>) {
+      const {
+        payload: {id, comment}
+      } = action;
+      state[id].comment = comment;
+      StorageService.setData(state, StorageProperties.comments);
+      return state;
+    },
   },
 });
 export const {addComment, deleteComment, updateComment} = CommentSlice.actions;

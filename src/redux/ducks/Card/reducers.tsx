@@ -21,9 +21,13 @@ export interface DeleteCardPayload {
 }
 
 export interface UpdateCardPayload {
-  cardId: string;
-  CardProperties: keyof CardDataProps;
-  value: string;
+  id: string;
+  title: string;
+}
+
+export interface updateCardDescriptionPayload {
+  id: string;
+  descriptionCard: string;
 }
 
 export type CardsData = Record<string, CardDataProps>;
@@ -42,37 +46,43 @@ export const CardSlice = createSlice({
         payload: { cardTitle, listId },
       } = action;
       const newCardId = uuid();
-      const cloneState = { ...state };
-      cloneState[newCardId] = {
+      state[newCardId] = {
         id: newCardId,
         cardTitle: cardTitle,
         listId: listId,
         cardDescription: "",
       };
-      StorageService.setData(cloneState, StorageProperties.cards);
-      return cloneState;
+      StorageService.setData(state, StorageProperties.cards);
+      return state;
     },
 
     deleteCard(state, action: PayloadAction<DeleteCardPayload>) {
       const {
         payload: { id },
       } = action;
-      const cloneState = { ...state };
-      delete cloneState[id];
-      StorageService.setData(cloneState, StorageProperties.cards);
-      return cloneState;
+      delete state[id];
+      StorageService.setData(state, StorageProperties.cards);
+      return state;
     },
 
     updateCard(state, action: PayloadAction<UpdateCardPayload>) {
       const {
-        payload: {cardId, CardProperties, value}
+        payload: {id, title}
       } = action;
-      const cloneState = { ...state };
-      cloneState[cardId][CardProperties] = value;
-      StorageService.setData(cloneState, StorageProperties.cards);
-      return cloneState; 
+      state[id].cardTitle = title;
+      StorageService.setData(state, StorageProperties.cards);
+      return state; 
     },
+
+    updateCardDescription(state, action:PayloadAction<updateCardDescriptionPayload>){
+      const {
+        payload: {id, descriptionCard}
+      } = action;
+      state[id].cardDescription = descriptionCard;
+      StorageService.setData(state, StorageProperties.cards);
+      return state;
+    }
   },
 });
-export const { addCard, updateCard, deleteCard } = CardSlice.actions;
+export const { addCard, updateCard, deleteCard, updateCardDescription } = CardSlice.actions;
 export default CardSlice.reducer;

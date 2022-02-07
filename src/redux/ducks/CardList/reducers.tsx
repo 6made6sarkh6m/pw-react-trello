@@ -23,10 +23,9 @@ export const CardListSlice = createSlice({
       const {
         payload: {id, listTitle}
       } = action;
-      const cloneState = { ...state };
-      cloneState[action.payload.id] = {id,listTitle};
-      StorageService.setData(cloneState, StorageProperties.lists);
-      return cloneState;
+      state[id] = {id,listTitle};
+      StorageService.setData(state, StorageProperties.lists);
+      return state;
     },
   },
 });

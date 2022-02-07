@@ -122,7 +122,7 @@ const CardModal: FC<CardViewProps> = ({
           </ListTitleContainer>
           <Description
             cardDescription={cardDescription}
-            cardId={cardId}
+            id={cardId}
           ></Description>
           <Title>Actions</Title>
           <NewComment
