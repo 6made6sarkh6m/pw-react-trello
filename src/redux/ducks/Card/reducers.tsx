@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { defaultCards } from "app/views/utils/mock";
+import { defaultCards } from "utils/mock";
 import { v4 as uuid } from "uuid";
-import { StorageProperties } from "app/views/enum/enum";
-import { StorageService } from "app/views/helpers/storageService";
+import { StorageProperties } from "enum/enum";
+import { StorageService } from "helpers/storageService";
 
 export interface CardDataProps {
   id: string;

@@ -1,13 +1,13 @@
 import React, { FC, useRef, useState } from "react";
 import styled from "styled-components";
-import { COLORS } from "app/views/styles/colors";
-import { Button } from "app/views/components/ui/components/Button";
-import { Textarea } from "app/views/components/ui/components/Textarea";
+import { COLORS } from "styles/colors";
+import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
-import { addComment } from "app/state/ducks/Comments/reducers";
-import { StorageService } from "app/views/helpers/storageService";
-import { defaultUser } from "app/views/utils/mock";
-import { StorageProperties } from "app/views/enum/enum";
+import { addComment } from "redux/ducks/Comments/reducers";
+import { StorageService } from "helpers/storageService";
+import { defaultUser } from "utils/mock";
+import { StorageProperties } from "enum/enum";
 interface NewCommentProps {
   cardId: string;
 }

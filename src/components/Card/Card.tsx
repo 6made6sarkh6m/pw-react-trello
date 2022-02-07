@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DeleteIcon from "../ui/icons/DeleteIcon";
 import CommentIcon from "../ui/icons/CommentIcon";
 import { CardModal } from "../CardModal";
-import { COLORS } from "views/styles/colors";
+import { COLORS } from "styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCard } from "redux/ducks/Card/reducers";

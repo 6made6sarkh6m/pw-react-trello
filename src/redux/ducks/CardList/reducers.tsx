@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { defaultLists } from "app/views/utils/mock";
-import { StorageProperties } from "app/views/enum/enum";
-import { StorageService } from "app/views/helpers/storageService";
+import { defaultLists } from "utils/mock";
+import { StorageProperties } from "enum/enum";
+import { StorageService } from "helpers/storageService";
 
 export interface ListDataProps {
   id: string;

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { COLORS } from "views/styles/colors";
+import { COLORS } from "styles/colors";
 
 interface TextareaProps {
   isEditing?: boolean;

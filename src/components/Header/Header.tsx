@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { COLORS } from "app/views/styles/colors";
+import { COLORS } from "styles/colors";
 
 type HeaderProps = {
   username: string;

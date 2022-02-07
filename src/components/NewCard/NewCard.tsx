@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { Button } from "views/components/ui/components/Button";
-import { Textarea } from "views/components/ui/components/Textarea";
-import { COLORS } from "views/styles/colors";
+import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
+import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
 import { addCard } from "redux/ducks/Card/reducers";
 interface NewCardProps {

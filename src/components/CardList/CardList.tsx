@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import useClickOutside from "../../hooks/useClickOutside";
+import useClickOutside from "hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
-import { Button } from "app/views/components/ui/components/Button";
-import { Textarea } from "app/views/components/ui/components/Textarea";
+import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
 import { Card } from "../Card";
 import { NewCard } from "../NewCard";
-import { COLORS } from "app/views/styles/colors";
+import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCard } from "app/state/store";
-import { updateCardList } from "app/state/ducks/CardList/reducers";
+import { selectCard } from "redux/store";
+import { updateCardList } from "redux/ducks/CardList/reducers";
 interface ListProps {
   listTitle: string;
   id: string;

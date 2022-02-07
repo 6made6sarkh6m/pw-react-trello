@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import useClickOutside from "views/hooks/useClickOutside";
+import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
-import { Button } from "views/components/ui/components/Button";
-import { Textarea } from "views/components/ui/components/Textarea";
-import { CardProperties } from "views/enum/enum";
+import { Button } from "components/ui/components/Button";
+import { Textarea } from "components/ui/components/Textarea";
+import { CardProperties } from "enum/enum";
 interface DescriptionProps {
   cardDescription: string;
   cardId: string;

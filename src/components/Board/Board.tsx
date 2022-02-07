@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { CardList } from "app/views/components/CardList";
+import { CardList } from "components/CardList";
 import { useSelector } from "react-redux";
-import { selectCardList } from "app/state/store";
+import { selectCardList } from "redux/store";
 
 const Board: FC = () => {
   const lists = useSelector(selectCardList);

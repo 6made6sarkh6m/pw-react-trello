@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { StorageService } from "./app/views/helpers/storageService";
-import { Board } from "app/views/components/Board";
-import { UsernameModal } from "app/views/components/UsernameModal";
-import { Header } from "./app/views/components/Header";
-import { StorageProperties } from "app/views/enum/enum";
-import { defaultUser } from "app/views/utils/mock";
+import { StorageService } from "./helpers/storageService";
+import { Board } from "components/Board";
+import { UsernameModal } from "components/UsernameModal";
+import { Header } from "./components/Header";
+import { StorageProperties } from "./enum/enum";
+import { defaultUser } from "./utils/mock";
 
 const App = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
