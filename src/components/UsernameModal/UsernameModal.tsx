@@ -1,28 +1,26 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { StorageService } from "helpers/storageService";
 import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
-import { StorageProperties } from "enum/enum";
 import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User/UserSlice";
-type PopupProps = {
+type UsernameModalProps = {
   onSubmit?: () => void;
 };
 
-const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
+const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState<string>("");
-  const [isNotValid, setIsNotValid] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
 
   const handleOnSubmit = () => {
     const name = username.trim();
     if (name) {
-      dispatch(saveUser({ name }));
+      dispatch(saveUser({ isAuth: true, name }));
       onSubmit?.();
     } else {
-      setIsNotValid(true);
+      setIsValid(false);
     }
   };
 
@@ -31,7 +29,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
       e.preventDefault();
       const name = username.trim();
       if (name) {
-        dispatch(saveUser({ name }));
+        dispatch(saveUser({ isAuth: true, name }));
         onSubmit?.();
       }
     }
@@ -53,7 +51,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
             SAVE
           </StyledButton>
         </InputWrapper>
-        {isNotValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
+        {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>
     </Root>
   );

@@ -9,7 +9,7 @@ import { COLORS } from "styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
-import { selectComment } from "redux/store";
+import { selectComment, selectUser } from "redux/store";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 import { StorageService } from "helpers/storageService";
 import { defaultUser } from "utils/mock";
@@ -30,20 +30,17 @@ const CardModal: FC<CardViewProps> = ({
 }) => {
   const dispatch = useDispatch();
   const comments = useSelector(selectComment);
-  const username = StorageService.getData(
-    defaultUser,
-    StorageProperties.user
-  ).name;
+  const { name } = useSelector(selectUser);
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
 
-  const [newtitle, setTitle] = useState<string>(cardTitle);
+  const [newTitle, setTitle] = useState<string>(cardTitle);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const title = newtitle.trim();
+      const title = newTitle.trim();
       if (title) {
         dispatch(updateCard({ cardId, title }));
         setIsEditingTitle(false);
@@ -110,7 +107,7 @@ const CardModal: FC<CardViewProps> = ({
               <Textarea
                 isEditing={isEditingTitle}
                 rows={1}
-                value={newtitle}
+                value={newTitle}
                 onChange={(e) => setTitle(e.target.value)}
                 onKeyDown={handleOnKeyDown}
                 spellCheck={false}
@@ -136,7 +133,7 @@ const CardModal: FC<CardViewProps> = ({
               {filteredComments.map((comment) => {
                 return (
                   <li key={comment.id}>
-                    <Title>{username}</Title>
+                    <Title>{name}</Title>
                     <Comment
                       id={comment.id}
                       commentValue={comment.comment}

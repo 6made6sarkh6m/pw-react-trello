@@ -17,7 +17,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const [isEditingDescription, setIsEditingDescription] =
     useState<boolean>(false);
   const [description, setDescription] = useState<string>(cardDescription);
-  const onDescriptionUpdate = () => {
+  const handleDescriptionUpdate = () => {
     const descriptionCard = description.trim();
     if (descriptionCard) {
       dispatch(updateCardDescription({ id, descriptionCard }));
@@ -59,7 +59,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
 
       {isEditingDescription && (
         <DescriptionControlConteiner>
-          <StyledButton primary={true} onClick={onDescriptionUpdate}>
+          <StyledButton primary={true} onClick={handleDescriptionUpdate}>
             Save
           </StyledButton>
           <StyledButton

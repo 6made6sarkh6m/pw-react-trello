@@ -34,7 +34,7 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
     }
   };
 
-  const handleOnDelete = () => {
+  const handleDeleteClick = () => {
     dispatch(deleteComment({ id }));
   };
   useClickOutside(ref, () => {
@@ -64,7 +64,7 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
             onChange={(e) => setComment(e.target.value)}
           />
         )}
-        <DeleteButton onClick={handleOnDelete}>
+        <DeleteButton onClick={handleDeleteClick}>
           <DeleteIcon />
         </DeleteButton>
       </CommentContainer>

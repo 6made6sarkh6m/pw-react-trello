@@ -1,7 +1,9 @@
 export interface UserDataProps {
+  isAuth: boolean;
   name: string;
 }
 
 export interface SaveUserPayload {
-    name: string;
+  isAuth: boolean;
+  name: string;
 }

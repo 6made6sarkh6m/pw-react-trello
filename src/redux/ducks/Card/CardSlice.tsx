@@ -3,9 +3,13 @@ import { defaultCards } from "utils/mock";
 import { v4 as uuid } from "uuid";
 import { StorageProperties } from "enum/enum";
 import { StorageService } from "helpers/storageService";
-import { AddCardPayload, CardDataProps, DeleteCardPayload, updateCardDescriptionPayload, UpdateCardPayload } from "./types";
-
-
+import {
+  AddCardPayload,
+  CardDataProps,
+  DeleteCardPayload,
+  updateCardDescriptionPayload,
+  UpdateCardPayload,
+} from "./types";
 
 export type CardsData = Record<string, CardDataProps>;
 
@@ -30,7 +34,6 @@ export const CardSlice = createSlice({
         cardDescription: "",
       };
       StorageService.setData(state, StorageProperties.cards);
-      return state;
     },
 
     deleteCard(state, action: PayloadAction<DeleteCardPayload>) {
@@ -39,27 +42,28 @@ export const CardSlice = createSlice({
       } = action;
       delete state[id];
       StorageService.setData(state, StorageProperties.cards);
-      return state;
     },
 
     updateCard(state, action: PayloadAction<UpdateCardPayload>) {
       const {
-        payload: {cardId, title}
+        payload: { cardId, title },
       } = action;
       state[cardId].cardTitle = title;
       StorageService.setData(state, StorageProperties.cards);
-      return state; 
     },
 
-    updateCardDescription(state, action:PayloadAction<updateCardDescriptionPayload>){
+    updateCardDescription(
+      state,
+      action: PayloadAction<updateCardDescriptionPayload>
+    ) {
       const {
-        payload: {id, descriptionCard}
+        payload: { id, descriptionCard },
       } = action;
       state[id].cardDescription = descriptionCard;
       StorageService.setData(state, StorageProperties.cards);
-      return state;
-    }
+    },
   },
 });
-export const { addCard, updateCard, deleteCard, updateCardDescription } = CardSlice.actions;
+export const { addCard, updateCard, deleteCard, updateCardDescription } =
+  CardSlice.actions;
 export default CardSlice.reducer;

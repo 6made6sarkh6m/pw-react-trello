@@ -3,8 +3,12 @@ import { defaultComments } from "utils/mock";
 import { v4 as uuid } from "uuid";
 import { StorageProperties } from "enum/enum";
 import { StorageService } from "helpers/storageService";
-import { CommentDataProps, AddCommentPayload, DeleteCommentPayload, UpdateCommentPayload } from "./types";
-
+import {
+  CommentDataProps,
+  AddCommentPayload,
+  DeleteCommentPayload,
+  UpdateCommentPayload,
+} from "./types";
 
 export type CommentsData = Record<string, CommentDataProps>;
 
@@ -19,7 +23,7 @@ export const CommentSlice = createSlice({
   reducers: {
     addComment(state, action: PayloadAction<AddCommentPayload>) {
       const {
-        payload: {cardId, comment, author}
+        payload: { cardId, comment, author },
       } = action;
       const newCommentId = uuid();
       state[newCommentId] = {
@@ -31,17 +35,19 @@ export const CommentSlice = createSlice({
       StorageService.setData(state, StorageProperties.comments);
       return state;
     },
+
     deleteComment(state, action: PayloadAction<DeleteCommentPayload>) {
       const {
-        payload: {id}
+        payload: { id },
       } = action;
-      delete  state[id];
+      delete state[id];
       StorageService.setData(state, StorageProperties.comments);
       return state;
     },
+
     updateComment(state, action: PayloadAction<UpdateCommentPayload>) {
       const {
-        payload: {id, comment}
+        payload: { id, comment },
       } = action;
       state[id].comment = comment;
       StorageService.setData(state, StorageProperties.comments);
@@ -49,6 +55,7 @@ export const CommentSlice = createSlice({
     },
   },
 });
-export const {addComment, deleteComment, updateComment} = CommentSlice.actions;
+export const { addComment, deleteComment, updateComment } =
+  CommentSlice.actions;
 
 export default CommentSlice.reducer;

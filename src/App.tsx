@@ -1,38 +1,32 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { StorageService } from "./helpers/storageService";
 import { Board } from "components/Board";
 import { UsernameModal } from "components/UsernameModal";
 import { Header } from "./components/Header";
-import { StorageProperties } from "./enum/enum";
-import { defaultUser } from "./utils/mock";
 import { useSelector } from "react-redux";
 import { selectUser } from "redux/store";
 
 const App = () => {
   const user = useSelector(selectUser);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-  const renderPopup = () => {
-    return (
-      isOpen && (
-        <UsernameModal onSubmit={() => setIsOpen(false)}></UsernameModal>
-      )
-    );
-  };
   useEffect(() => {
-    !user.name ? setIsOpen(true) : setIsOpen(false);
+    !user.isAuth ? setIsOpenModal(true) : setIsOpenModal(false);
   }, []);
   return (
     <>
-      <Header username={user.name || ""}></Header>
-      <main>
-        <PageWrapper>
-          <Board />
-        </PageWrapper>
-
-        {renderPopup()}
-      </main>
+      {isOpenModal ? (
+        <UsernameModal onSubmit={() => setIsOpenModal(false)}></UsernameModal>
+      ) : (
+        <>
+          <Header username={user.name || ""}></Header>
+          <main>
+            <PageWrapper>
+              <Board />
+            </PageWrapper>
+          </main>
+        </>
+      )}
     </>
   );
 };

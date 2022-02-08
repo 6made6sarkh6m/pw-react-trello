@@ -25,7 +25,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
     return Object.values(comments).filter((comment) => comment.cardId === id)
       .length;
   }, [comments]);
-  const handleOnDelete = (id: string) => {
+  const handleDeleteClick = (id: string) => {
     dispatch(deleteCard({ id }));
   };
   return (
@@ -34,7 +34,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
         <CardTitle>{title}</CardTitle>
         <DeleteButton
           onClick={() => {
-            handleOnDelete(id);
+            handleDeleteClick(id);
           }}
         >
           <DeleteIcon></DeleteIcon>
