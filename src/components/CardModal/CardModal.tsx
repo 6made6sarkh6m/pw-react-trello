@@ -10,7 +10,7 @@ import { DeleteButton } from "../ui/components/DeleteButton";
 import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment } from "redux/store";
-import { updateCard } from "redux/ducks/Card/reducers";
+import { updateCard } from "redux/ducks/Card/CardSlice";
 import { StorageService } from "helpers/storageService";
 import { defaultUser } from "utils/mock";
 import { StorageProperties } from "enum/enum";
@@ -30,7 +30,10 @@ const CardModal: FC<CardViewProps> = ({
 }) => {
   const dispatch = useDispatch();
   const comments = useSelector(selectComment);
-  const username = StorageService.getData(defaultUser, StorageProperties.user).name;
+  const username = StorageService.getData(
+    defaultUser,
+    StorageProperties.user
+  ).name;
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
@@ -42,9 +45,8 @@ const CardModal: FC<CardViewProps> = ({
       e.preventDefault();
       const title = newtitle.trim();
       if (title) {
-        dispatch(updateCard({cardId, title}));
+        dispatch(updateCard({ cardId, title }));
         setIsEditingTitle(false);
-
       } else {
         setTitle(cardTitle);
         setIsEditingTitle(false);
@@ -126,10 +128,8 @@ const CardModal: FC<CardViewProps> = ({
             id={cardId}
           ></Description>
           <Title>Actions</Title>
-          <NewComment
-            cardId={cardId}
-          ></NewComment>
-           
+          <NewComment cardId={cardId}></NewComment>
+
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>

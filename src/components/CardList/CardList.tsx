@@ -9,7 +9,7 @@ import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCard } from "redux/store";
-import { updateCardList } from "redux/ducks/CardList/reducers";
+import { updateCardList } from "redux/ducks/CardList/CardListSlice";
 interface ListProps {
   listTitle: string;
   id: string;

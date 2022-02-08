@@ -1,1 +1,1 @@
-export {default as CommentReducer} from './reducers';
+export { default as CommentReducer } from "./CommentsSlice";

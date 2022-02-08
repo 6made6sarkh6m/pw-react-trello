@@ -5,16 +5,13 @@ import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { CardProperties } from "enum/enum";
 import { useDispatch } from "react-redux";
-import { updateCardDescription } from "redux/ducks/Card/reducers";
+import { updateCardDescription } from "redux/ducks/Card/CardSlice";
 interface DescriptionProps {
   cardDescription: string;
   id: string;
 }
 
-const Description: FC<DescriptionProps> = ({
-  cardDescription,
-  id,
-}) => {
+const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const dispatch = useDispatch();
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] =
@@ -23,7 +20,7 @@ const Description: FC<DescriptionProps> = ({
   const onDescriptionUpdate = () => {
     const descriptionCard = description.trim();
     if (descriptionCard) {
-      dispatch(updateCardDescription({id, descriptionCard}))
+      dispatch(updateCardDescription({ id, descriptionCard }));
       setIsEditingDescription(false);
     } else {
       setIsEditingDescription(false);

@@ -6,7 +6,7 @@ import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { StorageProperties } from "enum/enum";
 import { useDispatch } from "react-redux";
-import { saveUser } from "redux/ducks/User/reducer";
+import { saveUser } from "redux/ducks/User/UserSlice";
 type PopupProps = {
   onSubmit?: () => void;
 };
@@ -16,11 +16,10 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>("");
   const [isNotValid, setIsNotValid] = useState<boolean>(false);
 
-
   const handleOnSubmit = () => {
     const name = username.trim();
     if (name) {
-      dispatch(saveUser({name}));
+      dispatch(saveUser({ name }));
       onSubmit?.();
     } else {
       setIsNotValid(true);
@@ -32,7 +31,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
       e.preventDefault();
       const name = username.trim();
       if (name) {
-        dispatch(saveUser({name}));
+        dispatch(saveUser({ name }));
         onSubmit?.();
       }
     }

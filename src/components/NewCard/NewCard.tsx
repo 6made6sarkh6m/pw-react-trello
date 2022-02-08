@@ -4,17 +4,13 @@ import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
-import { addCard } from "redux/ducks/Card/reducers";
+import { addCard } from "redux/ducks/Card/CardSlice";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
 }
 
-export const NewCard: FC<NewCardProps> = ({
-  listId,
-  onCancelAddingCard,
-
-}) => {
+export const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
@@ -23,7 +19,7 @@ export const NewCard: FC<NewCardProps> = ({
       e.preventDefault();
       const cardTitle = currentTitle.trim();
       if (cardTitle) {
-        dispatch(addCard({cardTitle,listId}))
+        dispatch(addCard({ cardTitle, listId }));
         onCancelAddingCard();
       }
     }
@@ -35,7 +31,7 @@ export const NewCard: FC<NewCardProps> = ({
   const handleAddCard = () => {
     const cardTitle = currentTitle.trim();
     if (cardTitle) {
-      dispatch(addCard({cardTitle, listId}));
+      dispatch(addCard({ cardTitle, listId }));
       onCancelAddingCard();
     }
   };

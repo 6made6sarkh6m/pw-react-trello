@@ -28,7 +28,7 @@ const App = () => {
       <Header username={user.name || ""}></Header>
       <main>
         <PageWrapper>
-          <Board></Board>
+          <Board />
         </PageWrapper>
 
         {renderPopup()}

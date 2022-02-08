@@ -1,1 +1,1 @@
-export { default as CardReducer } from "./reducers";
+export { default as CardReducer } from "./CardSlice";

@@ -6,16 +6,13 @@ import { COLORS } from "styles/colors";
 import { DeleteButton } from "components/ui/components/DeleteButton";
 import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
-import { deleteComment } from "redux/ducks/Comments/reducers";
+import { deleteComment } from "redux/ducks/Comments/CommentsSlice";
 interface CommentProps {
   id: string;
   commentValue: string;
 }
 
-const Comment: FC<CommentProps> = ({
-  id,
-  commentValue,
-}) => {
+const Comment: FC<CommentProps> = ({ id, commentValue }) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [comment, setComment] = useState<string>(commentValue);
@@ -38,8 +35,8 @@ const Comment: FC<CommentProps> = ({
   };
 
   const handleOnDelete = () => {
-    dispatch(deleteComment({id}));
-  }
+    dispatch(deleteComment({ id }));
+  };
   useClickOutside(ref, () => {
     if (isEditing) {
       setIsEditing(false);

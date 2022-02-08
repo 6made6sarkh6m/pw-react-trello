@@ -6,7 +6,7 @@ import { CardModal } from "../CardModal";
 import { COLORS } from "styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCard } from "redux/ducks/Card/reducers";
+import { deleteCard } from "redux/ducks/Card/CardSlice";
 import { CommentReducer } from "redux/ducks/Comments";
 import { selectComment } from "redux/store";
 interface CardProps {
@@ -17,27 +17,26 @@ interface CardProps {
   listTitle: string;
 }
 
-const Card: FC<CardProps> = ({
-  title,
-  id,
-  listTitle,
-  cardDescription,
-}) => {
+const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
   const dispatch = useDispatch();
-  const comments  = useSelector(selectComment);
+  const comments = useSelector(selectComment);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const commentCount = useMemo(() => {
     return Object.values(comments).filter((comment) => comment.cardId === id)
       .length;
   }, [comments]);
-  const handleOnDelete = (id : string) => {
-    dispatch(deleteCard({id}))
-  }
+  const handleOnDelete = (id: string) => {
+    dispatch(deleteCard({ id }));
+  };
   return (
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
         <CardTitle>{title}</CardTitle>
-        <DeleteButton onClick={ ()=>{handleOnDelete(id)}}>
+        <DeleteButton
+          onClick={() => {
+            handleOnDelete(id);
+          }}
+        >
           <DeleteIcon></DeleteIcon>
         </DeleteButton>
         <CommentCounter>
@@ -52,7 +51,7 @@ const Card: FC<CardProps> = ({
           listTitle={listTitle}
           cardDescription={cardDescription}
           onClose={() => setIsOpen(false)}
-        ></CardModal> 
+        ></CardModal>
       )}
     </>
   );

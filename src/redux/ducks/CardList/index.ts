@@ -1,1 +1,1 @@
-export {default as CardListReducer} from './reducers';
+export {default as CardListReducer} from './CardListSlice';

@@ -4,25 +4,26 @@ import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
-import { addComment } from "redux/ducks/Comments/reducers";
+import { addComment } from "redux/ducks/Comments/CommentsSlice";
 import { StorageService } from "helpers/storageService";
 import { defaultUser } from "utils/mock";
 import { StorageProperties } from "enum/enum";
 interface NewCommentProps {
   cardId: string;
 }
-const NewComment: FC<NewCommentProps> = ({
-  cardId
-}) => {
+const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
-  const authorData = StorageService.getData(defaultUser, StorageProperties.user);
+  const authorData = StorageService.getData(
+    defaultUser,
+    StorageProperties.user
+  );
   const author = authorData.name;
   const dispatch = useDispatch();
   const [newComment, setNewComment] = useState<string>("");
   const onSaveComment = () => {
     const comment = newComment.trim();
     if (comment) {
-      dispatch(addComment({cardId, comment, author}));
+      dispatch(addComment({ cardId, comment, author }));
       setNewComment("");
       ref?.current?.blur?.();
     }
@@ -32,7 +33,7 @@ const NewComment: FC<NewCommentProps> = ({
     if (e.key === "Enter") {
       const comment = newComment.trim();
       if (comment) {
-        dispatch(addComment({cardId, comment, author}));
+        dispatch(addComment({ cardId, comment, author }));
         setNewComment("");
         ref?.current?.blur?.();
       }
