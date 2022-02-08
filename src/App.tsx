@@ -8,7 +8,7 @@ import { selectUser } from "redux/store";
 
 const App = () => {
   const user = useSelector(selectUser);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
     !user.isAuth ? setIsOpenModal(true) : setIsOpenModal(false);

@@ -33,9 +33,9 @@ const CardModal: FC<CardViewProps> = ({
   const { name } = useSelector(selectUser);
   const editTitleRef = useRef<HTMLTextAreaElement>(null);
 
-  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
-  const [newTitle, setTitle] = useState<string>(cardTitle);
+  const [newTitle, setTitle] = useState(cardTitle);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {

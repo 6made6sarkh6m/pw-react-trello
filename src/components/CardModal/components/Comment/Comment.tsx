@@ -14,8 +14,8 @@ interface CommentProps {
 
 const Comment: FC<CommentProps> = ({ id, commentValue }) => {
   const dispatch = useDispatch();
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>(commentValue);
+  const [isEditing, setIsEditing] = useState(false);
+  const [comment, setComment] = useState(commentValue);
   const ref = useRef<HTMLTextAreaElement>(null);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

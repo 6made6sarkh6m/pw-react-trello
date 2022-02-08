@@ -19,7 +19,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   );
   const author = authorData.name;
   const dispatch = useDispatch();
-  const [newComment, setNewComment] = useState<string>("");
+  const [newComment, setNewComment] = useState("");
   const onSaveComment = () => {
     const comment = newComment.trim();
     if (comment) {

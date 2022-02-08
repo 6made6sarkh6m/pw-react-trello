@@ -12,7 +12,7 @@ interface NewCardProps {
 
 export const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
-  const [currentTitle, setCurrentTitle] = useState<string>("");
+  const [currentTitle, setCurrentTitle] = useState("");
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {

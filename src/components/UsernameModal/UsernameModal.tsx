@@ -11,8 +11,8 @@ type UsernameModalProps = {
 
 const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState<string>("");
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [username, setUsername] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
   const handleOnSubmit = () => {
     const name = username.trim();

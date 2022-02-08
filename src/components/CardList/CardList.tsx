@@ -18,9 +18,9 @@ interface ListProps {
 const CardList: FC<ListProps> = ({ listTitle, id }) => {
   const cards = useSelector(selectCard);
   const dispatch = useDispatch();
-  const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
-  const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [currentTitle, setCurrentTitle] = useState(listTitle);
+  const [isAddingCard, setIsAddingCard] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const ref = useRef<HTMLTextAreaElement>(null);
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

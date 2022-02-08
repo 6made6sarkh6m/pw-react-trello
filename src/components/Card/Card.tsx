@@ -20,7 +20,7 @@ interface CardProps {
 const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
   const dispatch = useDispatch();
   const comments = useSelector(selectComment);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
   const commentCount = useMemo(() => {
     return Object.values(comments).filter((comment) => comment.cardId === id)
       .length;

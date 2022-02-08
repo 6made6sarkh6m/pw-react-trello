@@ -14,9 +14,8 @@ interface DescriptionProps {
 const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const dispatch = useDispatch();
   const editDescRef = useRef<HTMLTextAreaElement>(null);
-  const [isEditingDescription, setIsEditingDescription] =
-    useState<boolean>(false);
-  const [description, setDescription] = useState<string>(cardDescription);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [description, setDescription] = useState(cardDescription);
   const handleDescriptionUpdate = () => {
     const descriptionCard = description.trim();
     if (descriptionCard) {
