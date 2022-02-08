@@ -11,9 +11,6 @@ import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment, selectUser } from "redux/store";
 import { updateCard } from "redux/ducks/Card/CardSlice";
-import { StorageService } from "helpers/storageService";
-import { defaultUser } from "utils/mock";
-import { StorageProperties } from "enum/enum";
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -31,11 +28,9 @@ const CardModal: FC<CardViewProps> = ({
   const dispatch = useDispatch();
   const comments = useSelector(selectComment);
   const { name } = useSelector(selectUser);
-  const editTitleRef = useRef<HTMLTextAreaElement>(null);
-
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-
   const [newTitle, setTitle] = useState(cardTitle);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -50,6 +45,7 @@ const CardModal: FC<CardViewProps> = ({
       }
     }
   };
+
   const handleCloseView: EventListener | EventListenerObject = (e) => {
     const event = e as KeyboardEvent;
     if (event.key === "Escape") {
@@ -58,21 +54,10 @@ const CardModal: FC<CardViewProps> = ({
       onClose?.();
     }
   };
-  useClickOutside(editTitleRef, () => {
-    if (isEditingTitle) {
-      setIsEditingTitle(false);
-      setTitle(cardTitle);
-    }
-  });
 
-  useEffect(() => {
-    if (isEditingTitle) {
-      editTitleRef?.current?.focus?.();
-      editTitleRef?.current?.select?.();
-    } else {
-      editTitleRef?.current?.blur?.();
-    }
-  }, [isEditingTitle]);
+  useClickOutside(modalRef, () => {
+    onClose?.();
+  });
 
   useEffect(() => {
     document.addEventListener("keydown", handleCloseView, false);
@@ -91,7 +76,7 @@ const CardModal: FC<CardViewProps> = ({
   return (
     <Root>
       <Container>
-        <Modal>
+        <Modal ref={modalRef}>
           <Header>
             <div style={{ width: "90%" }}>
               <CardTitle>{cardTitle}</CardTitle>

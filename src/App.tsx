@@ -34,11 +34,9 @@ const App = () => {
 const PageWrapper = styled.div`
   display: flex;
   align-items: flex-start;
-  width: 1440px;
   padding: 20px;
   @media screen and (max-width: 800px) {
     width: 100%;
-    flex-direction: column;
   }
 `;
 
