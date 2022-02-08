@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultLists } from "utils/mock";
 import { StorageProperties } from "enum/enum";
 import { StorageService } from "helpers/storageService";
-import { ListDataProps } from "./types";
-
+import { AddCardListPayload, ListDataProps } from "./types";
+import {v4 as uuid} from 'uuid';
 export type CardListData = Record<string, ListDataProps>;
 
 export const initialDeskState: CardListData = StorageService.getData(
@@ -21,11 +21,22 @@ export const CardListSlice = createSlice({
       } = action;
       state[id] = { id, listTitle };
       StorageService.setData(state, StorageProperties.lists);
-      return state;
     },
+
+    addCardList(state, action: PayloadAction<AddCardListPayload>) {
+      const {
+        payload : {listTitle}
+      } = action;
+      const newId = uuid();
+      state[newId] = {
+        id : newId,
+        listTitle: listTitle
+      }
+      StorageService.setData(state, StorageProperties.lists);
+    }
   },
 });
 
-export const { updateCardList } = CardListSlice.actions;
+export const { updateCardList, addCardList } = CardListSlice.actions;
 
 export default CardListSlice.reducer;

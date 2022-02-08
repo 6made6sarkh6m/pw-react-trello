@@ -10,7 +10,7 @@ interface NewCardProps {
   onCancelAddingCard: () => void;
 }
 
-export const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
+const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState("");
 
