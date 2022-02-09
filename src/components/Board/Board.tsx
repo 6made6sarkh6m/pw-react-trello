@@ -11,16 +11,32 @@ import { NewCardList } from "components/NewCardList";
 const Board: FC = () => {
   const lists = useSelector(selectCardList);
   const [isAddingCardList, setIsAddingCardList] = useState(false);
+  const [columnWithAddCarad, setColumnWithAddCarad] = useState("");
 
   const handleCancelAddingCardList = () => {
-    setIsAddingCardList(false);
+    setColumnWithAddCarad("");
   };
+
+  const handleAddCardClick = (clickedColumnId: string) => {
+    setColumnWithAddCarad(clickedColumnId);
+    console.log("clickedColumnId", clickedColumnId);
+  };
+  const handleCancelAddCardClick = () => {
+    setColumnWithAddCarad("");
+  };
+
   return (
     <Root>
       {Object.values(lists).map((list) => {
         return (
           <li key={list.id}>
-            <CardList listTitle={list.listTitle} id={list.id}></CardList>
+            <CardList
+              listTitle={list.listTitle}
+              id={list.id}
+              isAddCardShowed={columnWithAddCarad === list.id}
+              onAddCardClick={handleAddCardClick}
+              onCancelAddCardClick={handleCancelAddCardClick}
+            ></CardList>
           </li>
         );
       })}

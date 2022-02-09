@@ -18,15 +18,26 @@ import DeleteIcon from "components/ui/icons/DeleteIcon";
 interface ListProps {
   listTitle: string;
   id: string;
+  isAddCardShowed: boolean;
+  onAddCardClick: (id: string) => void;
+  onCancelAddCardClick: () => void;
 }
 
-const CardList: FC<ListProps> = ({ listTitle, id }) => {
+const CardList: FC<ListProps> = ({
+  listTitle,
+  id,
+  isAddCardShowed,
+  onAddCardClick,
+  onCancelAddCardClick,
+}) => {
   const cards = useSelector(selectCard);
   const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState(listTitle);
-  const [isAddingCard, setIsAddingCard] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
   const ref = useRef<HTMLTextAreaElement>(null);
+
+  console.log("isAddCardShowed", isAddCardShowed);
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -44,9 +55,6 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
     }
   };
 
-  const handleCancelAddingCard = () => {
-    setIsAddingCard(false);
-  };
   useClickOutside(ref, () => {
     if (isEditing) {
       setIsEditing(false);
@@ -113,13 +121,13 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
             );
           })}
       </ul>
-      {isAddingCard ? (
+      {isAddCardShowed ? (
         <NewCard
           listId={id}
-          onCancelAddingCard={handleCancelAddingCard}
+          onCancelAddingCard={onCancelAddCardClick}
         ></NewCard>
       ) : (
-        <StyledButton onClick={() => setIsAddingCard(!isAddingCard)}>
+        <StyledButton onClick={() => onAddCardClick(id)} primary={false}>
           <IconContainer>
             <AddIcon />
           </IconContainer>
