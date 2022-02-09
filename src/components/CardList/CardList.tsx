@@ -127,7 +127,7 @@ const CardList: FC<ListProps> = ({
           onCancelAddingCard={onCancelAddCardClick}
         ></NewCard>
       ) : (
-        <StyledButton onClick={() => onAddCardClick(id)} primary={false}>
+        <StyledButton onClick={() => onAddCardClick(id)}>
           <IconContainer>
             <AddIcon />
           </IconContainer>

@@ -19,6 +19,7 @@ export const UserSlice = createSlice({
       } = action;
       state = { isAuth, name };
       StorageService.setData(state, StorageProperties.user);
+      return state;
     },
   },
 });

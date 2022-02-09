@@ -19,7 +19,7 @@ const App = () => {
         <UsernameModal onSubmit={() => setIsOpenModal(false)}></UsernameModal>
       ) : (
         <>
-          <Header username={user.name || ""}></Header>
+          <Header username={user.name}></Header>
           <main>
             <PageWrapper>
               <Board />
@@ -33,6 +33,7 @@ const App = () => {
 
 const PageWrapper = styled.div`
   display: flex;
+  width: 1440px;
   align-items: flex-start;
   padding: 20px;
   @media screen and (max-width: 800px) {
