@@ -5,6 +5,7 @@ import { UsernameModal } from "components/UsernameModal";
 import { Header } from "./components/Header";
 import { useSelector } from "react-redux";
 import { selectUser } from "redux/selectors";
+import { COLORS } from "styles/colors";
 
 const App = () => {
   const user = useSelector(selectUser);
@@ -18,27 +19,51 @@ const App = () => {
       {isOpenModal ? (
         <UsernameModal onSubmit={() => setIsOpenModal(false)}></UsernameModal>
       ) : (
-        <>
+        <AppWrapper>
           <Header username={user.name}></Header>
-          <main>
+          <Main>
             <PageWrapper>
               <Board />
             </PageWrapper>
-          </main>
-        </>
+          </Main>
+        </AppWrapper>
       )}
     </>
   );
 };
 
+const AppWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
 const PageWrapper = styled.div`
   display: flex;
-  width: 1440px;
   align-items: flex-start;
   padding: 20px;
-  @media screen and (max-width: 800px) {
-    width: 100%;
+  height: 100%;
+  width: 100%;
+  overflow-x: auto;
+
+  ::-webkit-scrollbar {
+    height: 10px;
   }
+
+  ::-webkit-scrollbar-track {
+    background: ${COLORS.glassEffect};
+    border-radius: 3px;
+    margin: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${COLORS.lightGrey};
+    border-radius: 3px;
+  }
+`;
+
+const Main = styled.main`
+  height: 100%;
 `;
 
 export default App;

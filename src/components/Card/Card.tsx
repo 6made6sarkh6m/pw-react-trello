@@ -58,6 +58,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
 
 const CardItem = styled.div`
   display: flex;
+  position: relative;
   background-color: ${COLORS.blindingWhite};
   width: 90%;
   min-height: 50px;

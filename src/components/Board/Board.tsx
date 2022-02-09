@@ -14,7 +14,7 @@ const Board: FC = () => {
   const [columnWithAddCarad, setColumnWithAddCarad] = useState("");
 
   const handleCancelAddingCardList = () => {
-    setColumnWithAddCarad("");
+    setIsAddingCardList(false);
   };
 
   const handleAddCardClick = (clickedColumnId: string) => {
@@ -57,10 +57,7 @@ const Board: FC = () => {
 };
 const Root = styled.ul`
   display: flex;
-  flex-wrap: wrap;
-  @media screen and (max-width: 800px) {
-    flex-direction: column;
-  }
+  flex-wrap: nowrap;
 `;
 const StyledButton = styled(Button)`
   height: 30px;
