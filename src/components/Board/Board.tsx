@@ -2,11 +2,11 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { CardList } from "components/CardList";
 import { useSelector } from "react-redux";
-import { selectCardList } from "redux/store";
+import { selectCardList } from "redux/selectors";
 import { Button } from "components/ui/components/Button";
 import { COLORS } from "styles/colors";
 import AddIcon from "components/ui/icons/AddIcon";
-import { NewCardList } from 'components/NewCardList';
+import { NewCardList } from "components/NewCardList";
 
 const Board: FC = () => {
   const lists = useSelector(selectCardList);
@@ -24,20 +24,18 @@ const Board: FC = () => {
           </li>
         );
       })}
-      {
-        isAddingCardList? (
-          <NewCardList
-          onCancelAddingCardList={handleCancelAddingCardList}></NewCardList>
-        )
-        :
-        (<StyledButton  onClick={() => setIsAddingCardList(!isAddingCardList)}>
-        <IconContainer>
-          <AddIcon></AddIcon>
-        </IconContainer>
-        Add list
-      </StyledButton>
-      )
-      }
+      {isAddingCardList ? (
+        <NewCardList
+          onCancelAddingCardList={handleCancelAddingCardList}
+        ></NewCardList>
+      ) : (
+        <StyledButton onClick={() => setIsAddingCardList(!isAddingCardList)}>
+          <IconContainer>
+            <AddIcon></AddIcon>
+          </IconContainer>
+          Add list
+        </StyledButton>
+      )}
     </Root>
   );
 };

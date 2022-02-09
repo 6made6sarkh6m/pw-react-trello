@@ -4,7 +4,7 @@ import { Board } from "components/Board";
 import { UsernameModal } from "components/UsernameModal";
 import { Header } from "./components/Header";
 import { useSelector } from "react-redux";
-import { selectUser } from "redux/store";
+import { selectUser } from "redux/selectors";
 
 const App = () => {
   const user = useSelector(selectUser);

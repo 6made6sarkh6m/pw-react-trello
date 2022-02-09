@@ -9,7 +9,7 @@ import { COLORS } from "styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
-import { selectComment, selectUser } from "redux/store";
+import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 interface CardViewProps {
   onClose?: () => void;

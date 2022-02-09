@@ -8,7 +8,7 @@ import { Card } from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCard } from "redux/store";
+import { selectCard } from "redux/selectors";
 import { updateCardList } from "redux/ducks/CardList/CardListSlice";
 interface ListProps {
   listTitle: string;
