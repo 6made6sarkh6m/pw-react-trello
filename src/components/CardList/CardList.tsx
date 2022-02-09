@@ -9,7 +9,12 @@ import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCard } from "redux/selectors";
-import { updateCardList } from "redux/ducks/CardList/CardListSlice";
+import {
+  deleteCardList,
+  updateCardList,
+} from "redux/ducks/CardList/CardListSlice";
+import { DeleteButton } from "components/ui/components/DeleteButton";
+import DeleteIcon from "components/ui/icons/DeleteIcon";
 interface ListProps {
   listTitle: string;
   id: string;
@@ -48,6 +53,9 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
     }
   });
 
+  const handleDeleteCardList = (id: string) => {
+    dispatch(deleteCardList({ id }));
+  };
   useEffect(() => {
     if (isEditing) {
       ref?.current?.focus?.();
@@ -75,6 +83,13 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
           onChange={(e) => setCurrentTitle(e.target.value)}
           onKeyDown={handleonKeyDown}
         ></Textarea>
+        <DeleteButton
+          onClick={() => {
+            handleDeleteCardList(id);
+          }}
+        >
+          <DeleteIcon></DeleteIcon>
+        </DeleteButton>
       </Header>
       <ul>
         {Object.values(cards)
@@ -130,6 +145,7 @@ const Header = styled.div`
   padding: 8px 4px;
   position: relative;
   display: flex;
+  flex-direction: row;
 `;
 
 const Title = styled.h2`
