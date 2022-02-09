@@ -62,7 +62,6 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
             Save
           </StyledButton>
           <StyledButton
-            primary={false}
             onClick={() => {
               setIsEditingDescription(false);
               setDescription(cardDescription);

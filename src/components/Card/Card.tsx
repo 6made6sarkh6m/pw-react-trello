@@ -36,7 +36,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
             handleDeleteClick(id);
           }}
         >
-          <DeleteIcon></DeleteIcon>
+          <DeleteIcon/>
         </DeleteButton>
         <CommentCounter>
           <CommentIcon></CommentIcon>

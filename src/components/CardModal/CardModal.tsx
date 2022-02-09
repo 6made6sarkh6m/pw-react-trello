@@ -99,7 +99,7 @@ const CardModal: FC<CardViewProps> = ({
               ></Textarea>
             </div>
             <DeleteButton onClick={onClose}>
-              <DeleteIcon></DeleteIcon>
+              <DeleteIcon/>
             </DeleteButton>
           </Header>
           <ListTitleContainer>
