@@ -18,8 +18,6 @@ export const UserSlice = createSlice({
         payload: { isAuth, name },
       } = action;
       state = { isAuth, name };
-      StorageService.setData(state, StorageProperties.user);
-      return state;
     },
   },
 });

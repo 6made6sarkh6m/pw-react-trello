@@ -24,7 +24,6 @@ export const CardListSlice = createSlice({
         payload: { id, listTitle },
       } = action;
       state[id] = { id, listTitle };
-      StorageService.setData(state, StorageProperties.lists);
     },
 
     addCardList(state, action: PayloadAction<AddCardListPayload>) {
@@ -36,7 +35,6 @@ export const CardListSlice = createSlice({
         id: newId,
         listTitle: listTitle,
       };
-      StorageService.setData(state, StorageProperties.lists);
     },
 
     deleteCardList(state, action: PayloadAction<DeleteCardListPayload>) {
@@ -45,7 +43,6 @@ export const CardListSlice = createSlice({
       } = action;
 
       delete state[id];
-      StorageService.setData(state, StorageProperties.lists);
     },
   },
 });

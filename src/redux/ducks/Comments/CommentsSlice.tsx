@@ -32,8 +32,6 @@ export const CommentSlice = createSlice({
         comment: comment,
         author: author,
       };
-      StorageService.setData(state, StorageProperties.comments);
-      return state;
     },
 
     deleteComment(state, action: PayloadAction<DeleteCommentPayload>) {
@@ -41,8 +39,6 @@ export const CommentSlice = createSlice({
         payload: { id },
       } = action;
       delete state[id];
-      StorageService.setData(state, StorageProperties.comments);
-      return state;
     },
 
     updateComment(state, action: PayloadAction<UpdateCommentPayload>) {
@@ -50,8 +46,6 @@ export const CommentSlice = createSlice({
         payload: { id, comment },
       } = action;
       state[id].comment = comment;
-      StorageService.setData(state, StorageProperties.comments);
-      return state;
     },
   },
 });
