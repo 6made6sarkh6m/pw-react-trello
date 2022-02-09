@@ -12,7 +12,7 @@ type UsernameModalProps = {
 const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleOnSubmit = () => {
     const name = username.trim();
@@ -123,7 +123,6 @@ const ErrorTitle = styled.p`
     font-size: 15px;
     margin: 0;
     min-height: 20px;
-    }
 `;
 
 const StyledButton = styled(Button)`

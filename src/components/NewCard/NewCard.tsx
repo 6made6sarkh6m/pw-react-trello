@@ -51,7 +51,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
         <StyledButton primary={true} onClick={handleAddCard}>
           Add
         </StyledButton>
-        <StyledButton primary={false} onClick={() => onCancelAddingCard()}>
+        <StyledButton onClick={() => onCancelAddingCard()}>
           Cancel
         </StyledButton>
       </ButtonContainer>

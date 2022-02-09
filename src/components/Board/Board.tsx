@@ -31,7 +31,7 @@ const Board: FC = () => {
       ) : (
         <StyledButton onClick={() => setIsAddingCardList(!isAddingCardList)}>
           <IconContainer>
-            <AddIcon></AddIcon>
+            <AddIcon/>
           </IconContainer>
           Add list
         </StyledButton>

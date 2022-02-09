@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import useClickOutside from "hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
@@ -56,6 +56,13 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
   };
+
+  const filteredCards = useMemo(
+    () =>
+      Object.values(cards).filter((card) => card.listId === id),
+    [cards]
+  );
+
   useEffect(() => {
     if (isEditing) {
       ref?.current?.focus?.();
@@ -88,13 +95,11 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
             handleDeleteCardList(id);
           }}
         >
-          <DeleteIcon></DeleteIcon>
+          <DeleteIcon />
         </DeleteButton>
       </Header>
       <ul>
-        {Object.values(cards)
-          .filter((card) => card.listId === id)
-          .map((card) => {
+        {filteredCards.map((card) => {
             return (
               <li key={card.id}>
                 <Card
@@ -114,12 +119,9 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
           onCancelAddingCard={handleCancelAddingCard}
         ></NewCard>
       ) : (
-        <StyledButton
-          onClick={() => setIsAddingCard(!isAddingCard)}
-          primary={false}
-        >
+        <StyledButton onClick={() => setIsAddingCard(!isAddingCard)}>
           <IconContainer>
-            <AddIcon></AddIcon>
+            <AddIcon />
           </IconContainer>
           Add card
         </StyledButton>
