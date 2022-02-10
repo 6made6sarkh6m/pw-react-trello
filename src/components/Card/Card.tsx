@@ -60,13 +60,12 @@ const CardItem = styled.div`
   display: flex;
   position: relative;
   background-color: ${COLORS.blindingWhite};
-  width: 90%;
+  width: 100%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
   padding: 6px 8px;
   margin-bottom: 10px;
-  margin-left: 4px;
   border-radius: 3px;
   overflow: hidden;
 `;

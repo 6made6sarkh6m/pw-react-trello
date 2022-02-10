@@ -63,7 +63,6 @@ const NewCommentContainer = styled.div`
   margin-top: 15px;
   position: relative;
   min-height: 20px;
-  box-shadow: 0 1px 0 ${COLORS.greyShadowed};
   padding: 0px 4px;
 `;
 const StyledButton = styled(Button)`

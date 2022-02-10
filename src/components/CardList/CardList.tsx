@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import useClickOutside from "hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
@@ -35,8 +34,6 @@ const CardList: FC<ListProps> = ({
   const [currentTitle, setCurrentTitle] = useState(listTitle);
 
   const [isEditing, setIsEditing] = useState(false);
-  const ref = useRef<HTMLTextAreaElement>(null);
-
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -54,30 +51,15 @@ const CardList: FC<ListProps> = ({
     }
   };
 
-  useClickOutside(ref, () => {
-    if (isEditing) {
-      setIsEditing(false);
-    }
-  });
-
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
   };
 
   const filteredCards = useMemo(
-    () =>
-      Object.values(cards).filter((card) => card.listId === id),
+    () => Object.values(cards).filter((card) => card.listId === id),
     [cards]
   );
 
-  useEffect(() => {
-    if (isEditing) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
-    } else {
-      ref?.current?.blur?.();
-    }
-  }, [isEditing]);
   return (
     <Root>
       <Header>
@@ -107,18 +89,18 @@ const CardList: FC<ListProps> = ({
       </Header>
       <ul>
         {filteredCards.map((card) => {
-            return (
-              <li key={card.id}>
-                <Card
-                  listId={id}
-                  title={card.cardTitle}
-                  id={card.id}
-                  cardDescription={card.cardDescription}
-                  listTitle={listTitle}
-                ></Card>
-              </li>
-            );
-          })}
+          return (
+            <li key={card.id}>
+              <Card
+                listId={id}
+                title={card.cardTitle}
+                id={card.id}
+                cardDescription={card.cardDescription}
+                listTitle={listTitle}
+              ></Card>
+            </li>
+          );
+        })}
       </ul>
       {isAddCardShowed ? (
         <NewCard
@@ -143,7 +125,7 @@ const Root = styled.div`
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
-  padding: 0 4px 8px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
 `;

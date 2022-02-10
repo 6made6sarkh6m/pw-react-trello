@@ -30,7 +30,7 @@ const CardModal: FC<CardViewProps> = ({
   const { name } = useSelector(selectUser);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setTitle] = useState(cardTitle);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef(null);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -75,7 +75,7 @@ const CardModal: FC<CardViewProps> = ({
 
   return (
     <Root>
-      <Container>
+      <Container ref={modalRef}>
         <Modal>
           <Header>
             <div style={{ width: "90%" }}>
@@ -99,7 +99,7 @@ const CardModal: FC<CardViewProps> = ({
               ></Textarea>
             </div>
             <DeleteButton onClick={onClose}>
-              <DeleteIcon/>
+              <DeleteIcon />
             </DeleteButton>
           </Header>
           <ListTitleContainer>
