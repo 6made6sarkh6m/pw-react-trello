@@ -36,7 +36,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
             handleDeleteClick(id);
           }}
         >
-          <DeleteIcon/>
+          <DeleteIcon />
         </DeleteButton>
         <CommentCounter>
           <CommentIcon></CommentIcon>
@@ -66,6 +66,7 @@ const CardItem = styled.div`
   cursor: pointer;
   padding: 6px 8px;
   margin-bottom: 10px;
+  margin-left: 4px;
   border-radius: 3px;
   overflow: hidden;
 `;

@@ -89,7 +89,7 @@ const PopupInner = styled.div`
   flex-direction: column;
   align-items: center;
   @media screen and (max-width: 800px) {
-    width: calc((100% - 100px) / 3);
+    width: 100%;
   }
 `;
 
@@ -118,11 +118,11 @@ const PopupTitle = styled.h2`
 `;
 
 const ErrorTitle = styled.p`
-    font-family: sans-serif;
-    color: ${COLORS.error};
-    font-size: 15px;
-    margin: 0;
-    min-height: 20px;
+  font-family: sans-serif;
+  color: ${COLORS.error};
+  font-size: 15px;
+  margin: 0;
+  min-height: 20px;
 `;
 
 const StyledButton = styled(Button)`
