@@ -43,7 +43,7 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
       <CardListItem>
         <Textarea
           autoFocus={true}
-          rows={2}
+          rows={1}
           placeholder="Set list title"
           onKeyDown={handleOnKeyDown}
           onChange={(e) => setCardListTitle(e.target.value)}
@@ -72,7 +72,7 @@ const CardListItem = styled.div`
   padding: 6px 8px;
   margin-bottom: 10px;
   border-radius: 3px;
-  overflow: hidden;
+  overflow-y: hidden;
 `;
 
 const ButtonContainer = styled.div`

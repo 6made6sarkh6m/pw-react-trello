@@ -19,8 +19,8 @@ const Board: FC = () => {
 
   const handleAddCardClick = (clickedColumnId: string) => {
     setColumnWithAddCarad(clickedColumnId);
-    console.log("clickedColumnId", clickedColumnId);
   };
+
   const handleCancelAddCardClick = () => {
     setColumnWithAddCarad("");
   };
@@ -47,7 +47,7 @@ const Board: FC = () => {
       ) : (
         <StyledButton onClick={() => setIsAddingCardList(!isAddingCardList)}>
           <IconContainer>
-            <AddIcon/>
+            <AddIcon />
           </IconContainer>
           Add list
         </StyledButton>
@@ -55,14 +55,17 @@ const Board: FC = () => {
     </Root>
   );
 };
+
 const Root = styled.ul`
   display: flex;
   flex-wrap: nowrap;
 `;
+
 const StyledButton = styled(Button)`
   height: 30px;
   width: 272px;
 `;
+
 const IconContainer = styled.div`
   margin-right: 4px;
   height: 20px;

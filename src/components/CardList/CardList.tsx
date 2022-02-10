@@ -37,7 +37,6 @@ const CardList: FC<ListProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const ref = useRef<HTMLTextAreaElement>(null);
 
-  console.log("isAddCardShowed", isAddCardShowed);
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -137,6 +136,7 @@ const CardList: FC<ListProps> = ({
     </Root>
   );
 };
+
 const Root = styled.div`
   width: 272px;
   background: ${COLORS.lightGrey};

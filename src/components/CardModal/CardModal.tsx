@@ -76,7 +76,7 @@ const CardModal: FC<CardViewProps> = ({
   return (
     <Root>
       <Container>
-        <Modal ref={modalRef}>
+        <Modal>
           <Header>
             <div style={{ width: "90%" }}>
               <CardTitle>{cardTitle}</CardTitle>
