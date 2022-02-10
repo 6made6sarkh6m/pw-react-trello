@@ -1,69 +1,47 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import useClickOutside from "../../hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
-import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
 import { Card } from "../Card";
 import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCard } from "redux/selectors";
+import {
+  deleteCardList,
+  updateCardList,
+} from "redux/ducks/CardList/CardListSlice";
+import { DeleteButton } from "components/ui/components/DeleteButton";
+import DeleteIcon from "components/ui/icons/DeleteIcon";
 interface ListProps {
   listTitle: string;
   id: string;
-  cards: CardsData;
-  comments: CommentsData;
-  username: string;
-  onUpdateList: (id: string, title: string) => void;
-  onAddCard: (listId: string, cardTitle: string) => void;
-  onDeleteCard: (id: string) => void;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
+  isAddCardShowed: boolean;
+  onAddCardClick: (id: string) => void;
+  onCancelAddCardClick: () => void;
 }
 
 const CardList: FC<ListProps> = ({
   listTitle,
   id,
-  cards,
-  comments,
-  username,
-  onAddCard,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
-  onUpdateList,
+  isAddCardShowed,
+  onAddCardClick,
+  onCancelAddCardClick,
 }) => {
-  const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
-  const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const ref = useRef<HTMLTextAreaElement>(null);
-  const [isAddingCardOnColumn, setAddingCardOnColumn] = useState<string>("");
+  const cards = useSelector(selectCard);
+  const dispatch = useDispatch();
+  const [currentTitle, setCurrentTitle] = useState(listTitle);
 
-  let isAddingNewCard = false;
+  const [isEditing, setIsEditing] = useState(false);
 
-  const handleOnAddNewCard = (id: string) => {
-    setAddingCardOnColumn(id);
-    isAddingNewCard = isAddingCardOnColumn === id;
-  };
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedTitle = currentTitle.trim();
-      if (trimmedTitle) {
+      const listTitle = currentTitle.trim();
+      if (listTitle) {
         setIsEditing(false);
-        onUpdateList(id, currentTitle);
+        dispatch(updateCardList({ id, listTitle }));
       }
     }
 
@@ -73,23 +51,15 @@ const CardList: FC<ListProps> = ({
     }
   };
 
-  const handleCancelAddingCard = () => {
-    setIsAddingCard(false);
+  const handleDeleteCardList = (id: string) => {
+    dispatch(deleteCardList({ id }));
   };
-  useClickOutside(ref, () => {
-    if (isEditing) {
-      setIsEditing(false);
-    }
-  });
 
-  useEffect(() => {
-    if (isEditing) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
-    } else {
-      ref?.current?.blur?.();
-    }
-  }, [isEditing]);
+  const filteredCards = useMemo(
+    () => Object.values(cards).filter((card) => card.listId === id),
+    [cards]
+  );
+
   return (
     <Root>
       <Header>
@@ -109,44 +79,38 @@ const CardList: FC<ListProps> = ({
           onChange={(e) => setCurrentTitle(e.target.value)}
           onKeyDown={handleonKeyDown}
         ></Textarea>
+        <DeleteButton
+          onClick={() => {
+            handleDeleteCardList(id);
+          }}
+        >
+          <DeleteIcon />
+        </DeleteButton>
       </Header>
       <ul>
-        {Object.values(cards)
-          .filter((card) => card.listId === id)
-          .map((card) => {
-            return (
-              <li key={card.id}>
-                <Card
-                  listId={id}
-                  title={card.cardTitle}
-                  id={card.id}
-                  username={username}
-                  comments={comments}
-                  cardDescription={card.cardDescription}
-                  listTitle={listTitle}
-                  onDeleteCard={onDeleteCard}
-                  onUpdateCard={onUpdateCard}
-                  onUpdateComment={onUpdateComment}
-                  onDeleteComment={onDeleteComment}
-                  onAddComment={onAddComment}
-                ></Card>
-              </li>
-            );
-          })}
+        {filteredCards.map((card) => {
+          return (
+            <li key={card.id}>
+              <Card
+                listId={id}
+                title={card.cardTitle}
+                id={card.id}
+                cardDescription={card.cardDescription}
+                listTitle={listTitle}
+              ></Card>
+            </li>
+          );
+        })}
       </ul>
-      {isAddingCard ? (
+      {isAddCardShowed ? (
         <NewCard
           listId={id}
-          onCancelAddingCard={handleCancelAddingCard}
-          onAddCard={onAddCard}
+          onCancelAddingCard={onCancelAddCardClick}
         ></NewCard>
       ) : (
-        <StyledButton
-          onClick={() => setIsAddingCard(!isAddingCard)}
-          primary={false}
-        >
+        <StyledButton onClick={() => onAddCardClick(id)}>
           <IconContainer>
-            <AddIcon></AddIcon>
+            <AddIcon />
           </IconContainer>
           Add card
         </StyledButton>
@@ -154,24 +118,23 @@ const CardList: FC<ListProps> = ({
     </Root>
   );
 };
+
 const Root = styled.div`
   width: 272px;
   background: ${COLORS.lightGrey};
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
-  padding: 0 4px 8px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
 `;
 
 const Header = styled.div`
   padding: 8px 4px;
   position: relative;
   display: flex;
+  flex-direction: row;
 `;
 
 const Title = styled.h2`

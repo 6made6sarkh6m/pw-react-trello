@@ -1,76 +1,77 @@
-import React, { FC } from "react";
-import styled from 'styled-components';
+import React, { FC, useState } from "react";
+import styled from "styled-components";
 import { CardList } from "components/CardList";
-import {
-  CardDataProps,
-  CardsData,
-  CommentDataProps,
-  CommentsData,
-  DeskData,
-} from "App";
+import { useSelector } from "react-redux";
+import { selectCardList } from "redux/selectors";
+import { Button } from "components/ui/components/Button";
+import { COLORS } from "styles/colors";
+import AddIcon from "components/ui/icons/AddIcon";
+import { NewCardList } from "components/NewCardList";
 
-interface BoardProps {
-  lists: DeskData;
-  cards: CardsData;
-  comments: CommentsData;
-  onUpdateList: (id: string, title: string) => void;
-  onAddCard: (listId: string, cardTitle: string) => void;
-  onDeleteCard: (cardId: string) => void;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  username: string;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
-}
+const Board: FC = () => {
+  const lists = useSelector(selectCardList);
+  const [isAddingCardList, setIsAddingCardList] = useState(false);
+  const [columnWithAddCarad, setColumnWithAddCarad] = useState("");
 
-const Board: FC<BoardProps> = ({
-  lists,
-  username,
-  cards,
-  comments,
-  onUpdateList,
-  onAddCard,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
-}) => {
+  const handleCancelAddingCardList = () => {
+    setIsAddingCardList(false);
+  };
+
+  const handleAddCardClick = (clickedColumnId: string) => {
+    setColumnWithAddCarad(clickedColumnId);
+  };
+
+  const handleCancelAddCardClick = () => {
+    setColumnWithAddCarad("");
+  };
+
   return (
     <Root>
       {Object.values(lists).map((list) => {
         return (
           <li key={list.id}>
             <CardList
-              cards={cards}
-              comments={comments}
-              id={list.id}
               listTitle={list.listTitle}
-              username={username}
-              onUpdateList={onUpdateList}
-              onAddCard={onAddCard}
-              onDeleteCard={onDeleteCard}
-              onUpdateCard={onUpdateCard}
-              onUpdateComment={onUpdateComment}
-              onDeleteComment={onDeleteComment}
-              onAddComment={onAddComment}
+              id={list.id}
+              isAddCardShowed={columnWithAddCarad === list.id}
+              onAddCardClick={handleAddCardClick}
+              onCancelAddCardClick={handleCancelAddCardClick}
             ></CardList>
           </li>
         );
       })}
+      {isAddingCardList ? (
+        <NewCardList
+          onCancelAddingCardList={handleCancelAddingCardList}
+        ></NewCardList>
+      ) : (
+        <StyledButton onClick={() => setIsAddingCardList(!isAddingCardList)}>
+          <IconContainer>
+            <AddIcon />
+          </IconContainer>
+          Add list
+        </StyledButton>
+      )}
     </Root>
   );
 };
+
 const Root = styled.ul`
   display: flex;
-`
+  flex-wrap: nowrap;
+`;
+
+const StyledButton = styled(Button)`
+  height: 30px;
+  width: 272px;
+`;
+
+const IconContainer = styled.div`
+  margin-right: 4px;
+  height: 20px;
+  opacity: 0.8;
+  display: flex;
+  color: ${COLORS.deepGrey};
+`;
 
 export default Board;

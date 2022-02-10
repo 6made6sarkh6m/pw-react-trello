@@ -3,22 +3,27 @@ import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
+import { useDispatch } from "react-redux";
+import { addComment } from "redux/ducks/Comments/CommentsSlice";
+import { StorageService } from "helpers/storageService";
+import { defaultUser } from "utils/mock";
+import { StorageProperties } from "enum/enum";
 interface NewCommentProps {
   cardId: string;
-  username: string;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
-const NewComment: FC<NewCommentProps> = ({
-  cardId,
-  username,
-  onAddComment,
-}) => {
+const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
-  const [newComment, setNewComment] = useState<string>("");
+  const authorData = StorageService.getData(
+    defaultUser,
+    StorageProperties.user
+  );
+  const author = authorData.name;
+  const dispatch = useDispatch();
+  const [newComment, setNewComment] = useState("");
   const onSaveComment = () => {
-    const trimmedComment = newComment.trim();
-    if (trimmedComment) {
-      onAddComment(cardId, username, newComment);
+    const comment = newComment.trim();
+    if (comment) {
+      dispatch(addComment({ cardId, comment, author }));
       setNewComment("");
       ref?.current?.blur?.();
     }
@@ -26,8 +31,9 @@ const NewComment: FC<NewCommentProps> = ({
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      if (newComment.trim() !== "") {
-        onAddComment(cardId, username, newComment);
+      const comment = newComment.trim();
+      if (comment) {
+        dispatch(addComment({ cardId, comment, author }));
         setNewComment("");
         ref?.current?.blur?.();
       }
@@ -57,7 +63,6 @@ const NewCommentContainer = styled.div`
   margin-top: 15px;
   position: relative;
   min-height: 20px;
-  box-shadow: 0 1px 0 ${COLORS.greyShadowed};
   padding: 0px 4px;
 `;
 const StyledButton = styled(Button)`

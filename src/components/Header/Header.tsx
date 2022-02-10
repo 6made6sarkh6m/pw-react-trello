@@ -21,7 +21,6 @@ const Container = styled.header`
   margin-bottom: 12px;
   display: flex;
   justify-content: flex-start;
-  padding: 4px;
   @media screen and (max-width: 800px) {
     width: 100%;
   }

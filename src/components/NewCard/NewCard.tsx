@@ -3,25 +3,23 @@ import styled from "styled-components";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { COLORS } from "styles/colors";
+import { useDispatch } from "react-redux";
+import { addCard } from "redux/ducks/Card/CardSlice";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
-  onAddCard: (listId: string, currentTitle: string) => void;
 }
 
-export const NewCard: FC<NewCardProps> = ({
-  listId,
-  onCancelAddingCard,
-  onAddCard,
-}) => {
-  const [currentTitle, setCurrentTitle] = useState<string>("");
+const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
+  const dispatch = useDispatch();
+  const [currentTitle, setCurrentTitle] = useState("");
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedCurrentTitle = currentTitle.trim();
-      if (trimmedCurrentTitle) {
-        onAddCard(listId, currentTitle);
+      const cardTitle = currentTitle.trim();
+      if (cardTitle) {
+        dispatch(addCard({ cardTitle, listId }));
         onCancelAddingCard();
       }
     }
@@ -31,9 +29,9 @@ export const NewCard: FC<NewCardProps> = ({
   };
 
   const handleAddCard = () => {
-    const trimmedCurrentTitle = currentTitle.trim();
-    if (trimmedCurrentTitle) {
-      onAddCard(listId, currentTitle);
+    const cardTitle = currentTitle.trim();
+    if (cardTitle) {
+      dispatch(addCard({ cardTitle, listId }));
       onCancelAddingCard();
     }
   };
@@ -53,7 +51,7 @@ export const NewCard: FC<NewCardProps> = ({
         <StyledButton primary={true} onClick={handleAddCard}>
           Add
         </StyledButton>
-        <StyledButton primary={false} onClick={() => onCancelAddingCard()}>
+        <StyledButton onClick={() => onCancelAddingCard()}>
           Cancel
         </StyledButton>
       </ButtonContainer>

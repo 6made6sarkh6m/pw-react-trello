@@ -2,67 +2,50 @@ import React, { FC, useRef, useEffect, useState, useMemo } from "react";
 import { Comment } from "./components/Comment";
 import { NewComment } from "./components/NewComment";
 import { Description } from "./components/Description";
-import { CardDataProps, CommentDataProps, CommentsData } from "App";
 import useClickOutside from "hooks/useClickOutside";
 import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
-import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
 import { Textarea } from "../ui/components/Textarea";
+import { useDispatch, useSelector } from "react-redux";
+import { selectComment, selectUser } from "redux/selectors";
+import { updateCard } from "redux/ducks/Card/CardSlice";
 interface CardViewProps {
   onClose?: () => void;
-  comments: CommentsData;
   cardId: string;
   cardTitle: string;
   listTitle: string;
   cardDescription: string;
-  username: string;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
 const CardModal: FC<CardViewProps> = ({
   onClose,
-  comments,
   cardId,
   cardTitle,
   listTitle,
   cardDescription,
-  username,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
 }) => {
-  const editTitleRef = useRef<HTMLTextAreaElement>(null);
-
-  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
-
-  const [title, setTitle] = useState<string>(cardTitle);
+  const dispatch = useDispatch();
+  const comments = useSelector(selectComment);
+  const { name } = useSelector(selectUser);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [newTitle, setTitle] = useState(cardTitle);
+  const modalRef = useRef(null);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedTitle = title.trim();
-      if (trimmedTitle) {
+      const title = newTitle.trim();
+      if (title) {
+        dispatch(updateCard({ cardId, title }));
         setIsEditingTitle(false);
-        onUpdateCard(cardId, CardProperties.title, title);
       } else {
         setTitle(cardTitle);
         setIsEditingTitle(false);
       }
     }
   };
+
   const handleCloseView: EventListener | EventListenerObject = (e) => {
     const event = e as KeyboardEvent;
     if (event.key === "Escape") {
@@ -71,21 +54,10 @@ const CardModal: FC<CardViewProps> = ({
       onClose?.();
     }
   };
-  useClickOutside(editTitleRef, () => {
-    if (isEditingTitle) {
-      setIsEditingTitle(false);
-      setTitle(cardTitle);
-    }
-  });
 
-  useEffect(() => {
-    if (isEditingTitle) {
-      editTitleRef?.current?.focus?.();
-      editTitleRef?.current?.select?.();
-    } else {
-      editTitleRef?.current?.blur?.();
-    }
-  }, [isEditingTitle]);
+  useClickOutside(modalRef, () => {
+    onClose?.();
+  });
 
   useEffect(() => {
     document.addEventListener("keydown", handleCloseView, false);
@@ -103,7 +75,7 @@ const CardModal: FC<CardViewProps> = ({
 
   return (
     <Root>
-      <Container>
+      <Container ref={modalRef}>
         <Modal>
           <Header>
             <div style={{ width: "90%" }}>
@@ -120,14 +92,14 @@ const CardModal: FC<CardViewProps> = ({
               <Textarea
                 isEditing={isEditingTitle}
                 rows={1}
-                value={title}
+                value={newTitle}
                 onChange={(e) => setTitle(e.target.value)}
                 onKeyDown={handleOnKeyDown}
                 spellCheck={false}
               ></Textarea>
             </div>
             <DeleteButton onClick={onClose}>
-              <DeleteIcon></DeleteIcon>
+              <DeleteIcon />
             </DeleteButton>
           </Header>
           <ListTitleContainer>
@@ -135,27 +107,21 @@ const CardModal: FC<CardViewProps> = ({
           </ListTitleContainer>
           <Description
             cardDescription={cardDescription}
-            cardId={cardId}
-            onUpdateCard={onUpdateCard}
+            id={cardId}
           ></Description>
           <Title>Actions</Title>
-          <NewComment
-            cardId={cardId}
-            username={username}
-            onAddComment={onAddComment}
-          ></NewComment>
+          <NewComment cardId={cardId}></NewComment>
+
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>
               {filteredComments.map((comment) => {
                 return (
                   <li key={comment.id}>
-                    <Title>{username}</Title>
+                    <Title>{name}</Title>
                     <Comment
                       id={comment.id}
                       commentValue={comment.comment}
-                      onUpdateComment={onUpdateComment}
-                      onDeleteComment={onDeleteComment}
                     ></Comment>
                   </li>
                 );

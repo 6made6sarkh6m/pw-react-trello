@@ -1,4 +1,3 @@
-import { CommentDataProps } from "App";
 import DeleteIcon from "components/ui/icons/DeleteIcon";
 import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
@@ -6,25 +5,17 @@ import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { DeleteButton } from "components/ui/components/DeleteButton";
 import { Textarea } from "components/ui/components/Textarea";
+import { useDispatch } from "react-redux";
+import { deleteComment } from "redux/ducks/Comments/CommentsSlice";
 interface CommentProps {
   id: string;
   commentValue: string;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
 }
 
-const Comment: FC<CommentProps> = ({
-  id,
-  commentValue,
-  onUpdateComment,
-  onDeleteComment,
-}) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>(commentValue);
+const Comment: FC<CommentProps> = ({ id, commentValue }) => {
+  const dispatch = useDispatch();
+  const [isEditing, setIsEditing] = useState(false);
+  const [comment, setComment] = useState(commentValue);
   const ref = useRef<HTMLTextAreaElement>(null);
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -32,7 +23,6 @@ const Comment: FC<CommentProps> = ({
       const trimmedComment = comment.trim();
       if (trimmedComment) {
         setIsEditing(false);
-        onUpdateComment(id, "comment", comment);
       } else {
         setIsEditing(false);
         setComment(commentValue);
@@ -42,6 +32,10 @@ const Comment: FC<CommentProps> = ({
       setIsEditing(false);
       setComment(commentValue);
     }
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(deleteComment({ id }));
   };
   useClickOutside(ref, () => {
     if (isEditing) {
@@ -70,7 +64,7 @@ const Comment: FC<CommentProps> = ({
             onChange={(e) => setComment(e.target.value)}
           />
         )}
-        <DeleteButton onClick={() => onDeleteComment(id)}>
+        <DeleteButton onClick={handleDeleteClick}>
           <DeleteIcon />
         </DeleteButton>
       </CommentContainer>

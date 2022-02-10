@@ -1,40 +1,35 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { StorageService } from "helpers/storageService";
 import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
-import { StorageProperties } from "enum/enum";
-type PopupProps = {
+import { useDispatch } from "react-redux";
+import { saveUser } from "redux/ducks/User/UserSlice";
+type UsernameModalProps = {
   onSubmit?: () => void;
 };
 
-const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
-  const [username, setUsername] = useState<string>("");
-  const [isNotValid, setIsNotValid] = useState<boolean>(false);
-
-  const userData = {
-    name: ""
-  };
+const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleOnSubmit = () => {
-    const trimmedUsername = username.trim();
-    if (trimmedUsername) {
-      userData.name = trimmedUsername;
-      StorageService.setData(userData, StorageProperties.user);
+    const name = username.trim();
+    if (name) {
+      dispatch(saveUser({ isAuth: true, name }));
       onSubmit?.();
     } else {
-      setIsNotValid(true);
+      setIsValid(false);
     }
   };
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const trimmedUsername = username.trim();
-      if (trimmedUsername) {
-        userData.name = trimmedUsername;
-        StorageService.setData(userData, StorageProperties.user);
+      const name = username.trim();
+      if (name) {
+        dispatch(saveUser({ isAuth: true, name }));
         onSubmit?.();
       }
     }
@@ -56,7 +51,7 @@ const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
             SAVE
           </StyledButton>
         </InputWrapper>
-        {isNotValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
+        {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>
     </Root>
   );
@@ -94,7 +89,7 @@ const PopupInner = styled.div`
   flex-direction: column;
   align-items: center;
   @media screen and (max-width: 800px) {
-    width: calc((100% - 100px) / 3);
+    width: 100%;
   }
 `;
 
@@ -123,12 +118,11 @@ const PopupTitle = styled.h2`
 `;
 
 const ErrorTitle = styled.p`
-    font-family: sans-serif;
-    color: ${COLORS.error};
-    font-size: 15px;
-    margin: 0;
-    min-height: 20px;
-    }
+  font-family: sans-serif;
+  color: ${COLORS.error};
+  font-size: 15px;
+  margin: 0;
+  min-height: 20px;
 `;
 
 const StyledButton = styled(Button)`

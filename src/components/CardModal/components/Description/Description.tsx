@@ -1,46 +1,30 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { CardDataProps } from "App";
-import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { CardProperties } from "enum/enum";
+import { useDispatch } from "react-redux";
+import { updateCardDescription } from "redux/ducks/Card/CardSlice";
 interface DescriptionProps {
   cardDescription: string;
-  cardId: string;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
+  id: string;
 }
 
-const Description: FC<DescriptionProps> = ({
-  cardDescription,
-  cardId,
-  onUpdateCard,
-}) => {
+const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
+  const dispatch = useDispatch();
   const editDescRef = useRef<HTMLTextAreaElement>(null);
-  const [isEditingDescription, setIsEditingDescription] =
-    useState<boolean>(false);
-  const [description, setDescription] = useState<string>(cardDescription);
-  const onDescriptionUpdate = () => {
-    const trimmedDescription = description.trim();
-    if (trimmedDescription) {
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [description, setDescription] = useState(cardDescription);
+  const handleDescriptionUpdate = () => {
+    const descriptionCard = description.trim();
+    if (descriptionCard) {
+      dispatch(updateCardDescription({ id, descriptionCard }));
       setIsEditingDescription(false);
-      onUpdateCard(cardId, CardProperties.description, description);
     } else {
       setIsEditingDescription(false);
       setDescription(cardDescription);
     }
   };
-
-  useClickOutside(editDescRef, () => {
-    if (isEditingDescription) {
-      setIsEditingDescription(false);
-      setDescription(description);
-    }
-  });
 
   useEffect(() => {
     if (isEditingDescription) {
@@ -66,11 +50,10 @@ const Description: FC<DescriptionProps> = ({
 
       {isEditingDescription && (
         <DescriptionControlConteiner>
-          <StyledButton primary={true} onClick={onDescriptionUpdate}>
+          <StyledButton primary={true} onClick={handleDescriptionUpdate}>
             Save
           </StyledButton>
           <StyledButton
-            primary={false}
             onClick={() => {
               setIsEditingDescription(false);
               setDescription(cardDescription);
@@ -86,7 +69,7 @@ const Description: FC<DescriptionProps> = ({
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 70%;
   padding: 0 4px;
   margin-top: 30px;
 `;
