@@ -3,20 +3,15 @@ import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "redux/ducks/Comments/CommentsSlice";
-import { StorageService } from "helpers/storageService";
-import { defaultUser } from "utils/mock";
-import { StorageProperties } from "enum/enum";
+import { selectUser } from "redux/selectors";
 interface NewCommentProps {
   cardId: string;
 }
 const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
-  const authorData = StorageService.getData(
-    defaultUser,
-    StorageProperties.user
-  );
+  const authorData = useSelector(selectUser);
   const author = authorData.name;
   const dispatch = useDispatch();
   const [newComment, setNewComment] = useState("");

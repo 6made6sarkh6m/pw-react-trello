@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultComments } from "utils/mock";
 import { v4 as uuid } from "uuid";
-import { StorageProperties } from "enum/enum";
-import { StorageService } from "helpers/storageService";
 import {
   CommentDataProps,
   AddCommentPayload,
@@ -12,10 +10,7 @@ import {
 
 export type CommentsData = Record<string, CommentDataProps>;
 
-export const initialCommentState: CommentsData = StorageService.getData(
-  defaultComments,
-  StorageProperties.comments
-);
+export const initialCommentState: CommentsData = defaultComments;
 
 export const CommentSlice = createSlice({
   name: "comments",
@@ -32,7 +27,6 @@ export const CommentSlice = createSlice({
         comment: comment,
         author: author,
       };
-      StorageService.setData(state, StorageProperties.comments);
     },
 
     deleteComment(state, action: PayloadAction<DeleteCommentPayload>) {
@@ -40,7 +34,6 @@ export const CommentSlice = createSlice({
         payload: { id },
       } = action;
       delete state[id];
-      StorageService.setData(state, StorageProperties.comments);
     },
 
     updateComment(state, action: PayloadAction<UpdateCommentPayload>) {
@@ -48,7 +41,7 @@ export const CommentSlice = createSlice({
         payload: { id, comment },
       } = action;
       state[id].comment = comment;
-      StorageService.setData(state, StorageProperties.comments);
+
     },
   },
 });
