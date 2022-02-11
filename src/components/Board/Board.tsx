@@ -11,18 +11,18 @@ import { NewCardList } from "components/NewCardList";
 const Board: FC = () => {
   const lists = useSelector(selectCardList);
   const [isAddingCardList, setIsAddingCardList] = useState(false);
-  const [columnWithAddCarad, setColumnWithAddCarad] = useState("");
+  const [columnWithAddCarad, setColumnWithAddCard] = useState("");
 
   const handleCancelAddingCardList = () => {
     setIsAddingCardList(false);
   };
 
   const handleAddCardClick = (clickedColumnId: string) => {
-    setColumnWithAddCarad(clickedColumnId);
+    setColumnWithAddCard(clickedColumnId);
   };
 
   const handleCancelAddCardClick = () => {
-    setColumnWithAddCarad("");
+    setColumnWithAddCard("");
   };
 
   return (
