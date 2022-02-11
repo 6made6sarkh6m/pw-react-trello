@@ -46,6 +46,7 @@ export const CommentSlice = createSlice({
         payload: { id, comment },
       } = action;
       state[id].comment = comment;
+
     },
   },
 });

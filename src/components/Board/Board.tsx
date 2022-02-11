@@ -11,16 +11,32 @@ import { NewCardList } from "components/NewCardList";
 const Board: FC = () => {
   const lists = useSelector(selectCardList);
   const [isAddingCardList, setIsAddingCardList] = useState(false);
+  const [columnWithAddCarad, setColumnWithAddCarad] = useState("");
 
   const handleCancelAddingCardList = () => {
     setIsAddingCardList(false);
   };
+
+  const handleAddCardClick = (clickedColumnId: string) => {
+    setColumnWithAddCarad(clickedColumnId);
+  };
+
+  const handleCancelAddCardClick = () => {
+    setColumnWithAddCarad("");
+  };
+
   return (
     <Root>
       {Object.values(lists).map((list) => {
         return (
           <li key={list.id}>
-            <CardList listTitle={list.listTitle} id={list.id}></CardList>
+            <CardList
+              listTitle={list.listTitle}
+              id={list.id}
+              isAddCardShowed={columnWithAddCarad === list.id}
+              onAddCardClick={handleAddCardClick}
+              onCancelAddCardClick={handleCancelAddCardClick}
+            ></CardList>
           </li>
         );
       })}
@@ -31,7 +47,7 @@ const Board: FC = () => {
       ) : (
         <StyledButton onClick={() => setIsAddingCardList(!isAddingCardList)}>
           <IconContainer>
-            <AddIcon></AddIcon>
+            <AddIcon />
           </IconContainer>
           Add list
         </StyledButton>
@@ -39,17 +55,17 @@ const Board: FC = () => {
     </Root>
   );
 };
+
 const Root = styled.ul`
   display: flex;
-  flex-wrap: wrap;
-  @media screen and (max-width: 800px) {
-    flex-direction: column;
-  }
+  flex-wrap: nowrap;
 `;
+
 const StyledButton = styled(Button)`
   height: 30px;
   width: 272px;
 `;
+
 const IconContainer = styled.div`
   margin-right: 4px;
   height: 20px;

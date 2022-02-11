@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
@@ -26,13 +25,6 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
       setDescription(cardDescription);
     }
   };
-
-  useClickOutside(editDescRef, () => {
-    if (isEditingDescription) {
-      setIsEditingDescription(false);
-      setDescription(description);
-    }
-  });
 
   useEffect(() => {
     if (isEditingDescription) {
@@ -62,7 +54,6 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
             Save
           </StyledButton>
           <StyledButton
-            primary={false}
             onClick={() => {
               setIsEditingDescription(false);
               setDescription(cardDescription);
@@ -78,7 +69,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 70%;
   padding: 0 4px;
   margin-top: 30px;
 `;

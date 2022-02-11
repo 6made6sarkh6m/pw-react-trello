@@ -36,7 +36,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
             handleDeleteClick(id);
           }}
         >
-          <DeleteIcon></DeleteIcon>
+          <DeleteIcon />
         </DeleteButton>
         <CommentCounter>
           <CommentIcon></CommentIcon>
@@ -58,8 +58,9 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
 
 const CardItem = styled.div`
   display: flex;
+  position: relative;
   background-color: ${COLORS.blindingWhite};
-  width: 90%;
+  width: 100%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
