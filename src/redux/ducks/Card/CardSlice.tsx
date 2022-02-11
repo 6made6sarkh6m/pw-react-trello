@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultCards } from "utils/mock";
 import { v4 as uuid } from "uuid";
-import { StorageProperties } from "enum/enum";
-import { StorageService } from "helpers/storageService";
 import {
   AddCardPayload,
   CardDataProps,
@@ -13,10 +11,7 @@ import {
 
 export type CardsData = Record<string, CardDataProps>;
 
-export const initialCardState: CardsData = StorageService.getData(
-  defaultCards,
-  StorageProperties.cards
-);
+export const initialCardState: CardsData = defaultCards;
 
 export const CardSlice = createSlice({
   name: "cards",
@@ -33,7 +28,6 @@ export const CardSlice = createSlice({
         listId: listId,
         cardDescription: "",
       };
-      StorageService.setData(state, StorageProperties.cards);
     },
 
     deleteCard(state, action: PayloadAction<DeleteCardPayload>) {
@@ -41,7 +35,6 @@ export const CardSlice = createSlice({
         payload: { id },
       } = action;
       delete state[id];
-      StorageService.setData(state, StorageProperties.cards);
     },
 
     updateCard(state, action: PayloadAction<UpdateCardPayload>) {
@@ -49,7 +42,6 @@ export const CardSlice = createSlice({
         payload: { cardId, title },
       } = action;
       state[cardId].cardTitle = title;
-      StorageService.setData(state, StorageProperties.cards);
     },
 
     updateCardDescription(
@@ -60,7 +52,6 @@ export const CardSlice = createSlice({
         payload: { id, descriptionCard },
       } = action;
       state[id].cardDescription = descriptionCard;
-      StorageService.setData(state, StorageProperties.cards);
     },
   },
 });
