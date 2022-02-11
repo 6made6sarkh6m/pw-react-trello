@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultUser } from "utils/mock";
-import { StorageService } from "helpers/storageService";
-import { StorageProperties } from "enum/enum";
 import { UserDataProps, SaveUserPayload } from "./types";
 
-export const initialUserState: UserDataProps = StorageService.getData(
-  defaultUser,
-  StorageProperties.user
-);
+export const initialUserState: UserDataProps = defaultUser;
 
 export const UserSlice = createSlice({
   name: "user",
@@ -18,6 +13,7 @@ export const UserSlice = createSlice({
         payload: { isAuth, name },
       } = action;
       state = { isAuth, name };
+      return state;
     },
   },
 });

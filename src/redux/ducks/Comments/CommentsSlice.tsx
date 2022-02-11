@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultComments } from "utils/mock";
 import { v4 as uuid } from "uuid";
-import { StorageProperties } from "enum/enum";
-import { StorageService } from "helpers/storageService";
 import {
   CommentDataProps,
   AddCommentPayload,
@@ -12,10 +10,7 @@ import {
 
 export type CommentsData = Record<string, CommentDataProps>;
 
-export const initialCommentState: CommentsData = StorageService.getData(
-  defaultComments,
-  StorageProperties.comments
-);
+export const initialCommentState: CommentsData = defaultComments;
 
 export const CommentSlice = createSlice({
   name: "comments",

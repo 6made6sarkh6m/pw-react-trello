@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultCards } from "utils/mock";
 import { v4 as uuid } from "uuid";
-import { StorageProperties } from "enum/enum";
-import { StorageService } from "helpers/storageService";
 import {
   AddCardPayload,
   CardDataProps,
@@ -13,10 +11,7 @@ import {
 
 export type CardsData = Record<string, CardDataProps>;
 
-export const initialCardState: CardsData = StorageService.getData(
-  defaultCards,
-  StorageProperties.cards
-);
+export const initialCardState: CardsData = defaultCards;
 
 export const CardSlice = createSlice({
   name: "cards",
