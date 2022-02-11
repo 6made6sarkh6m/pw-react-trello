@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import useClickOutside from "hooks/useClickOutside";
 import AddIcon from "../ui/icons/AddIcon";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
@@ -18,15 +17,23 @@ import DeleteIcon from "components/ui/icons/DeleteIcon";
 interface ListProps {
   listTitle: string;
   id: string;
+  isAddCardShowed: boolean;
+  onAddCardClick: (id: string) => void;
+  onCancelAddCardClick: () => void;
 }
 
-const CardList: FC<ListProps> = ({ listTitle, id }) => {
+const CardList: FC<ListProps> = ({
+  listTitle,
+  id,
+  isAddCardShowed,
+  onAddCardClick,
+  onCancelAddCardClick,
+}) => {
   const cards = useSelector(selectCard);
   const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState(listTitle);
-  const [isAddingCard, setIsAddingCard] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
-  const ref = useRef<HTMLTextAreaElement>(null);
 
   const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -44,26 +51,15 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
     }
   };
 
-  const handleCancelAddingCard = () => {
-    setIsAddingCard(false);
-  };
-  useClickOutside(ref, () => {
-    if (isEditing) {
-      setIsEditing(false);
-    }
-  });
-
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
   };
-  useEffect(() => {
-    if (isEditing) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
-    } else {
-      ref?.current?.blur?.();
-    }
-  }, [isEditing]);
+
+  const filteredCards = useMemo(
+    () => Object.values(cards).filter((card) => card.listId === id),
+    [cards]
+  );
+
   return (
     <Root>
       <Header>
@@ -88,38 +84,33 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
             handleDeleteCardList(id);
           }}
         >
-          <DeleteIcon></DeleteIcon>
+          <DeleteIcon />
         </DeleteButton>
       </Header>
       <ul>
-        {Object.values(cards)
-          .filter((card) => card.listId === id)
-          .map((card) => {
-            return (
-              <li key={card.id}>
-                <Card
-                  listId={id}
-                  title={card.cardTitle}
-                  id={card.id}
-                  cardDescription={card.cardDescription}
-                  listTitle={listTitle}
-                ></Card>
-              </li>
-            );
-          })}
+        {filteredCards.map((card) => {
+          return (
+            <li key={card.id}>
+              <Card
+                listId={id}
+                title={card.cardTitle}
+                id={card.id}
+                cardDescription={card.cardDescription}
+                listTitle={listTitle}
+              ></Card>
+            </li>
+          );
+        })}
       </ul>
-      {isAddingCard ? (
+      {isAddCardShowed ? (
         <NewCard
           listId={id}
-          onCancelAddingCard={handleCancelAddingCard}
+          onCancelAddingCard={onCancelAddCardClick}
         ></NewCard>
       ) : (
-        <StyledButton
-          onClick={() => setIsAddingCard(!isAddingCard)}
-          primary={false}
-        >
+        <StyledButton onClick={() => onAddCardClick(id)}>
           <IconContainer>
-            <AddIcon></AddIcon>
+            <AddIcon />
           </IconContainer>
           Add card
         </StyledButton>
@@ -127,18 +118,16 @@ const CardList: FC<ListProps> = ({ listTitle, id }) => {
     </Root>
   );
 };
+
 const Root = styled.div`
   width: 272px;
   background: ${COLORS.lightGrey};
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
-  padding: 0 4px 8px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
 `;
 
 const Header = styled.div`
