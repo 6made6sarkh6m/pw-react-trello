@@ -35,6 +35,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
       editDescRef?.current?.blur?.();
     }
   }, [isEditingDescription]);
+  
   return (
     <Form
       onSubmit={handleSubmit}
@@ -86,6 +87,7 @@ const DescriptionContainer = styled.div`
   padding: 0 4px;
   margin-top: 30px;
 `;
+
 const Title = styled.h2`
   text-align: start;
   font-size: 14px;

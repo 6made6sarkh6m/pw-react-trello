@@ -125,7 +125,6 @@ const CardModal: FC<CardViewProps> = ({
           ></Description>
           <Title>Actions</Title>
           <NewComment cardId={cardId}></NewComment>
-
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>

@@ -35,6 +35,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
       }
     }
   };
+
   return (
     <NewCommentContainer>
       <Form
@@ -75,8 +76,10 @@ const NewCommentContainer = styled.div`
   min-height: 20px;
   padding: 0px 4px;
 `;
+
 const StyledButton = styled(Button)`
   width: 70px;
   align-items: center;
 `;
+
 export default NewComment;
