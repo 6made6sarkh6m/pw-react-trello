@@ -11,6 +11,7 @@ import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
+import { Form, Field } from "react-final-form";
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -32,9 +33,8 @@ const CardModal: FC<CardViewProps> = ({
   const [newTitle, setTitle] = useState(cardTitle);
   const modalRef = useRef(null);
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault();
       const title = newTitle.trim();
       if (title) {
         dispatch(updateCard({ cardId, title }));
@@ -89,14 +89,28 @@ const CardModal: FC<CardViewProps> = ({
                   ></EditTitleContainer>
                 </>
               )}
-              <Textarea
-                isEditing={isEditingTitle}
-                rows={1}
-                value={newTitle}
-                onChange={(e) => setTitle(e.target.value)}
-                onKeyDown={handleOnKeyDown}
-                spellCheck={false}
-              ></Textarea>
+              <Form
+                onSubmit={handleSubmit}
+                render={({ handleSubmit }) => (
+                  <form onKeyDown={handleSubmit}>
+                    <Field
+                      name="card-title"
+                      render={() => {
+                        return (
+                          <Textarea
+                            isEditing={isEditingTitle}
+                            rows={1}
+                            value={newTitle}
+                            onKeyDown={handleSubmit}
+                            onChange={(e) => setTitle(e.target.value)}
+                            spellCheck={false}
+                          />
+                        );
+                      }}
+                    />
+                  </form>
+                )}
+              ></Form>
             </div>
             <DeleteButton onClick={onClose}>
               <DeleteIcon />

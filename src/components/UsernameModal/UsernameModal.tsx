@@ -5,6 +5,7 @@ import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User/UserSlice";
+import { Form, Field } from "react-final-form";
 type UsernameModalProps = {
   onSubmit?: () => void;
 };
@@ -14,7 +15,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState("");
   const [isValid, setIsValid] = useState<boolean>(true);
 
-  const handleOnSubmit = () => {
+  const handleSubmit = () => {
     const name = username.trim();
     if (name) {
       dispatch(saveUser({ isAuth: true, name }));
@@ -40,16 +41,27 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
       <PopupInner>
         <PopupTitle>What's your name?</PopupTitle>
         <InputWrapper>
-          <Textarea
-            rows={1}
-            autoFocus={true}
-            placeholder="Type your name!"
-            onChange={(e) => setUsername(e.target.value)}
-            onKeyDown={handleonKeyDown}
-          ></Textarea>
-          <StyledButton primary={true} onClick={handleOnSubmit}>
-            SAVE
-          </StyledButton>
+          <Form
+            onSubmit={handleSubmit}
+            render={({ handleSubmit }) => (
+              <>
+                <Field
+                  name="username"
+                  render={()=>{
+                    return <Textarea
+                    rows={1}
+                    autoFocus={true}
+                    placeholder="Type your name!"
+                    onChange={(e) => setUsername(e.target.value)}
+                    onKeyDown={handleonKeyDown}
+                  />
+                  }}/>
+                <StyledButton primary={true} onClick={handleSubmit}>
+                  SAVE
+                </StyledButton>
+              </>
+            )}
+          ></Form>
         </InputWrapper>
         {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>

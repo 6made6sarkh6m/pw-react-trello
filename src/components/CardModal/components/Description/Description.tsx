@@ -2,9 +2,10 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Button } from "components/ui/components/Button";
 import { Textarea } from "components/ui/components/Textarea";
-import { CardProperties } from "enum/enum";
 import { useDispatch } from "react-redux";
 import { updateCardDescription } from "redux/ducks/Card/CardSlice";
+import { Form, Field } from "react-final-form";
+
 interface DescriptionProps {
   cardDescription: string;
   id: string;
@@ -15,7 +16,8 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [description, setDescription] = useState(cardDescription);
-  const handleDescriptionUpdate = () => {
+
+  const handleSubmit = () => {
     const descriptionCard = description.trim();
     if (descriptionCard) {
       dispatch(updateCardDescription({ id, descriptionCard }));
@@ -34,36 +36,47 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
     }
   }, [isEditingDescription]);
   return (
-    <>
-      <DescriptionContainer>
-        <Title>Description</Title>
-        <Textarea
-          onClick={() => setIsEditingDescription(true)}
-          isEditing={isEditingDescription}
-          rows={8}
-          value={description}
-          placeholder="Type your description text"
-          onChange={(e) => setDescription(e.target.value)}
-          spellCheck={false}
-        ></Textarea>
-      </DescriptionContainer>
-
-      {isEditingDescription && (
-        <DescriptionControlConteiner>
-          <StyledButton primary={true} onClick={handleDescriptionUpdate}>
-            Save
-          </StyledButton>
-          <StyledButton
-            onClick={() => {
-              setIsEditingDescription(false);
-              setDescription(cardDescription);
+    <Form
+      onSubmit={handleSubmit}
+      render={({ handleSubmit }) => (
+        <>
+          <Field
+            name="card-description"
+            render={() => {
+              return (
+                <DescriptionContainer>
+                  <Title>Description</Title>
+                  <Textarea
+                    onClick={() => setIsEditingDescription(true)}
+                    isEditing={isEditingDescription}
+                    rows={8}
+                    value={description}
+                    placeholder="Type your description text"
+                    onChange={(e) => setDescription(e.target.value)}
+                    spellCheck={false}
+                  ></Textarea>
+                </DescriptionContainer>
+              );
             }}
-          >
-            Cancel
-          </StyledButton>
-        </DescriptionControlConteiner>
+          />
+          {isEditingDescription && (
+            <DescriptionControlConteiner>
+              <StyledButton primary={true} onClick={handleSubmit}>
+                Save
+              </StyledButton>
+              <StyledButton
+                onClick={() => {
+                  setIsEditingDescription(false);
+                  setDescription(cardDescription);
+                }}
+              >
+                Cancel
+              </StyledButton>
+            </DescriptionControlConteiner>
+          )}
+        </>
       )}
-    </>
+    ></Form>
   );
 };
 const DescriptionContainer = styled.div`
