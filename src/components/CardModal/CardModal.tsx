@@ -89,7 +89,7 @@ const CardModal: FC<CardViewProps> = ({
                     onClick={() => {
                       setIsEditingTitle(true);
                     }}
-                  ></EditTitleContainer>
+                  />
                 </>
               )}
               <Form
@@ -113,7 +113,7 @@ const CardModal: FC<CardViewProps> = ({
                     />
                   </form>
                 )}
-              ></Form>
+              />
             </div>
             <DeleteButton onClick={onClose}>
               <DeleteIcon />
@@ -122,12 +122,9 @@ const CardModal: FC<CardViewProps> = ({
           <ListTitleContainer>
             <ListTitle>В колонке {listTitle}</ListTitle>
           </ListTitleContainer>
-          <Description
-            cardDescription={cardDescription}
-            id={cardId}
-          ></Description>
+          <Description cardDescription={cardDescription} id={cardId} />
           <Title>Actions</Title>
-          <NewComment cardId={cardId}></NewComment>
+          <NewComment cardId={cardId} />
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>
@@ -135,10 +132,7 @@ const CardModal: FC<CardViewProps> = ({
                 return (
                   <li key={comment.id}>
                     <Title>{name}</Title>
-                    <Comment
-                      id={comment.id}
-                      commentValue={comment.comment}
-                    ></Comment>
+                    <Comment id={comment.id} commentValue={comment.comment} />
                   </li>
                 );
               })}

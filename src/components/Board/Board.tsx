@@ -36,14 +36,12 @@ const Board: FC = () => {
               isAddCardShowed={columnWithAddCarad === list.id}
               onAddCardClick={handleAddCardClick}
               onCancelAddCardClick={handleCancelAddCardClick}
-            ></CardList>
+            />
           </li>
         );
       })}
       {isAddingCardList ? (
-        <NewCardList
-          onCancelAddingCardList={handleCancelAddingCardList}
-        ></NewCardList>
+        <NewCardList onCancelAddingCardList={handleCancelAddingCardList} />
       ) : (
         <StyledButton onClick={() => setIsAddingCardList(!isAddingCardList)}>
           <IconContainer>

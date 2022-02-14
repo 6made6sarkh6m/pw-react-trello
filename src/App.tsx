@@ -17,10 +17,10 @@ const App = () => {
   return (
     <>
       {isOpenModal ? (
-        <UsernameModal onSubmit={() => setIsOpenModal(false)}></UsernameModal>
+        <UsernameModal onSubmit={() => setIsOpenModal(false)} />
       ) : (
         <AppWrapper>
-          <Header username={user.name}></Header>
+          <Header username={user.name} />
           <Main>
             <PageWrapper>
               <Board />

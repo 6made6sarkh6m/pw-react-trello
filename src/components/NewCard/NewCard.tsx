@@ -54,7 +54,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
                       placeholder="Set card name"
                       onKeyDown={handleonKeyDown}
                       onChange={(e) => setCurrentTitle(e.target.value)}
-                    ></Textarea>
+                    />
                   </CardItem>
                 );
               }}

@@ -35,7 +35,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
       editDescRef?.current?.blur?.();
     }
   }, [isEditingDescription]);
-  
+
   return (
     <Form
       onSubmit={handleSubmit}
@@ -55,7 +55,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
                     placeholder="Type your description text"
                     onChange={(e) => setDescription(e.target.value)}
                     spellCheck={false}
-                  ></Textarea>
+                  />
                 </DescriptionContainer>
               );
             }}
@@ -77,9 +77,10 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
           )}
         </>
       )}
-    ></Form>
+    />
   );
 };
+
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;

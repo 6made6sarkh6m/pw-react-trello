@@ -62,7 +62,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
                 <StyledButton primary={true}>SAVE</StyledButton>
               </form>
             )}
-          ></Form>
+          />
         </InputWrapper>
         {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>

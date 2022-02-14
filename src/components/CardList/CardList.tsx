@@ -69,7 +69,7 @@ const CardList: FC<ListProps> = ({
             onClick={() => {
               setIsEditing(true);
             }}
-          ></EditTitleContainer>
+          />
         )}
         <Textarea
           isEditing={isEditing}
@@ -78,7 +78,7 @@ const CardList: FC<ListProps> = ({
           spellCheck={false}
           onChange={(e) => setCurrentTitle(e.target.value)}
           onKeyDown={handleonKeyDown}
-        ></Textarea>
+        />
         <DeleteButton
           onClick={() => {
             handleDeleteCardList(id);
@@ -97,16 +97,13 @@ const CardList: FC<ListProps> = ({
                 id={card.id}
                 cardDescription={card.cardDescription}
                 listTitle={listTitle}
-              ></Card>
+              />
             </li>
           );
         })}
       </ul>
       {isAddCardShowed ? (
-        <NewCard
-          listId={id}
-          onCancelAddingCard={onCancelAddCardClick}
-        ></NewCard>
+        <NewCard listId={id} onCancelAddingCard={onCancelAddCardClick} />
       ) : (
         <StyledButton onClick={() => onAddCardClick(id)}>
           <IconContainer>

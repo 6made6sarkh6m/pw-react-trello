@@ -7,6 +7,7 @@ import { DeleteButton } from "components/ui/components/DeleteButton";
 import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "redux/ducks/Comments/CommentsSlice";
+
 interface CommentProps {
   id: string;
   commentValue: string;
@@ -74,6 +75,7 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
     </>
   );
 };
+
 const CommentContainer = styled.div`
   position: relative;
   display: flex;

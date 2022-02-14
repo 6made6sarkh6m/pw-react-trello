@@ -8,6 +8,7 @@ import { DeleteButton } from "../ui/components/DeleteButton";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCard } from "redux/ducks/Card/CardSlice";
 import { selectComment } from "redux/selectors";
+
 interface CardProps {
   listId: string;
   title: string;
@@ -24,6 +25,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
     return Object.values(comments).filter((comment) => comment.cardId === id)
       .length;
   }, [comments]);
+
   const handleDeleteClick = (id: string) => {
     dispatch(deleteCard({ id }));
   };
@@ -39,7 +41,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
           <DeleteIcon />
         </DeleteButton>
         <CommentCounter>
-          <CommentIcon></CommentIcon>
+          <CommentIcon/>
           {commentCount}
         </CommentCounter>
       </CardItem>
@@ -50,7 +52,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
           listTitle={listTitle}
           cardDescription={cardDescription}
           onClose={() => setIsOpen(false)}
-        ></CardModal>
+        />
       )}
     </>
   );

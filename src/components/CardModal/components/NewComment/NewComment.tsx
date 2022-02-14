@@ -53,7 +53,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
                     onChange={(e) => setNewComment(e.target.value)}
                     onKeyDown={handleOnKeyDown}
                     spellCheck={false}
-                  ></Textarea>
+                  />
                 );
               }}
             />
@@ -62,7 +62,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
             </StyledButton>
           </>
         )}
-      ></Form>
+      />
     </NewCommentContainer>
   );
 };

@@ -39,7 +39,7 @@ const Textarea: FC<TextareaProps> = ({
       onChange={onChange}
       onKeyDown={onKeyDown}
       onClick={onClick}
-    ></StyledTextarea>
+    />
   );
 };
 

@@ -56,7 +56,7 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
                       placeholder="Set list title"
                       onKeyDown={handleOnKeyDown}
                       onChange={(e) => setCardListTitle(e.target.value)}
-                    ></Textarea>
+                    />
                   );
                 }}
               />
