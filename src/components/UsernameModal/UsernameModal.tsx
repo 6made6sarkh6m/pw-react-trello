@@ -44,22 +44,23 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
           <Form
             onSubmit={handleSubmit}
             render={({ handleSubmit }) => (
-              <>
+              <form onSubmit={handleSubmit}>
                 <Field
                   name="username"
-                  render={()=>{
-                    return <Textarea
-                    rows={1}
-                    autoFocus={true}
-                    placeholder="Type your name!"
-                    onChange={(e) => setUsername(e.target.value)}
-                    onKeyDown={handleonKeyDown}
-                  />
-                  }}/>
-                <StyledButton primary={true} onClick={handleSubmit}>
-                  SAVE
-                </StyledButton>
-              </>
+                  render={() => {
+                    return (
+                      <Textarea
+                        rows={1}
+                        autoFocus={true}
+                        placeholder="Type your name!"
+                        onChange={(e) => setUsername(e.target.value)}
+                        onKeyDown={handleonKeyDown}
+                      />
+                    );
+                  }}
+                />
+                <StyledButton primary={true}>SAVE</StyledButton>
+              </form>
             )}
           ></Form>
         </InputWrapper>

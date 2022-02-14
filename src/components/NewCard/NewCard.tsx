@@ -5,6 +5,7 @@ import { Textarea } from "components/ui/components/Textarea";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
 import { addCard } from "redux/ducks/Card/CardSlice";
+import { Field, Form } from "react-final-form";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
@@ -28,7 +29,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
     }
   };
 
-  const handleAddCard = () => {
+  const handleSubmit = () => {
     const cardTitle = currentTitle.trim();
     if (cardTitle) {
       dispatch(addCard({ cardTitle, listId }));
@@ -38,23 +39,35 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
 
   return (
     <>
-      <CardItem>
-        <Textarea
-          autoFocus={true}
-          rows={2}
-          placeholder="Set card name"
-          onKeyDown={handleonKeyDown}
-          onChange={(e) => setCurrentTitle(e.target.value)}
-        ></Textarea>
-      </CardItem>
-      <ButtonContainer>
-        <StyledButton primary={true} onClick={handleAddCard}>
-          Add
-        </StyledButton>
-        <StyledButton onClick={() => onCancelAddingCard()}>
-          Cancel
-        </StyledButton>
-      </ButtonContainer>
+      <Form
+        onSubmit={handleSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="new-card"
+              render={() => {
+                return (
+                  <CardItem>
+                    <Textarea
+                      autoFocus={true}
+                      rows={2}
+                      placeholder="Set card name"
+                      onKeyDown={handleonKeyDown}
+                      onChange={(e) => setCurrentTitle(e.target.value)}
+                    ></Textarea>
+                  </CardItem>
+                );
+              }}
+            />
+            <ButtonContainer>
+              <StyledButton primary={true}>Add</StyledButton>
+              <StyledButton onClick={() => onCancelAddingCard()}>
+                Cancel
+              </StyledButton>
+            </ButtonContainer>
+          </form>
+        )}
+      />
     </>
   );
 };

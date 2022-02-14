@@ -33,19 +33,22 @@ const CardModal: FC<CardViewProps> = ({
   const [newTitle, setTitle] = useState(cardTitle);
   const modalRef = useRef(null);
 
-  const handleSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      const title = newTitle.trim();
-      if (title) {
-        dispatch(updateCard({ cardId, title }));
-        setIsEditingTitle(false);
-      } else {
-        setTitle(cardTitle);
-        setIsEditingTitle(false);
-      }
+  const handleSubmit = () => {
+    const title = newTitle.trim();
+    if (title) {
+      dispatch(updateCard({ cardId, title }));
+      setIsEditingTitle(false);
+    } else {
+      setTitle(cardTitle);
+      setIsEditingTitle(false);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
   const handleCloseView: EventListener | EventListenerObject = (e) => {
     const event = e as KeyboardEvent;
     if (event.key === "Escape") {
@@ -92,7 +95,7 @@ const CardModal: FC<CardViewProps> = ({
               <Form
                 onSubmit={handleSubmit}
                 render={({ handleSubmit }) => (
-                  <form onKeyDown={handleSubmit}>
+                  <form onSubmit={handleSubmit}>
                     <Field
                       name="card-title"
                       render={() => {
@@ -101,8 +104,8 @@ const CardModal: FC<CardViewProps> = ({
                             isEditing={isEditingTitle}
                             rows={1}
                             value={newTitle}
-                            onKeyDown={handleSubmit}
                             onChange={(e) => setTitle(e.target.value)}
+                            onKeyDown={handleKeyDown}
                             spellCheck={false}
                           />
                         );

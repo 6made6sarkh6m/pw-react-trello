@@ -5,6 +5,7 @@ import { COLORS } from "styles/colors";
 import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
 import { addCardList } from "redux/ducks/CardList/CardListSlice";
+import { Form, Field } from "react-final-form";
 
 interface NewCardListProps {
   onCancelAddingCardList: () => void;
@@ -29,7 +30,7 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
     }
   };
 
-  const handleAddCard = () => {
+  const handleSubmit = () => {
     const listTitle = cardListTitle.trim();
 
     if (listTitle) {
@@ -40,23 +41,35 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
 
   return (
     <>
-      <CardListItem>
-        <Textarea
-          autoFocus={true}
-          rows={1}
-          placeholder="Set list title"
-          onKeyDown={handleOnKeyDown}
-          onChange={(e) => setCardListTitle(e.target.value)}
-        ></Textarea>
-        <ButtonContainer>
-          <StyledButton primary={true} onClick={handleAddCard}>
-            Add
-          </StyledButton>
-          <StyledButton  onClick={onCancelAddingCardList}>
-            Cancel
-          </StyledButton>
-        </ButtonContainer>
-      </CardListItem>
+      <Form
+        onSubmit={handleSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <CardListItem>
+              <Field
+                name="new-cardlist"
+                render={() => {
+                  return (
+                    <Textarea
+                      autoFocus={true}
+                      rows={1}
+                      placeholder="Set list title"
+                      onKeyDown={handleOnKeyDown}
+                      onChange={(e) => setCardListTitle(e.target.value)}
+                    ></Textarea>
+                  );
+                }}
+              />
+              <ButtonContainer>
+                <StyledButton primary={true}>Add</StyledButton>
+                <StyledButton onClick={onCancelAddingCardList}>
+                  Cancel
+                </StyledButton>
+              </ButtonContainer>
+            </CardListItem>
+          </form>
+        )}
+      />
     </>
   );
 };
