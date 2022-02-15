@@ -6,6 +6,7 @@ import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User/UserSlice";
 import { Form, Field } from "react-final-form";
+import { TextInput } from "components/ui/components/TextInput";
 type UsernameModalProps = {
   onSubmit?: () => void;
 };
@@ -51,17 +52,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
               <Field
                 name="userName"
                 render={({ input, rest }) => {
-                  return (
-                    <Textarea
-                      {...input}
-                      {...rest}
-                      // rows={1}
-                      // autoFocus={true}
-                      // placeholder="Type your name!"
-                      // onChange={(e) => setUsername(e.target.value)}
-                      // onKeyDown={handleonKeyDown}
-                    />
-                  );
+                  return <TextInput {...input} {...rest} />;
                 }}
               />
               <StyledButton primary={true}>SAVE</StyledButton>

@@ -46,8 +46,12 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
     <NewCommentContainer>
       <Form
         onSubmit={onSubmit}
-        render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
+        render={({ handleSubmit, form }) => (
+          <form
+            onSubmit={(event) => {
+              handleSubmit(event);
+            }}
+          >
             <Field
               name="newComment"
               render={({ input, rest }) => {

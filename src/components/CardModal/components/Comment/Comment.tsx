@@ -11,6 +11,7 @@ import {
   updateComment,
 } from "redux/ducks/Comments/CommentsSlice";
 import { Field, Form } from "react-final-form";
+import { TextInput } from "components/ui/components/TextInput";
 
 interface CommentProps {
   id: string;
@@ -32,13 +33,13 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
       setIsEditing(false);
     }
   };
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-    }
-    if (e.key === "Escape") {
-      setIsEditing(false);
-    }
-  };
+  // const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  //   if (e.key === "Enter") {
+  //   }
+  //   if (e.key === "Escape") {
+  //     setIsEditing(false);
+  //   }
+  // };
 
   const handleDeleteClick = () => {
     dispatch(deleteComment({ id }));
@@ -66,10 +67,9 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
             render={({ handleSubmit }) => (
               <form onSubmit={handleSubmit}>
                 <Field
-                  initialValue={comment}
                   name="comment"
                   render={({ input, rest }) => {
-                    return <Textarea {...input} {...rest} />;
+                    return <TextInput {...input} {...rest} />;
                   }}
                 />
               </form>

@@ -6,6 +6,7 @@ import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
 import { addCard } from "redux/ducks/Card/CardSlice";
 import { Field, Form } from "react-final-form";
+import { TextInput } from "components/ui/components/TextInput";
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
@@ -18,20 +19,6 @@ type Value = {
 const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
   const [currentTitle, setCurrentTitle] = useState("");
-
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const cardTitle = currentTitle.trim();
-      if (cardTitle) {
-        dispatch(addCard({ cardTitle, listId }));
-        onCancelAddingCard();
-      }
-    }
-    if (e.key === "Escape") {
-      onCancelAddingCard();
-    }
-  };
 
   const onSubmit = (value: Value) => {
     const cardTitle = value.newCardTitle.trim();
@@ -52,7 +39,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
               render={({ input, rest }) => {
                 return (
                   <CardItem>
-                    <Textarea {...input} {...rest} />
+                    <TextInput {...input} {...rest} />
                   </CardItem>
                 );
               }}

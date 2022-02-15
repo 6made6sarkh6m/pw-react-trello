@@ -8,15 +8,15 @@ interface StyledProps {
   isEditing?: boolean;
   autoFocus?: boolean;
 }
-const Textarea: FC<TextAreaProps> = ({
+const TextInput: FC<TextAreaProps> = ({
   input,
   meta,
   ...rest
 }: TextAreaProps) => {
-  return <StyledTextarea {...input} {...rest} />;
+  return <StyledTextInput {...input} {...rest} />;
 };
 
-const StyledTextarea = styled.textarea<StyledProps>`
+const StyledTextInput = styled.input<StyledProps>`
   font-family: sans-serif;
   width: 100%;
   color: ${COLORS.deepBlue};
@@ -46,4 +46,4 @@ const StyledTextarea = styled.textarea<StyledProps>`
   }
 `;
 
-export default Textarea;
+export default TextInput;

@@ -15,6 +15,7 @@ import {
 import { DeleteButton } from "components/ui/components/DeleteButton";
 import DeleteIcon from "components/ui/icons/DeleteIcon";
 import { Field, Form } from "react-final-form";
+import { TextInput } from "components/ui/components/TextInput";
 interface ListProps {
   listTitle: string;
   id: string;
@@ -37,10 +38,11 @@ const CardList: FC<ListProps> = ({
   const cards = useSelector(selectCard);
   const dispatch = useDispatch();
 
-  const [isEditing, setIsEditing] = useState(false);
-
   const onSubmit = (value: Value) => {
-    console.log(value.cardListTitle);
+    const listTitle = value.cardListTitle.trim();
+    if (listTitle) {
+      dispatch(updateCardList({ id, listTitle }));
+    }
   };
 
   const handleDeleteCardList = (id: string) => {
@@ -54,26 +56,25 @@ const CardList: FC<ListProps> = ({
 
   return (
     <Root>
-      <Form
-        onSubmit={onSubmit}
-        render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Header>
+      <Header>
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
               <Field
                 name={"cardListTitle"}
                 initialValue={listTitle}
                 render={({ input, rest }) => {
-                  return <Textarea {...input} {...rest} />;
+                  return <TextInput {...input} {...rest} />;
                 }}
               />
-
-              <DeleteButton onClick={() => handleDeleteCardList(id)}>
-                <DeleteIcon />
-              </DeleteButton>
-            </Header>
-          </form>
-        )}
-      />
+            </form>
+          )}
+        />
+        <DeleteButton onClick={() => handleDeleteCardList(id)}>
+          <DeleteIcon />
+        </DeleteButton>
+      </Header>
       <ul>
         {filteredCards.map((card) => {
           return (

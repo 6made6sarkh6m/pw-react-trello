@@ -7,11 +7,11 @@ import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { DeleteButton } from "../ui/components/DeleteButton";
-import { Textarea } from "../ui/components/Textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 import { Form, Field } from "react-final-form";
+import { TextInput } from "components/ui/components/TextInput";
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -19,6 +19,10 @@ interface CardViewProps {
   listTitle: string;
   cardDescription: string;
 }
+
+type Value = {
+  title: string;
+};
 const CardModal: FC<CardViewProps> = ({
   onClose,
   cardId,
@@ -33,8 +37,8 @@ const CardModal: FC<CardViewProps> = ({
   const [newTitle, setTitle] = useState(cardTitle);
   const modalRef = useRef(null);
 
-  const handleSubmit = () => {
-    const title = newTitle.trim();
+  const onSubmit = (value: Value) => {
+    const title = value.title.trim();
     if (title) {
       dispatch(updateCard({ cardId, title }));
       setIsEditingTitle(false);
@@ -44,11 +48,6 @@ const CardModal: FC<CardViewProps> = ({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  };
   const handleCloseView: EventListener | EventListenerObject = (e) => {
     const event = e as KeyboardEvent;
     if (event.key === "Escape") {
@@ -82,24 +81,15 @@ const CardModal: FC<CardViewProps> = ({
         <Modal>
           <Header>
             <div style={{ width: "90%" }}>
-              <CardTitle>{cardTitle}</CardTitle>
-              {!isEditingTitle && (
-                <>
-                  <EditTitleContainer
-                    onClick={() => {
-                      setIsEditingTitle(true);
-                    }}
-                  />
-                </>
-              )}
               <Form
-                onSubmit={handleSubmit}
+                onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
                     <Field
-                      name="card-title"
+                      name="title"
+                      initialValue={cardTitle}
                       render={({ input, rest }) => {
-                        return <Textarea {...input} {...rest} />;
+                        return <TextInput {...input} {...rest} />;
                       }}
                     />
                   </form>

@@ -6,6 +6,7 @@ import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
 import { addCardList } from "redux/ducks/CardList/CardListSlice";
 import { Form, Field } from "react-final-form";
+import { TextInput } from "components/ui/components/TextInput";
 
 interface NewCardListProps {
   onCancelAddingCardList: () => void;
@@ -18,21 +19,6 @@ type Value = {
 const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
   const dispatch = useDispatch();
   const [cardListTitle, setCardListTitle] = useState("");
-
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      const listTitle = cardListTitle.trim();
-
-      if (listTitle) {
-        dispatch(addCardList({ listTitle }));
-        onCancelAddingCardList();
-      }
-    }
-
-    if (e.key === "Escape") {
-      onCancelAddingCardList();
-    }
-  };
 
   const onSubmit = (value: Value) => {
     const listTitle = value.newCardList.trim();
@@ -52,13 +38,7 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
               <Field
                 name="newCardList"
                 render={({ input, rest }) => {
-                  return (
-                    <Textarea
-                      {...input}
-                      {...rest}
-                      onKeyDown={handleOnKeyDown}
-                    />
-                  );
+                  return <TextInput {...input} {...rest} />;
                 }}
               />
               <ButtonContainer>
