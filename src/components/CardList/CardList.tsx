@@ -60,7 +60,7 @@ const CardList: FC<ListProps> = ({
         <Form
           onSubmit={onSubmit}
           render={({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
+            <StyledForm onSubmit={handleSubmit}>
               <Field
                 name={"cardListTitle"}
                 initialValue={listTitle}
@@ -68,7 +68,7 @@ const CardList: FC<ListProps> = ({
                   return <TextInput {...input} {...rest} />;
                 }}
               />
-            </form>
+            </StyledForm>
           )}
         />
         <DeleteButton onClick={() => handleDeleteCardList(id)}>
@@ -122,28 +122,8 @@ const Header = styled.div`
   flex-direction: row;
 `;
 
-const Title = styled.h2`
-  display: none;
-  text-align: start;
-  color: ${COLORS.deepBlue};
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 600;
-  min-height: 20px;
-  padding: 8px;
-  margin: 0;
-  z-index: 100000;
-`;
-
-const EditTitleContainer = styled.div`
-  position: absolute;
-  margin: 0 4px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 4px;
-  cursor: pointer;
+const StyledForm = styled.form`
+  flex-grow: 1;
 `;
 
 const IconContainer = styled.div`

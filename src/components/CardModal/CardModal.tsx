@@ -12,6 +12,7 @@ import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 import { Form, Field } from "react-final-form";
 import { TextInput } from "components/ui/components/TextInput";
+import { title } from "process";
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -74,17 +75,21 @@ const CardModal: FC<CardViewProps> = ({
       Object.values(comments).filter((comment) => comment.cardId === cardId),
     [comments]
   );
-
+  const unFocus = (event: HTMLInputElement) => {
+    event.blur();
+  };
   return (
     <Root>
       <Container ref={modalRef}>
         <Modal>
           <Header>
-            <div style={{ width: "90%" }}>
+            <CardTitleContainer>
               <Form
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
-                  <form onSubmit={handleSubmit}>
+                  <form
+                    onSubmit={handleSubmit}
+                  >
                     <Field
                       name="title"
                       initialValue={cardTitle}
@@ -95,7 +100,7 @@ const CardModal: FC<CardViewProps> = ({
                   </form>
                 )}
               />
-            </div>
+            </CardTitleContainer>
             <DeleteButton onClick={onClose}>
               <DeleteIcon />
             </DeleteButton>
@@ -169,27 +174,8 @@ const Header = styled.div`
   padding: 0 4px;
 `;
 
-const CardTitle = styled.h2`
-  display: none;
-  text-align: start;
-  color: black;
-  font-weight: 600;
-  max-height: 30px;
-  padding: 8px;
-  margin: 0;
-`;
-
-const EditTitleContainer = styled.div`
-  position: absolute;
-  max-height: 60px;
-  margin: 0 4px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 4px;
-  cursor: text;
-  width: 90%;
+const CardTitleContainer = styled.div`
+  width: 70%;
 `;
 
 const ListTitleContainer = styled.div`

@@ -38,6 +38,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   }, [isEditingDescription]);
 
   return (
+    <DescriptionContainer>
     <Form
       onSubmit={onSubmit}
       render={({ handleSubmit }) => (
@@ -69,6 +70,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
         </form>
       )}
     />
+    </DescriptionContainer>
   );
 };
 
@@ -80,16 +82,6 @@ const DescriptionContainer = styled.div`
   margin-top: 30px;
 `;
 
-const Title = styled.h2`
-  text-align: start;
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 600;
-  min-height: 20px;
-  padding: 8px;
-  margin: 0;
-  font-family: sans-serif;
-`;
 
 const DescriptionControlConteiner = styled.div`
   display: flex;
@@ -101,7 +93,7 @@ const DescriptionControlConteiner = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 30%;
+  width: 40%;
   align-items: center;
 `;
 

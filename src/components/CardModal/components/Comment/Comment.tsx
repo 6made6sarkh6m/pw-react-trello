@@ -30,16 +30,11 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
     const comment = value.comment.trim();
     if (comment) {
       dispatch(updateComment({ id, comment }));
+      setComment(comment);
       setIsEditing(false);
+
     }
   };
-  // const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-  //   if (e.key === "Enter") {
-  //   }
-  //   if (e.key === "Escape") {
-  //     setIsEditing(false);
-  //   }
-  // };
 
   const handleDeleteClick = () => {
     dispatch(deleteComment({ id }));
@@ -65,14 +60,15 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
           <Form
             onSubmit={onSubmit}
             render={({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
+              <StyledForm onSubmit={handleSubmit}>
                 <Field
                   name="comment"
+                  initialValue={comment}
                   render={({ input, rest }) => {
-                    return <TextInput {...input} {...rest} />;
+                    return <TextInput {...input} {...rest} autoFocus/>;
                   }}
                 />
-              </form>
+              </StyledForm>
             )}
           />
         )}
@@ -117,5 +113,7 @@ const EditCommentButton = styled.a`
   font-size: 13px;
   color: ${COLORS.deepGrey};
 `;
-
+const StyledForm = styled.form`
+  flex-grow: 1;
+`;
 export default Comment;
