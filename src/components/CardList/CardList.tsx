@@ -14,6 +14,7 @@ import {
 } from "redux/ducks/CardList/CardListSlice";
 import { DeleteButton } from "components/ui/components/DeleteButton";
 import DeleteIcon from "components/ui/icons/DeleteIcon";
+import { Field, Form } from "react-final-form";
 interface ListProps {
   listTitle: string;
   id: string;
@@ -21,6 +22,10 @@ interface ListProps {
   onAddCardClick: (id: string) => void;
   onCancelAddCardClick: () => void;
 }
+
+type Value = {
+  cardListTitle: string;
+};
 
 const CardList: FC<ListProps> = ({
   listTitle,
@@ -31,24 +36,11 @@ const CardList: FC<ListProps> = ({
 }) => {
   const cards = useSelector(selectCard);
   const dispatch = useDispatch();
-  const [currentTitle, setCurrentTitle] = useState(listTitle);
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const listTitle = currentTitle.trim();
-      if (listTitle) {
-        setIsEditing(false);
-        dispatch(updateCardList({ id, listTitle }));
-      }
-    }
-
-    if (e.key === "Escape") {
-      setCurrentTitle(listTitle);
-      setIsEditing(false);
-    }
+  const onSubmit = (value: Value) => {
+    console.log(value.cardListTitle);
   };
 
   const handleDeleteCardList = (id: string) => {
@@ -62,31 +54,39 @@ const CardList: FC<ListProps> = ({
 
   return (
     <Root>
-      <Header>
-        <Title>{listTitle}</Title>
-        {!isEditing && (
-          <EditTitleContainer
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          />
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Header>
+              <Title>{listTitle}</Title>
+              {!isEditing && (
+                <EditTitleContainer
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                />
+              )}
+
+              <Field
+                name={"cardListTitle"}
+                initialValue={listTitle}
+                render={({ input, rest }) => {
+                  return <Textarea {...input} {...rest} />;
+                }}
+              />
+
+              <DeleteButton
+                onClick={() => {
+                  handleDeleteCardList(id);
+                }}
+              >
+                <DeleteIcon />
+              </DeleteButton>
+            </Header>
+          </form>
         )}
-        <Textarea
-          isEditing={isEditing}
-          rows={1}
-          value={currentTitle}
-          spellCheck={false}
-          onChange={(e) => setCurrentTitle(e.target.value)}
-          onKeyDown={handleonKeyDown}
-        />
-        <DeleteButton
-          onClick={() => {
-            handleDeleteCardList(id);
-          }}
-        >
-          <DeleteIcon />
-        </DeleteButton>
-      </Header>
+      />
       <ul>
         {filteredCards.map((card) => {
           return (
@@ -144,6 +144,7 @@ const Title = styled.h2`
   min-height: 20px;
   padding: 8px;
   margin: 0;
+  z-index: 100000;
 `;
 
 const EditTitleContainer = styled.div`

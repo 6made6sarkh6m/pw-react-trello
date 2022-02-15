@@ -7,17 +7,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "redux/ducks/Comments/CommentsSlice";
 import { selectUser } from "redux/selectors";
 import { Form, Field } from "react-final-form";
+
 interface NewCommentProps {
   cardId: string;
 }
+
+type Value = {
+  newComment: string;
+};
 const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
   const authorData = useSelector(selectUser);
   const author = authorData.name;
   const dispatch = useDispatch();
   const [newComment, setNewComment] = useState("");
-  const handleSubmit = () => {
-    const comment = newComment.trim();
+
+  const onSubmit = (value: Value) => {
+    const comment = value.newComment.trim();
     if (comment) {
       dispatch(addComment({ cardId, comment, author }));
       setNewComment("");
@@ -39,28 +45,27 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   return (
     <NewCommentContainer>
       <Form
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         render={({ handleSubmit }) => (
-          <>
+          <form onSubmit={handleSubmit}>
             <Field
-              name="new-comment"
-              render={() => {
+              name="newComment"
+              render={({ input, rest }) => {
                 return (
                   <Textarea
+                    {...input}
+                    {...rest}
                     rows={3}
-                    value={newComment}
                     placeholder="Type your comment here"
-                    onChange={(e) => setNewComment(e.target.value)}
-                    onKeyDown={handleOnKeyDown}
                     spellCheck={false}
                   />
                 );
               }}
             />
-            <StyledButton primary={true} onClick={handleSubmit}>
+            <StyledButton type={"submit"} primary={true} onClick={handleSubmit}>
               Add
             </StyledButton>
-          </>
+          </form>
         )}
       />
     </NewCommentContainer>

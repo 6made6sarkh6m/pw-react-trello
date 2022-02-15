@@ -6,32 +6,37 @@ import { COLORS } from "styles/colors";
 import { DeleteButton } from "components/ui/components/DeleteButton";
 import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
-import { deleteComment } from "redux/ducks/Comments/CommentsSlice";
+import {
+  deleteComment,
+  updateComment,
+} from "redux/ducks/Comments/CommentsSlice";
+import { Field, Form } from "react-final-form";
 
 interface CommentProps {
   id: string;
   commentValue: string;
 }
-
+type Value = {
+  comment: string;
+};
 const Comment: FC<CommentProps> = ({ id, commentValue }) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [comment, setComment] = useState(commentValue);
   const ref = useRef<HTMLTextAreaElement>(null);
 
+  const onSubmit = (value: Value) => {
+    const comment = value.comment.trim();
+    if (comment) {
+      dispatch(updateComment({ id, comment }));
+      setIsEditing(false);
+    }
+  };
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      const trimmedComment = comment.trim();
-      if (trimmedComment) {
-        setIsEditing(false);
-      } else {
-        setIsEditing(false);
-        setComment(commentValue);
-      }
     }
     if (e.key === "Escape") {
       setIsEditing(false);
-      setComment(commentValue);
     }
   };
 
@@ -56,13 +61,19 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
         {!isEditing && <CommentContent>{comment}</CommentContent>}
 
         {isEditing && (
-          <Textarea
-            autoFocus={true}
-            rows={1}
-            value={comment}
-            spellCheck={false}
-            onKeyDown={handleOnKeyDown}
-            onChange={(e) => setComment(e.target.value)}
+          <Form
+            onSubmit={onSubmit}
+            render={({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Field
+                  initialValue={comment}
+                  name="comment"
+                  render={({ input, rest }) => {
+                    return <Textarea {...input} {...rest} />;
+                  }}
+                />
+              </form>
+            )}
           />
         )}
         <DeleteButton onClick={handleDeleteClick}>

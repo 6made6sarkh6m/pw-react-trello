@@ -1,46 +1,19 @@
 import React, { FC } from "react";
+import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 
-interface TextareaProps {
-  isEditing?: boolean;
-  value?: string;
-  spellCheck?: boolean;
-  placeholder?: string;
-  rows: number;
-  autoFocus?: boolean;
-  onChange?: (e: any) => void;
-  onKeyDown?: (e: any) => void;
-  onClick?: () => void;
-}
+type TextAreaProps = FieldRenderProps<string, any>;
 interface StyledProps {
   isEditing?: boolean;
   autoFocus?: boolean;
 }
-const Textarea: FC<TextareaProps> = ({
-  isEditing,
-  value,
-  spellCheck,
-  rows,
-  placeholder,
-  autoFocus,
-  onChange,
-  onKeyDown,
-  onClick,
-}) => {
-  return (
-    <StyledTextarea
-      autoFocus={autoFocus}
-      value={value}
-      isEditing={isEditing}
-      placeholder={placeholder}
-      rows={rows}
-      spellCheck={spellCheck}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      onClick={onClick}
-    />
-  );
+const Textarea: FC<TextAreaProps> = ({
+  input,
+  meta,
+  ...rest
+}: TextAreaProps) => {
+  return <StyledTextarea {...input} {...rest} />;
 };
 
 const StyledTextarea = styled.textarea<StyledProps>`

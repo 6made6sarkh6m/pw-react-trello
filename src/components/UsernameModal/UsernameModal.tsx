@@ -10,13 +10,16 @@ type UsernameModalProps = {
   onSubmit?: () => void;
 };
 
+type Value = {
+  userName: string;
+};
 const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [isValid, setIsValid] = useState<boolean>(true);
 
-  const handleSubmit = () => {
-    const name = username.trim();
+  const handleUserNameSubmit = (value: Value) => {
+    const name = value.userName.trim();
     if (name) {
       dispatch(saveUser({ isAuth: true, name }));
       onSubmit?.();
@@ -40,30 +43,32 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
     <Root>
       <PopupInner>
         <PopupTitle>What's your name?</PopupTitle>
-        <InputWrapper>
-          <Form
-            onSubmit={handleSubmit}
-            render={({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
-                <Field
-                  name="username"
-                  render={() => {
-                    return (
-                      <Textarea
-                        rows={1}
-                        autoFocus={true}
-                        placeholder="Type your name!"
-                        onChange={(e) => setUsername(e.target.value)}
-                        onKeyDown={handleonKeyDown}
-                      />
-                    );
-                  }}
-                />
-                <StyledButton primary={true}>SAVE</StyledButton>
-              </form>
-            )}
-          />
-        </InputWrapper>
+
+        <Form
+          onSubmit={handleUserNameSubmit}
+          render={({ handleSubmit }) => (
+            <InputWrapper onSubmit={handleSubmit}>
+              <Field
+                name="userName"
+                render={({ input, rest }) => {
+                  return (
+                    <Textarea
+                      {...input}
+                      {...rest}
+                      // rows={1}
+                      // autoFocus={true}
+                      // placeholder="Type your name!"
+                      // onChange={(e) => setUsername(e.target.value)}
+                      // onKeyDown={handleonKeyDown}
+                    />
+                  );
+                }}
+              />
+              <StyledButton primary={true}>SAVE</StyledButton>
+            </InputWrapper>
+          )}
+        />
+
         {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>
     </Root>
@@ -106,7 +111,7 @@ const PopupInner = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.form`
   display: flex;
   flex-direction: row;
   align-items: center;

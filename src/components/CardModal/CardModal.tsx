@@ -98,17 +98,8 @@ const CardModal: FC<CardViewProps> = ({
                   <form onSubmit={handleSubmit}>
                     <Field
                       name="card-title"
-                      render={() => {
-                        return (
-                          <Textarea
-                            isEditing={isEditingTitle}
-                            rows={1}
-                            value={newTitle}
-                            onChange={(e) => setTitle(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            spellCheck={false}
-                          />
-                        );
+                      render={({ input, rest }) => {
+                        return <Textarea {...input} {...rest} />;
                       }}
                     />
                   </form>

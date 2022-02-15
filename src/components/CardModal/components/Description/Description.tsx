@@ -11,20 +11,21 @@ interface DescriptionProps {
   id: string;
 }
 
+type Value = {
+  description: string;
+};
 const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const dispatch = useDispatch();
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
-  const [description, setDescription] = useState(cardDescription);
 
-  const handleSubmit = () => {
-    const descriptionCard = description.trim();
+  const onSubmit = (value: Value) => {
+    const descriptionCard = value.description.trim();
     if (descriptionCard) {
       dispatch(updateCardDescription({ id, descriptionCard }));
       setIsEditingDescription(false);
     } else {
       setIsEditingDescription(false);
-      setDescription(cardDescription);
     }
   };
 
@@ -38,44 +39,34 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
 
   return (
     <Form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       render={({ handleSubmit }) => (
-        <>
+        <form onSubmit={handleSubmit}>
           <Field
-            name="card-description"
-            render={() => {
+            name="description"
+            initialValue={cardDescription}
+            render={({ input, rest }) => {
               return (
-                <DescriptionContainer>
-                  <Title>Description</Title>
-                  <Textarea
-                    onClick={() => setIsEditingDescription(true)}
-                    isEditing={isEditingDescription}
-                    rows={8}
-                    value={description}
-                    placeholder="Type your description text"
-                    onChange={(e) => setDescription(e.target.value)}
-                    spellCheck={false}
-                  />
-                </DescriptionContainer>
+                <Textarea
+                  {...input}
+                  {...rest}
+                  onClick={() => setIsEditingDescription(true)}
+                  rows={8}
+                />
               );
             }}
           />
           {isEditingDescription && (
             <DescriptionControlConteiner>
-              <StyledButton primary={true} onClick={handleSubmit}>
+              <StyledButton primary={true} type="submit">
                 Save
               </StyledButton>
-              <StyledButton
-                onClick={() => {
-                  setIsEditingDescription(false);
-                  setDescription(cardDescription);
-                }}
-              >
+              <StyledButton onClick={() => setIsEditingDescription(false)}>
                 Cancel
               </StyledButton>
             </DescriptionControlConteiner>
           )}
-        </>
+        </form>
       )}
     />
   );

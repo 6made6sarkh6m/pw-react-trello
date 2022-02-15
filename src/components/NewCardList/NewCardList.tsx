@@ -11,6 +11,10 @@ interface NewCardListProps {
   onCancelAddingCardList: () => void;
 }
 
+type Value = {
+  newCardList: string;
+};
+
 const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
   const dispatch = useDispatch();
   const [cardListTitle, setCardListTitle] = useState("");
@@ -30,9 +34,8 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
     }
   };
 
-  const handleSubmit = () => {
-    const listTitle = cardListTitle.trim();
-
+  const onSubmit = (value: Value) => {
+    const listTitle = value.newCardList.trim();
     if (listTitle) {
       dispatch(addCardList({ listTitle }));
       onCancelAddingCardList();
@@ -42,20 +45,18 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
   return (
     <>
       <Form
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <CardListItem>
               <Field
-                name="new-cardlist"
-                render={() => {
+                name="newCardList"
+                render={({ input, rest }) => {
                   return (
                     <Textarea
-                      autoFocus={true}
-                      rows={1}
-                      placeholder="Set list title"
+                      {...input}
+                      {...rest}
                       onKeyDown={handleOnKeyDown}
-                      onChange={(e) => setCardListTitle(e.target.value)}
                     />
                   );
                 }}
