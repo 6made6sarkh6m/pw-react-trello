@@ -16,7 +16,7 @@ const Textarea: FC<TextAreaProps> = ({
   return <StyledTextarea {...input} {...rest} />;
 };
 
-const StyledTextarea = styled.textarea<StyledProps>`
+const StyledTextarea = styled.input<StyledProps>`
   font-family: sans-serif;
   width: 100%;
   color: ${COLORS.deepBlue};

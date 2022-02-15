@@ -59,15 +59,6 @@ const CardList: FC<ListProps> = ({
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <Header>
-              <Title>{listTitle}</Title>
-              {!isEditing && (
-                <EditTitleContainer
-                  onClick={() => {
-                    setIsEditing(true);
-                  }}
-                />
-              )}
-
               <Field
                 name={"cardListTitle"}
                 initialValue={listTitle}
@@ -76,11 +67,7 @@ const CardList: FC<ListProps> = ({
                 }}
               />
 
-              <DeleteButton
-                onClick={() => {
-                  handleDeleteCardList(id);
-                }}
-              >
+              <DeleteButton onClick={() => handleDeleteCardList(id)}>
                 <DeleteIcon />
               </DeleteButton>
             </Header>
