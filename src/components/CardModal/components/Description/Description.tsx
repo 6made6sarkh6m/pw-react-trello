@@ -39,37 +39,37 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
 
   return (
     <DescriptionContainer>
-    <Form
-      onSubmit={onSubmit}
-      render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <Field
-            name="description"
-            initialValue={cardDescription}
-            render={({ input, rest }) => {
-              return (
-                <Textarea
-                  {...input}
-                  {...rest}
-                  onClick={() => setIsEditingDescription(true)}
-                  rows={8}
-                />
-              );
-            }}
-          />
-          {isEditingDescription && (
-            <DescriptionControlConteiner>
-              <StyledButton primary={true} type="submit">
-                Save
-              </StyledButton>
-              <StyledButton onClick={() => setIsEditingDescription(false)}>
-                Cancel
-              </StyledButton>
-            </DescriptionControlConteiner>
-          )}
-        </form>
-      )}
-    />
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="description"
+              initialValue={cardDescription}
+              render={({ input, rest }) => {
+                return (
+                  <Textarea
+                    {...input}
+                    {...rest}
+                    onClick={() => setIsEditingDescription(true)}
+                    rows={8}
+                  />
+                );
+              }}
+            />
+            {isEditingDescription && (
+              <DescriptionControlConteiner>
+                <StyledButton primary={true} type="submit">
+                  Save
+                </StyledButton>
+                <StyledButton onClick={() => setIsEditingDescription(false)}>
+                  Cancel
+                </StyledButton>
+              </DescriptionControlConteiner>
+            )}
+          </form>
+        )}
+      />
     </DescriptionContainer>
   );
 };
@@ -77,15 +77,15 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
   padding: 0 4px;
   margin-top: 30px;
 `;
 
-
 const DescriptionControlConteiner = styled.div`
   display: flex;
-  width: 30%;
+  max-width: 200px;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   padding: 0 4px;
@@ -93,7 +93,8 @@ const DescriptionControlConteiner = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 40%;
+  max-width: 100px;
+  width: 100%;
   align-items: center;
 `;
 

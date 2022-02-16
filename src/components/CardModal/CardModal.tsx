@@ -12,7 +12,6 @@ import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 import { Form, Field } from "react-final-form";
 import { TextInput } from "components/ui/components/TextInput";
-import { title } from "process";
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -34,26 +33,17 @@ const CardModal: FC<CardViewProps> = ({
   const dispatch = useDispatch();
   const comments = useSelector(selectComment);
   const { name } = useSelector(selectUser);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [newTitle, setTitle] = useState(cardTitle);
   const modalRef = useRef(null);
 
   const onSubmit = (value: Value) => {
     const title = value.title.trim();
     if (title) {
       dispatch(updateCard({ cardId, title }));
-      setIsEditingTitle(false);
-    } else {
-      setTitle(cardTitle);
-      setIsEditingTitle(false);
     }
   };
 
-  const handleCloseView: EventListener | EventListenerObject = (e) => {
-    const event = e as KeyboardEvent;
-    if (event.key === "Escape") {
-      setIsEditingTitle(false);
-      setTitle(cardTitle);
+  const handleCloseView = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
       onClose?.();
     }
   };
@@ -62,22 +52,12 @@ const CardModal: FC<CardViewProps> = ({
     onClose?.();
   });
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleCloseView, false);
-
-    return () => {
-      document.removeEventListener("keydown", handleCloseView, false);
-    };
-  }, []);
-
   const filteredComments = useMemo(
     () =>
       Object.values(comments).filter((comment) => comment.cardId === cardId),
     [comments]
   );
-  const unFocus = (event: HTMLInputElement) => {
-    event.blur();
-  };
+
   return (
     <Root>
       <Container ref={modalRef}>
@@ -87,9 +67,7 @@ const CardModal: FC<CardViewProps> = ({
               <Form
                 onSubmit={onSubmit}
                 render={({ handleSubmit }) => (
-                  <form
-                    onSubmit={handleSubmit}
-                  >
+                  <form onSubmit={handleSubmit}>
                     <Field
                       name="title"
                       initialValue={cardTitle}
@@ -105,12 +83,16 @@ const CardModal: FC<CardViewProps> = ({
               <DeleteIcon />
             </DeleteButton>
           </Header>
+
           <ListTitleContainer>
             <ListTitle>В колонке {listTitle}</ListTitle>
           </ListTitleContainer>
+
           <Description cardDescription={cardDescription} id={cardId} />
+
           <Title>Actions</Title>
           <NewComment cardId={cardId} />
+
           <CommentsContainer>
             <Title>Comments</Title>
             <ul>
@@ -131,20 +113,19 @@ const CardModal: FC<CardViewProps> = ({
 };
 
 const Root = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: ${COLORS.shadowed};
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: ${COLORS.shadowed};
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
 `;
 
 const Container = styled.div`
@@ -158,8 +139,8 @@ const Container = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 768px;
-  min-height: 600px;
+  width: 600px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 768px) {
@@ -175,7 +156,7 @@ const Header = styled.div`
 `;
 
 const CardTitleContainer = styled.div`
-  width: 70%;
+  width: 100%;
 `;
 
 const ListTitleContainer = styled.div`

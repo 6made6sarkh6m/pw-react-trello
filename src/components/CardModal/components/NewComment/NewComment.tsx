@@ -26,16 +26,15 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
     }
   };
 
-
-
   return (
     <NewCommentContainer>
       <Form
         onSubmit={onSubmit}
-        render={({ handleSubmit }) => (
+        render={({ handleSubmit, form }) => (
           <form
             onSubmit={(event) => {
               handleSubmit(event);
+              form.change("newComment", undefined);
             }}
           >
             <Field
@@ -51,7 +50,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
                 );
               }}
             />
-            <StyledButton type={"submit"} primary={true} onClick={handleSubmit}>
+            <StyledButton type={"submit"} primary={true}>
               Add
             </StyledButton>
           </form>
@@ -64,7 +63,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
 const NewCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
   margin-top: 15px;
   position: relative;
   min-height: 20px;
@@ -72,7 +71,8 @@ const NewCommentContainer = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 70px;
+  max-width: 80px;
+  width: 100%;
   align-items: center;
 `;
 

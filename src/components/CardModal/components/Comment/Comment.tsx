@@ -32,7 +32,6 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
       dispatch(updateComment({ id, comment }));
       setComment(comment);
       setIsEditing(false);
-
     }
   };
 
@@ -65,7 +64,7 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
                   name="comment"
                   initialValue={comment}
                   render={({ input, rest }) => {
-                    return <TextInput {...input} {...rest} autoFocus/>;
+                    return <TextInput {...input} {...rest} autoFocus />;
                   }}
                 />
               </StyledForm>
@@ -86,7 +85,7 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
 const CommentContainer = styled.div`
   position: relative;
   display: flex;
-  width: 70%;
+  width: 100%;
   min-height: 40px;
   background-color: ${COLORS.lightGrey};
   border-radius: 3px;

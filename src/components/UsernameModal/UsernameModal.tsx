@@ -20,23 +20,16 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleUserNameSubmit = (value: Value) => {
-    const name = value.userName.trim();
-    if (name) {
-      dispatch(saveUser({ isAuth: true, name }));
-      onSubmit?.();
-    } else {
-      setIsValid(false);
-    }
-  };
-
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const name = username.trim();
+    if (value.userName !== undefined) {
+      const name = value.userName.trim();
       if (name) {
         dispatch(saveUser({ isAuth: true, name }));
         onSubmit?.();
+      } else {
+        setIsValid(false);
       }
+    } else {
+      setIsValid(false);
     }
   };
 
