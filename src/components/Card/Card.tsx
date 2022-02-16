@@ -1,6 +1,6 @@
 import React, { useState, useMemo, FC } from "react";
 import styled from "styled-components";
-import { CardModal } from "components/CardModal";
+import { CardModal } from "components";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCard } from "redux/ducks/Card";

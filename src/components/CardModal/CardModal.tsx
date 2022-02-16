@@ -1,7 +1,4 @@
 import React, { FC, useRef, useMemo } from "react";
-import { Comment } from "./components";
-import { NewComment } from "./components";
-import { Description } from "./components";
 import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
@@ -10,6 +7,7 @@ import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
+import { Description, NewComment, Comment } from "./components";
 
 interface CardViewProps {
   onClose?: () => void;

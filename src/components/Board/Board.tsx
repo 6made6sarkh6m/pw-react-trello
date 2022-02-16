@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useSelector } from "react-redux";
 import { selectCardList } from "redux/selectors";
-import { NewCardList } from "components/NewCardList";
-import { CardList } from "components/CardList";
 import { AddIcon, Button } from "components/ui";
+import { CardList, NewCardList } from "components";
 
 const Board: FC = () => {
   const lists = useSelector(selectCardList);

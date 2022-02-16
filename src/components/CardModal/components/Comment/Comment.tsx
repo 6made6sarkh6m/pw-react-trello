@@ -2,12 +2,10 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "components/ui";
-import { DeleteIcon } from "components/ui";
-import { TextInput } from "components/ui";
 import { useDispatch } from "react-redux";
 import { deleteComment, updateComment } from "redux/ducks/Comments";
 import { Field, Form } from "react-final-form";
+import { TextInput, DeleteButton, DeleteIcon } from "components/ui";
 
 interface CommentProps {
   id: string;

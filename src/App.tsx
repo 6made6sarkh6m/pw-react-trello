@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Board } from "components/Board";
-import { UsernameModal } from "components/UsernameModal";
-import { Header } from "components/Header";
 import { useSelector } from "react-redux";
 import { selectUser } from "redux/selectors";
 import { COLORS } from "styles/colors";
+import { Header, Board, UsernameModal } from "components";
 
 const App = () => {
   const user = useSelector(selectUser);
