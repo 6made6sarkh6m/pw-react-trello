@@ -15,7 +15,6 @@ type Value = {
 
 const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
-  const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleUserNameSubmit = (value: Value) => {
     if (value.userName !== undefined) {
@@ -24,13 +23,12 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
         dispatch(saveUser({ isAuth: true, name }));
         onSubmit?.();
       } else {
-        setIsValid(false);
+        console.log(name);
       }
-    } else {
-      setIsValid(false);
     }
   };
 
+  const required = (value: string) => value && value.trim()? undefined : "Required";
   return (
     <Root>
       <PopupInner>
@@ -42,16 +40,22 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
             <InputWrapper onSubmit={handleSubmit}>
               <Field
                 name="userName"
-                render={({ input, rest }) => {
-                  return <TextInput {...input} {...rest} />;
+                validate={required}
+                render={({ input, rest, meta }) => {
+                  return (
+                    <>
+                      <TextInput {...input} {...rest} />
+                      {meta.error && meta.touched && (
+                        <ErrorTitle>{meta.error}</ErrorTitle>
+                      )}
+                    </>
+                  );
                 }}
               />
-              <StyledButton primary={true}>SAVE</StyledButton>
+              <StyledButton type={"submit"} primary={true}>SAVE</StyledButton>
             </InputWrapper>
           )}
         />
-
-        {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
       </PopupInner>
     </Root>
   );

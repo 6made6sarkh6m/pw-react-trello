@@ -42,10 +42,14 @@ const CardModal: FC<CardViewProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.currentTarget.blur();
-      onSubmit({ title: e.currentTarget.value });
+      const trimmedTitle = e.currentTarget.value.trim();
+      if (trimmedTitle) {
+        onSubmit({ title: e.currentTarget.value });
+        e.currentTarget.blur();
+      }
     }
   };
+
   const handleCloseView = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       onClose?.();
@@ -70,18 +74,34 @@ const CardModal: FC<CardViewProps> = ({
             <CardTitleContainer>
               <Form
                 onSubmit={onSubmit}
+                validate={(values) => {
+                  const errors = {
+                    title: "",
+                  };
+
+                  if (!values.title || !values.title.trim()) {
+                    errors.title = "Required";
+                  }
+
+                  return errors;
+                }}
                 render={({ handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
                     <Field
                       name="title"
                       initialValue={cardTitle}
-                      render={({ input, rest }) => {
+                      render={({ input, rest, meta }) => {
                         return (
-                          <TextInput
-                            {...input}
-                            {...rest}
-                            onKeyDown={handleKeyDown}
-                          />
+                          <>
+                            <TextInput
+                              {...input}
+                              {...rest}
+                              onKeyDown={handleKeyDown}
+                            />
+                            {meta.error && meta.touched && (
+                              <ErrorTitle>{meta.error}</ErrorTitle>
+                            )}
+                          </>
                         );
                       }}
                     />
@@ -199,4 +219,11 @@ const CommentsContainer = styled.div`
   margin-top: 30px;
 `;
 
+const ErrorTitle = styled.p`
+  font-family: sans-serif;
+  color: ${COLORS.error};
+  font-size: 15px;
+  margin: 0;
+  min-height: 20px;
+`;
 export default CardModal;

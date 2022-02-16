@@ -13,6 +13,7 @@ interface NewCommentProps {
 type Value = {
   newComment: string;
 };
+
 const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const authorData = useSelector(selectUser);
   const author = authorData.name;
@@ -33,7 +34,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
           <form
             onSubmit={(event) => {
               handleSubmit(event);
-              form.change("newComment", undefined);
+              form.reset();
             }}
           >
             <Field

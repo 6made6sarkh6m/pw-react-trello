@@ -15,6 +15,7 @@ type Value = {
 };
 
 const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
+  
   const dispatch = useDispatch();
 
   const onSubmit = (value: Value) => {
