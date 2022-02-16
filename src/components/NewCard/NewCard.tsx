@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
-import { addCard } from "redux/ducks/Card/CardSlice";
+import { addCard } from "redux/ducks/Card";
 import { Field, Form } from "react-final-form";
 import { TextInput, Button } from "components/ui";
 

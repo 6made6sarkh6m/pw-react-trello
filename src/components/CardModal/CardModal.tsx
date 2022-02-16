@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment, selectUser } from "redux/selectors";
-import { updateCard } from "redux/ducks/Card/CardSlice";
+import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
 

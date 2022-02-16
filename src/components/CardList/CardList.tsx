@@ -3,10 +3,7 @@ import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCard } from "redux/selectors";
-import {
-  deleteCardList,
-  updateCardList,
-} from "redux/ducks/CardList/CardListSlice";
+import { deleteCardList, updateCardList } from "redux/ducks/CardList";
 import { Card } from "components/Card";
 import { NewCard } from "components/NewCard";
 import { Field, Form } from "react-final-form";

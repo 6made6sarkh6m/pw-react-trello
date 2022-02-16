@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { addComment } from "redux/ducks/Comments/CommentsSlice";
+import { addComment } from "redux/ducks/Comments";
 import { selectUser } from "redux/selectors";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";

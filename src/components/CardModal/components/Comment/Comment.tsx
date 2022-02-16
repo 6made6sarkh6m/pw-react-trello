@@ -6,10 +6,7 @@ import { DeleteButton } from "components/ui";
 import { DeleteIcon } from "components/ui";
 import { TextInput } from "components/ui";
 import { useDispatch } from "react-redux";
-import {
-  deleteComment,
-  updateComment,
-} from "redux/ducks/Comments/CommentsSlice";
+import { deleteComment, updateComment } from "redux/ducks/Comments";
 import { Field, Form } from "react-final-form";
 
 interface CommentProps {

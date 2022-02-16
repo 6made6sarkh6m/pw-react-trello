@@ -1,8 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
-import { addCardList } from "redux/ducks/CardList/CardListSlice";
+import { addCardList } from "redux/ducks/CardList";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
 

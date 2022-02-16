@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
-import { saveUser } from "redux/ducks/User/UserSlice";
+import { saveUser } from "redux/ducks/User";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
 type UsernameModalProps = {

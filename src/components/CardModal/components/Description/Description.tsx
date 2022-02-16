@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { updateCardDescription } from "redux/ducks/Card/CardSlice";
+import { updateCardDescription } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { Textarea, Button } from "components/ui";
 

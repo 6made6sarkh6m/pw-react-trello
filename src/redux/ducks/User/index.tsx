@@ -1,1 +1,1 @@
-export { default as UserReducer } from "./UserSlice";
+export { default as UserReducer, saveUser } from "./UserSlice";
