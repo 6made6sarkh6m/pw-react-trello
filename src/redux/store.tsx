@@ -1,8 +1,8 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { CardListReducer } from "./ducks/CardList";
-import { CardReducer } from "./ducks/Card";
-import { CommentReducer } from "./ducks/Comments";
-import { UserReducer } from "./ducks/User";
+import { CardListReducer } from "./ducks";
+import { CardReducer } from "./ducks";
+import { CommentReducer } from "./ducks";
+import { UserReducer } from "./ducks";
 import {
   persistStore,
   persistReducer,

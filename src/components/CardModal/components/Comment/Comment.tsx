@@ -1,17 +1,16 @@
-import DeleteIcon from "components/ui/icons/DeleteIcon";
-import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
+import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "components/ui/components/DeleteButton";
-import { Textarea } from "components/ui/components/Textarea";
+import { DeleteButton } from "components/ui";
+import { DeleteIcon } from "components/ui";
+import { TextInput } from "components/ui";
 import { useDispatch } from "react-redux";
 import {
   deleteComment,
   updateComment,
 } from "redux/ducks/Comments/CommentsSlice";
 import { Field, Form } from "react-final-form";
-import { TextInput } from "components/ui/components/TextInput";
 
 interface CommentProps {
   id: string;

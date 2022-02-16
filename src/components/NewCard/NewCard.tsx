@@ -1,12 +1,12 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
 import { addCard } from "redux/ducks/Card/CardSlice";
 import { Field, Form } from "react-final-form";
-import { TextInput } from "components/ui/components/TextInput";
+import { TextInput } from "components/ui";
+import { Button } from "components/ui";
+
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
@@ -18,7 +18,6 @@ type Value = {
 
 const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
-  const [currentTitle, setCurrentTitle] = useState("");
 
   const onSubmit = (value: Value) => {
     const cardTitle = value.newCardTitle.trim();

@@ -1,12 +1,12 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { CardList } from "components/CardList";
+import { COLORS } from "styles/colors";
 import { useSelector } from "react-redux";
 import { selectCardList } from "redux/selectors";
-import { Button } from "components/ui/components/Button";
-import { COLORS } from "styles/colors";
-import AddIcon from "components/ui/icons/AddIcon";
 import { NewCardList } from "components/NewCardList";
+import { CardList } from "components/CardList";
+import { AddIcon } from "components/ui";
+import { Button } from "components/ui";
 
 const Board: FC = () => {
   const lists = useSelector(selectCardList);

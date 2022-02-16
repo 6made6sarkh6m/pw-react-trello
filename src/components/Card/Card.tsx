@@ -1,13 +1,13 @@
 import React, { useState, useMemo, FC } from "react";
 import styled from "styled-components";
-import DeleteIcon from "../ui/icons/DeleteIcon";
-import CommentIcon from "../ui/icons/CommentIcon";
-import { CardModal } from "../CardModal";
+import { CardModal } from "components/CardModal";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/DeleteButton";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCard } from "redux/ducks/Card/CardSlice";
 import { selectComment } from "redux/selectors";
+import { DeleteButton } from "components/ui";
+import { DeleteIcon } from "components/ui";
+import { CommentIcon } from "components/ui";
 
 interface CardProps {
   listId: string;
@@ -29,6 +29,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
   const handleDeleteClick = (id: string) => {
     dispatch(deleteCard({ id }));
   };
+
   return (
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
@@ -41,7 +42,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
           <DeleteIcon />
         </DeleteButton>
         <CommentCounter>
-          <CommentIcon/>
+          <CommentIcon />
           {commentCount}
         </CommentCounter>
       </CardItem>

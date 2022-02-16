@@ -11,9 +11,10 @@ interface StyledProps {
 const TextInput: FC<TextAreaProps> = ({
   input,
   meta,
+  ref,
   ...rest
 }: TextAreaProps) => {
-  return <StyledTextInput {...input} {...rest} />;
+  return <StyledTextInput ref={ref} {...input} {...rest} />;
 };
 
 const StyledTextInput = styled.input<StyledProps>`

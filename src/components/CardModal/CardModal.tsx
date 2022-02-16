@@ -1,17 +1,18 @@
-import React, { FC, useRef, useEffect, useState, useMemo } from "react";
-import { Comment } from "./components/Comment";
-import { NewComment } from "./components/NewComment";
-import { Description } from "./components/Description";
+import React, { FC, useRef, useMemo } from "react";
+import { Comment } from "./components";
+import { NewComment } from "./components";
+import { Description } from "./components";
 import useClickOutside from "hooks/useClickOutside";
-import DeleteIcon from "../ui/icons/DeleteIcon";
+import { DeleteIcon } from "components/ui";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/DeleteButton";
+import { DeleteButton } from "components/ui";
+import { TextInput } from "components/ui";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 import { Form, Field } from "react-final-form";
-import { TextInput } from "components/ui/components/TextInput";
+
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -23,6 +24,7 @@ interface CardViewProps {
 type Value = {
   title: string;
 };
+
 const CardModal: FC<CardViewProps> = ({
   onClose,
   cardId,

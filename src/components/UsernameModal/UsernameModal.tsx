@@ -1,12 +1,11 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User/UserSlice";
 import { Form, Field } from "react-final-form";
-import { TextInput } from "components/ui/components/TextInput";
+import { TextInput } from "components/ui";
+import { Button } from "components/ui";
 type UsernameModalProps = {
   onSubmit?: () => void;
 };
@@ -14,9 +13,9 @@ type UsernameModalProps = {
 type Value = {
   userName: string;
 };
+
 const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
   const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleUserNameSubmit = (value: Value) => {

@@ -1,10 +1,5 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, useMemo } from "react";
 import styled from "styled-components";
-import AddIcon from "../ui/icons/AddIcon";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
-import { Card } from "../Card";
-import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCard } from "redux/selectors";
@@ -12,10 +7,15 @@ import {
   deleteCardList,
   updateCardList,
 } from "redux/ducks/CardList/CardListSlice";
-import { DeleteButton } from "components/ui/components/DeleteButton";
-import DeleteIcon from "components/ui/icons/DeleteIcon";
+import { Card } from "components/Card";
+import { NewCard } from "components/NewCard";
 import { Field, Form } from "react-final-form";
-import { TextInput } from "components/ui/components/TextInput";
+import { TextInput } from "components/ui";
+import { AddIcon } from "components/ui";
+import { Button } from "components/ui";
+import { DeleteButton } from "components/ui";
+import { DeleteIcon } from "components/ui";
+
 interface ListProps {
   listTitle: string;
   id: string;
