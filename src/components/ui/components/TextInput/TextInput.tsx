@@ -3,17 +3,17 @@ import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 
-type TextAreaProps = FieldRenderProps<string, any>;
+type TextInputProps = FieldRenderProps<string, any>;
 interface StyledProps {
   isEditing?: boolean;
   autoFocus?: boolean;
 }
-const TextInput: FC<TextAreaProps> = ({
+const TextInput: FC<TextInputProps> = ({
   input,
   meta,
   ref,
   ...rest
-}: TextAreaProps) => {
+}: TextInputProps) => {
   return <StyledTextInput ref={ref} {...input} {...rest} />;
 };
 
