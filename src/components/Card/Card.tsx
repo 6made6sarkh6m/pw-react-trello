@@ -5,9 +5,7 @@ import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCard } from "redux/ducks/Card/CardSlice";
 import { selectComment } from "redux/selectors";
-import { DeleteButton } from "components/ui";
-import { DeleteIcon } from "components/ui";
-import { CommentIcon } from "components/ui";
+import { DeleteButton, DeleteIcon, CommentIcon } from "components/ui";
 
 interface CardProps {
   listId: string;

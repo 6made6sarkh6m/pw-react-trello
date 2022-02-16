@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Button } from "components/ui";
-import { Textarea } from "components/ui";
 import { useDispatch } from "react-redux";
 import { updateCardDescription } from "redux/ducks/Card/CardSlice";
 import { Form, Field } from "react-final-form";
+import { Textarea, Button } from "components/ui";
 
 interface DescriptionProps {
   cardDescription: string;

@@ -3,15 +3,13 @@ import { Comment } from "./components";
 import { NewComment } from "./components";
 import { Description } from "./components";
 import useClickOutside from "hooks/useClickOutside";
-import { DeleteIcon } from "components/ui";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "components/ui";
-import { TextInput } from "components/ui";
 import { useDispatch, useSelector } from "react-redux";
 import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card/CardSlice";
 import { Form, Field } from "react-final-form";
+import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
 
 interface CardViewProps {
   onClose?: () => void;
@@ -44,6 +42,12 @@ const CardModal: FC<CardViewProps> = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.currentTarget.blur();
+      onSubmit({ title: e.currentTarget.value });
+    }
+  };
   const handleCloseView = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       onClose?.();
@@ -74,7 +78,13 @@ const CardModal: FC<CardViewProps> = ({
                       name="title"
                       initialValue={cardTitle}
                       render={({ input, rest }) => {
-                        return <TextInput {...input} {...rest} />;
+                        return (
+                          <TextInput
+                            {...input}
+                            {...rest}
+                            onKeyDown={handleKeyDown}
+                          />
+                        );
                       }}
                     />
                   </form>

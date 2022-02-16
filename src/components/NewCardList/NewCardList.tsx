@@ -4,8 +4,7 @@ import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
 import { addCardList } from "redux/ducks/CardList/CardListSlice";
 import { Form, Field } from "react-final-form";
-import { TextInput } from "components/ui";
-import { Button } from "components/ui";
+import { TextInput, Button } from "components/ui";
 
 interface NewCardListProps {
   onCancelAddingCardList: () => void;

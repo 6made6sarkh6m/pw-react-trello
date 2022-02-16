@@ -10,11 +10,13 @@ import {
 import { Card } from "components/Card";
 import { NewCard } from "components/NewCard";
 import { Field, Form } from "react-final-form";
-import { TextInput } from "components/ui";
-import { AddIcon } from "components/ui";
-import { Button } from "components/ui";
-import { DeleteButton } from "components/ui";
-import { DeleteIcon } from "components/ui";
+import {
+  AddIcon,
+  Button,
+  DeleteButton,
+  DeleteIcon,
+  TextInput,
+} from "components/ui";
 
 interface ListProps {
   listTitle: string;
@@ -45,6 +47,13 @@ const CardList: FC<ListProps> = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.currentTarget.blur();
+      onSubmit({ cardListTitle: e.currentTarget.value });
+    }
+  };
+
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
   };
@@ -65,7 +74,9 @@ const CardList: FC<ListProps> = ({
                 name={"cardListTitle"}
                 initialValue={listTitle}
                 render={({ input, rest }) => {
-                  return <TextInput {...input} {...rest} />;
+                  return (
+                    <TextInput {...input} {...rest} onKeyDown={handleKeyDown} />
+                  );
                 }}
               />
             </StyledForm>

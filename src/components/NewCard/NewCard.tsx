@@ -4,8 +4,7 @@ import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
 import { addCard } from "redux/ducks/Card/CardSlice";
 import { Field, Form } from "react-final-form";
-import { TextInput } from "components/ui";
-import { Button } from "components/ui";
+import { TextInput, Button } from "components/ui";
 
 interface NewCardProps {
   listId: string;
