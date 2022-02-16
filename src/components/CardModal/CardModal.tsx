@@ -68,7 +68,7 @@ const CardModal: FC<CardViewProps> = ({
 
   return (
     <Root>
-      <Container ref={modalRef}>
+      <Container ref={modalRef} onKeyDown={handleCloseView}>
         <Modal>
           <Header>
             <CardTitleContainer>
@@ -159,8 +159,9 @@ const Root = styled.div`
 `;
 
 const Container = styled.div`
+  max-width: 600px;
+  width: 100%;
   position: relative;
-  width: max-content;
   background-color: ${COLORS.blindingWhite};
   border-radius: 2px;
   padding: 10px;
@@ -169,7 +170,7 @@ const Container = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 600px;
+  width: 100%;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
