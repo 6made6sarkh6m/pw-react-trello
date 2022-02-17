@@ -8,8 +8,8 @@ import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
 import { Description, NewComment, Comment } from "./components";
-import { required } from "helpers/required";
-import { empty } from "helpers/empty";
+import { required, empty } from "helpers/validators";
+import { composeValidators } from "utils/composeValidators";
 
 interface CardViewProps {
   onClose?: () => void;
@@ -41,14 +41,6 @@ const CardModal: FC<CardViewProps> = ({
       dispatch(updateCard({ cardId, title }));
     }
   };
-
-  const composeValidators =
-    (...validators: any) =>
-    (value: any) =>
-      validators.reduce(
-        (error: any, validator: any) => error || validator(value),
-        undefined
-      );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {

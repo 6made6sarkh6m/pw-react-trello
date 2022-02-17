@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
-import { required } from "helpers/required";
-import { empty } from "helpers/empty";
+import { required, empty } from "helpers/validators";
+import { composeValidators } from "utils/composeValidators";
 type UsernameModalProps = {
   onSubmit?: () => void;
 };
@@ -27,14 +27,6 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
       }
     }
   };
-
-  const composeValidators =
-    (...validators: any) =>
-    (value: any) =>
-      validators.reduce(
-        (error: any, validator: any) => error || validator(value),
-        undefined
-      );
 
   return (
     <Root>
