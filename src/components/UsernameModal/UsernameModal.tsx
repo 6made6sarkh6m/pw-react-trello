@@ -37,25 +37,27 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
           onSubmit={handleUserNameSubmit}
           render={({ handleSubmit }) => (
             <InputWrapper onSubmit={handleSubmit}>
-              <Field
-                name="userName"
-                validate={composeValidators(required, empty)}
-                render={({ input, rest, meta }) => {
-                  return (
-                    <>
-                      <TextInput
-                        autoFocus
-                        spellCheck={false}
-                        {...input}
-                        {...rest}
-                      />
-                      {meta.error && meta.touched && (
-                        <ErrorTitle>{meta.error}</ErrorTitle>
-                      )}
-                    </>
-                  );
-                }}
-              />
+              <div style={{ width: "100%", flexDirection: "column" }}>
+                <Field
+                  name="userName"
+                  validate={composeValidators(required, empty)}
+                  render={({ input, rest, meta }) => {
+                    return (
+                      <>
+                        <TextInput
+                          autoFocus
+                          spellCheck={false}
+                          {...input}
+                          {...rest}
+                        />
+                        {meta.error && meta.touched && (
+                          <ErrorTitle>{meta.error}</ErrorTitle>
+                        )}
+                      </>
+                    );
+                  }}
+                />
+              </div>
               <StyledButton type="submit" primary>
                 SAVE
               </StyledButton>

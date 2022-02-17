@@ -82,6 +82,7 @@ const CardList: FC<ListProps> = ({
           <DeleteIcon />
         </DeleteButton>
       </Header>
+
       <ul>
         {filteredCards.map((card) => {
           return (
@@ -97,6 +98,7 @@ const CardList: FC<ListProps> = ({
           );
         })}
       </ul>
+
       {isAddCardShowed ? (
         <NewCard listId={id} onCancelAddingCard={onCancelAddCardClick} />
       ) : (

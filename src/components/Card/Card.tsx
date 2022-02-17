@@ -30,6 +30,16 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
 
   return (
     <>
+      {isOpen && (
+        <CardModal
+          cardId={id}
+          cardTitle={title}
+          listTitle={listTitle}
+          cardDescription={cardDescription}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
+
       <CardItem onClick={() => setIsOpen(!isOpen)}>
         <Container>
           <CardTitle>{title}</CardTitle>
@@ -48,15 +58,6 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
           </CommentCounter>
         </div>
       </CardItem>
-      {isOpen && (
-        <CardModal
-          cardId={id}
-          cardTitle={title}
-          listTitle={listTitle}
-          cardDescription={cardDescription}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
     </>
   );
 };
