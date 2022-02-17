@@ -5,6 +5,7 @@ import { addComment } from "redux/ducks/Comments";
 import { selectUser } from "redux/selectors";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
+import { FormApi } from "final-form";
 
 interface NewCommentProps {
   cardId: string;
@@ -19,10 +20,11 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const author = authorData.name;
   const dispatch = useDispatch();
 
-  const onSubmit = (value: Value) => {
+  const onSubmit = (value: Value, form: FormApi<Value, "">) => {
     const comment = value.newComment.trim();
     if (comment) {
       dispatch(addComment({ cardId, comment, author }));
+      form.reset();
     }
   };
 
@@ -31,13 +33,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
       <Form
         onSubmit={onSubmit}
         render={({ handleSubmit, form }) => (
-          <form
-            onSubmit={(event) => {
-              handleSubmit(event)?.then(() => {
-                form.reset();
-              });
-            }}
-          >
+          <form onSubmit={handleSubmit}>
             <Field
               name="newComment"
               render={({ input, rest }) => {
