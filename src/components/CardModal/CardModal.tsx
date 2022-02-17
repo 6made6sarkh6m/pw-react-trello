@@ -7,7 +7,7 @@ import { selectComment, selectUser } from "redux/selectors";
 import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
-import { Description, NewComment, Comment } from "./components";
+import { Description, NewComment, CommentList } from "./components";
 import { required, empty } from "helpers/validators";
 import { composeValidators } from "utils/composeValidators";
 
@@ -31,8 +31,6 @@ const CardModal: FC<CardViewProps> = ({
   cardDescription,
 }) => {
   const dispatch = useDispatch();
-  const comments = useSelector(selectComment);
-  const { name } = useSelector(selectUser);
   const modalRef = useRef(null);
 
   const onSubmit = (value: Value) => {
@@ -62,11 +60,6 @@ const CardModal: FC<CardViewProps> = ({
     onClose?.();
   });
 
-  const filteredComments = useMemo(
-    () =>
-      Object.values(comments).filter((comment) => comment.cardId === cardId),
-    [comments]
-  );
 
   return (
     <Root>
@@ -105,7 +98,6 @@ const CardModal: FC<CardViewProps> = ({
               <DeleteIcon />
             </DeleteButton>
           </Header>
-
           <ListTitleContainer>
             <ListTitle>В колонке {listTitle}</ListTitle>
           </ListTitleContainer>
@@ -115,19 +107,7 @@ const CardModal: FC<CardViewProps> = ({
           <Title>Actions</Title>
           <NewComment cardId={cardId} />
 
-          <CommentsContainer>
-            <Title>Comments</Title>
-            <ul>
-              {filteredComments.map((comment) => {
-                return (
-                  <li key={comment.id}>
-                    <Title>{name}</Title>
-                    <Comment id={comment.id} commentValue={comment.comment} />
-                  </li>
-                );
-              })}
-            </ul>
-          </CommentsContainer>
+          <CommentList cardId={cardId}/>
         </Modal>
       </Container>
     </Root>
@@ -204,12 +184,6 @@ const Title = styled.h2`
   padding: 8px;
   margin: 0;
   font-family: sans-serif;
-`;
-
-const CommentsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
 `;
 
 const ErrorTitle = styled.p`
