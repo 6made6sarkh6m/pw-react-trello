@@ -37,7 +37,12 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
               render={({ input, rest }) => {
                 return (
                   <CardItem>
-                    <TextInput {...input} {...rest} />
+                    <TextInput
+                      autoFocus
+                      spellCheck={false}
+                      {...input}
+                      {...rest}
+                    />
                   </CardItem>
                 );
               }}

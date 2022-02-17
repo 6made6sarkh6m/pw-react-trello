@@ -15,7 +15,6 @@ type Value = {
 };
 
 const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
-  
   const dispatch = useDispatch();
 
   const onSubmit = (value: Value) => {
@@ -36,7 +35,14 @@ const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
               <Field
                 name="newCardList"
                 render={({ input, rest }) => {
-                  return <TextInput {...input} {...rest} />;
+                  return (
+                    <TextInput
+                      autoFocus
+                      spellCheck={false}
+                      {...input}
+                      {...rest}
+                    />
+                  );
                 }}
               />
               <ButtonContainer>
