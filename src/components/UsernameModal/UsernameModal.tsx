@@ -22,9 +22,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
       if (name) {
         dispatch(saveUser({ isAuth: true, name }));
         onSubmit?.();
-      } else {
-        console.log(name);
-      }
+      } 
     }
   };
 
