@@ -1,8 +1,7 @@
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCard } from "redux/selectors";
+import { useDispatch } from "react-redux";
 import { deleteCardList, updateCardList } from "redux/ducks/CardList";
 import { Field, Form } from "react-final-form";
 import {
@@ -12,7 +11,8 @@ import {
   DeleteIcon,
   TextInput,
 } from "components/ui";
-import { Card, NewCard } from "components";
+import { NewCard } from "components";
+import { Cards } from "./components";
 
 interface ListProps {
   listTitle: string;
@@ -33,7 +33,6 @@ const CardList: FC<ListProps> = ({
   onAddCardClick,
   onCancelAddCardClick,
 }) => {
-  const cards = useSelector(selectCard);
   const dispatch = useDispatch();
 
   const onSubmit = (value: Value) => {
@@ -53,11 +52,6 @@ const CardList: FC<ListProps> = ({
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
   };
-
-  const filteredCards = useMemo(
-    () => Object.values(cards).filter((card) => card.listId === id),
-    [cards]
-  );
 
   return (
     <Root>
@@ -83,21 +77,7 @@ const CardList: FC<ListProps> = ({
         </DeleteButton>
       </Header>
 
-      <ul>
-        {filteredCards.map((card) => {
-          return (
-            <li key={card.id}>
-              <Card
-                listId={id}
-                title={card.cardTitle}
-                id={card.id}
-                cardDescription={card.cardDescription}
-                listTitle={listTitle}
-              />
-            </li>
-          );
-        })}
-      </ul>
+      <Cards listTitle={listTitle} id={id} />
 
       {isAddCardShowed ? (
         <NewCard listId={id} onCancelAddingCard={onCancelAddCardClick} />
