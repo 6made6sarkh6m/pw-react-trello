@@ -92,7 +92,7 @@ const PopupInner = styled.div`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  background-color: ${COLORS.lightGrey};
+  background-color: ${COLORS.blindingWhite};
   border-radius: 3px;
   box-shadow: ${COLORS.boxShadow};
   display: flex;
