@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
+import { validate } from "helpers/validate";
 type UsernameModalProps = {
   onSubmit?: () => void;
 };
@@ -26,8 +27,6 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
     }
   };
 
-  const required = (value: string) =>
-    value && value.trim() ? undefined : "Required";
   return (
     <Root>
       <PopupInner>
@@ -39,7 +38,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
             <InputWrapper onSubmit={handleSubmit}>
               <Field
                 name="userName"
-                validate={required}
+                validate={validate}
                 render={({ input, rest, meta }) => {
                   return (
                     <>
