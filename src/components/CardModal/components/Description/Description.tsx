@@ -58,7 +58,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
             />
             {isEditingDescription && (
               <DescriptionControlConteiner>
-                <StyledButton primary={true} type="submit">
+                <StyledButton primary type="submit">
                   Save
                 </StyledButton>
                 <StyledButton onClick={() => setIsEditingDescription(false)}>

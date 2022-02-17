@@ -51,7 +51,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
                 );
               }}
             />
-            <StyledButton type="submit" primary={true}>
+            <StyledButton type="submit" primary>
               Add
             </StyledButton>
           </form>

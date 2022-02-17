@@ -64,7 +64,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
                   );
                 }}
               />
-              <StyledButton type="submit" primary={true}>
+              <StyledButton type="submit" primary>
                 SAVE
               </StyledButton>
             </InputWrapper>
