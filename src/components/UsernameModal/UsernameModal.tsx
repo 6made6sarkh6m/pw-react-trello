@@ -22,11 +22,12 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
       if (name) {
         dispatch(saveUser({ isAuth: true, name }));
         onSubmit?.();
-      } 
+      }
     }
   };
 
-  const required = (value: string) => value && value.trim()? undefined : "Required";
+  const required = (value: string) =>
+    value && value.trim() ? undefined : "Required";
   return (
     <Root>
       <PopupInner>
@@ -42,7 +43,12 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
                 render={({ input, rest, meta }) => {
                   return (
                     <>
-                      <TextInput {...input} {...rest} />
+                      <TextInput
+                        autoFocus
+                        spellCheck={false}
+                        {...input}
+                        {...rest}
+                      />
                       {meta.error && meta.touched && (
                         <ErrorTitle>{meta.error}</ErrorTitle>
                       )}
@@ -50,7 +56,9 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
                   );
                 }}
               />
-              <StyledButton type={"submit"} primary={true}>SAVE</StyledButton>
+              <StyledButton type={"submit"} primary={true}>
+                SAVE
+              </StyledButton>
             </InputWrapper>
           )}
         />
