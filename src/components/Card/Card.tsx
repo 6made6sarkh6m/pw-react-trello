@@ -31,18 +31,22 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
   return (
     <>
       <CardItem onClick={() => setIsOpen(!isOpen)}>
-        <CardTitle>{title}</CardTitle>
-        <DeleteButton
-          onClick={() => {
-            handleDeleteClick(id);
-          }}
-        >
-          <DeleteIcon />
-        </DeleteButton>
-        <CommentCounter>
-          <CommentIcon />
-          {commentCount}
-        </CommentCounter>
+        <Container>
+          <CardTitle>{title}</CardTitle>
+          <DeleteButton
+            onClick={() => {
+              handleDeleteClick(id);
+            }}
+          >
+            <DeleteIcon />
+          </DeleteButton>
+        </Container>
+        <div>
+          <CommentCounter>
+            <CommentIcon />
+            {commentCount}
+          </CommentCounter>
+        </div>
       </CardItem>
       {isOpen && (
         <CardModal
@@ -59,7 +63,7 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
 
 const CardItem = styled.div`
   display: flex;
-  position: relative;
+  flex-direction: column;
   background-color: ${COLORS.blindingWhite};
   width: 100%;
   min-height: 50px;
@@ -69,6 +73,10 @@ const CardItem = styled.div`
   margin-bottom: 10px;
   border-radius: 3px;
   overflow: hidden;
+`;
+
+const Container = styled.div`
+  display: flex;
 `;
 
 const CardTitle = styled.span`
@@ -84,8 +92,7 @@ const CardTitle = styled.span`
 const CommentCounter = styled.span`
   font-family: monospace;
   font-size: 13px;
-  position: absolute;
-  margin-left: 10px;
+  margin-left: 0;
   align-self: flex-end;
   color: ${COLORS.deepGrey};
 `;

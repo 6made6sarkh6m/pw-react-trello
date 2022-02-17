@@ -33,8 +33,9 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
         render={({ handleSubmit, form }) => (
           <form
             onSubmit={(event) => {
-              handleSubmit(event);
-              form.reset();
+              handleSubmit(event)?.then(() => {
+                form.reset();
+              });
             }}
           >
             <Field

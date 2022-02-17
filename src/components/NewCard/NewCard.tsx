@@ -63,7 +63,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
 const CardItem = styled.div`
   display: flex;
   background-color: ${COLORS.blindingWhite};
-  width: 90%;
+  width: 100%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
