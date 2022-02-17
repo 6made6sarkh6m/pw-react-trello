@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
-import { validate } from "helpers/validate";
+import { required } from "helpers/required";
+import { empty } from "helpers/empty";
 type UsernameModalProps = {
   onSubmit?: () => void;
 };
@@ -27,6 +28,14 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
     }
   };
 
+  const composeValidators =
+    (...validators: any) =>
+    (value: any) =>
+      validators.reduce(
+        (error: any, validator: any) => error || validator(value),
+        undefined
+      );
+
   return (
     <Root>
       <PopupInner>
@@ -38,7 +47,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
             <InputWrapper onSubmit={handleSubmit}>
               <Field
                 name="userName"
-                validate={validate}
+                validate={composeValidators(required, empty)}
                 render={({ input, rest, meta }) => {
                   return (
                     <>
@@ -55,7 +64,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
                   );
                 }}
               />
-              <StyledButton type={"submit"} primary={true}>
+              <StyledButton type="submit" primary={true}>
                 SAVE
               </StyledButton>
             </InputWrapper>
