@@ -8,6 +8,7 @@ import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
 import { Description, NewComment, Comment } from "./components";
+import { validate } from "helpers/validate";
 
 interface CardViewProps {
   onClose?: () => void;
@@ -74,22 +75,12 @@ const CardModal: FC<CardViewProps> = ({
             <CardTitleContainer>
               <Form
                 onSubmit={onSubmit}
-                validate={(values) => {
-                  const errors = {
-                    title: "",
-                  };
-
-                  if (!values.title || !values.title.trim()) {
-                    errors.title = "Required";
-                  }
-
-                  return errors;
-                }}
                 render={({ handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
                     <Field
                       name="title"
                       initialValue={cardTitle}
+                      validate={validate}
                       render={({ input, rest, meta }) => {
                         return (
                           <>
