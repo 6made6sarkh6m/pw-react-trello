@@ -21,8 +21,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  cardList: CardListReducer,
-  card: CardReducer,
+  cardLists: CardListReducer,
+  cards: CardReducer,
   comments: CommentReducer,
   user: UserReducer,
 });
