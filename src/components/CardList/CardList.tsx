@@ -13,8 +13,6 @@ import {
 } from "components/ui";
 import { NewCard } from "components";
 import { Cards } from "./components";
-import { composeValidators } from "utils/composeValidators";
-import { hasEmptyValue } from "helpers/validators";
 import { FormApi } from "final-form";
 
 interface ListProps {
@@ -40,12 +38,20 @@ const CardList: FC<ListProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const onSubmit = (value: Value, form: FormApi<Value, "">) => {
+  const onSubmit = (value: Value) => {
     const listTitle = value.cardListTitle;
     dispatch(updateCardList({ id, listTitle }));
-    form.blur("cardListTitle");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const trimmedValue = e.currentTarget.value.trim();
+      if (trimmedValue) {
+        onSubmit({ cardListTitle: e.currentTarget.value });
+        e.currentTarget.blur();
+      }
+    }
+  };
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
   };
@@ -60,16 +66,9 @@ const CardList: FC<ListProps> = ({
               <Field
                 name={"cardListTitle"}
                 initialValue={listTitle}
-                validate={composeValidators(hasEmptyValue)}
                 render={({ input, rest }) => {
                   return (
-                    <>
-                      <TextInput {...input} {...rest} />
-                      <button
-                        type="submit"
-                        style={{ display: "none" }}
-                      ></button>
-                    </>
+                    <TextInput {...input} {...rest} onKeyDown={handleKeyDown} />
                   );
                 }}
               />
