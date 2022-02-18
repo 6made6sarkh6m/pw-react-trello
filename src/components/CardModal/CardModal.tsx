@@ -34,10 +34,8 @@ const CardModal: FC<CardViewProps> = ({
   const modalRef = useRef(null);
 
   const onSubmit = (value: Value) => {
-    const title = value.title.trim();
-    if (title) {
-      dispatch(updateCard({ cardId, title }));
-    }
+    const title = value.title;
+    dispatch(updateCard({ cardId, title }));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -59,7 +57,6 @@ const CardModal: FC<CardViewProps> = ({
   useClickOutside(modalRef, () => {
     onClose?.();
   });
-
 
   return (
     <Root>
@@ -107,7 +104,7 @@ const CardModal: FC<CardViewProps> = ({
           <Title>Actions</Title>
           <NewComment cardId={cardId} />
 
-          <CommentList cardId={cardId}/>
+          <CommentList cardId={cardId} />
         </Modal>
       </Container>
     </Root>

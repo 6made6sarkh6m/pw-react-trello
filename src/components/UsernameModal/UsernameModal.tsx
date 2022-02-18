@@ -19,13 +19,9 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
 
   const handleUserNameSubmit = (value: Value) => {
-    if (value.userName !== undefined) {
-      const name = value.userName.trim();
-      if (name) {
-        dispatch(saveUser({ isAuth: true, name }));
-        onSubmit?.();
-      }
-    }
+    const name = value.userName;
+    dispatch(saveUser({ isAuth: true, name }));
+    onSubmit?.();
   };
 
   return (
