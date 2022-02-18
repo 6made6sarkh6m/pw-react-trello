@@ -9,7 +9,7 @@ import { CardList, NewCardList } from "components";
 const Board: FC = () => {
   const lists = useSelector(selectCardList);
   const [isAddingCardList, setIsAddingCardList] = useState(false);
-  const [columnWithAddCarad, setColumnWithAddCard] = useState("");
+  const [columnWithAddCard, setColumnWithAddCard] = useState("");
 
   const handleCancelAddingCardList = () => {
     setIsAddingCardList(false);
@@ -31,7 +31,7 @@ const Board: FC = () => {
             <CardList
               listTitle={list.listTitle}
               id={list.id}
-              isAddCardShowed={columnWithAddCarad === list.id}
+              isAddCardShowed={columnWithAddCard === list.id}
               onAddCardClick={handleAddCardClick}
               onCancelAddCardClick={handleCancelAddCardClick}
             />
