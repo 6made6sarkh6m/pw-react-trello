@@ -15,7 +15,7 @@ const App = () => {
   return (
     <>
       {isOpenModal ? (
-        <UsernameModal onSubmit={() => setIsOpenModal(false)} />
+        <UsernameModal onClose={() => setIsOpenModal(false)} />
       ) : (
         <AppWrapper>
           <Header username={user.name} />

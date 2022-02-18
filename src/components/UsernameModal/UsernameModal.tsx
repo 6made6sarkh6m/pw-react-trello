@@ -8,20 +8,20 @@ import { TextInput, Button } from "components/ui";
 import { haseEmptyValue } from "helpers/validators";
 import { composeValidators } from "utils/composeValidators";
 type UsernameModalProps = {
-  onSubmit?: () => void;
+  onClose?: () => void;
 };
 
 type Value = {
   userName: string;
 };
 
-const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
+const UsernameModal: FC<UsernameModalProps> = ({ onClose }) => {
   const dispatch = useDispatch();
 
-  const handleUserNameSubmit = (value: Value) => {
+  const onSubmit = (value: Value) => {
     const name = value.userName;
     dispatch(saveUser({ isAuth: true, name }));
-    onSubmit?.();
+    onClose?.();
   };
 
   return (
@@ -30,7 +30,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
         <PopupTitle>What's your name?</PopupTitle>
 
         <Form
-          onSubmit={handleUserNameSubmit}
+          onSubmit={onSubmit}
           render={({ handleSubmit }) => (
             <InputWrapper onSubmit={handleSubmit}>
               <div style={{ width: "100%", flexDirection: "column" }}>
