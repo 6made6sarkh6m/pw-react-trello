@@ -13,7 +13,6 @@ import {
 } from "components/ui";
 import { NewCard } from "components";
 import { Cards } from "./components";
-import { FormApi } from "final-form";
 
 interface ListProps {
   listTitle: string;
@@ -64,7 +63,7 @@ const CardList: FC<ListProps> = ({
           render={({ handleSubmit }) => (
             <StyledForm onSubmit={handleSubmit}>
               <Field
-                name={"cardListTitle"}
+                name="cardListTitle"
                 initialValue={listTitle}
                 render={({ input, rest }) => {
                   return (
