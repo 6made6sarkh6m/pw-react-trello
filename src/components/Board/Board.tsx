@@ -2,15 +2,16 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useSelector } from "react-redux";
-import { selectCardList } from "redux/selectors";
+import { selectCards, selectCardLists } from "redux/selectors";
 import { AddIcon, Button } from "components/ui";
-import { CardList, NewCardList } from "components";
+import { CardList, CardModal, NewCardList } from "components";
 
 const Board: FC = () => {
-  const lists = useSelector(selectCardList);
+  const lists = useSelector(selectCardLists);
+  const cards = useSelector(selectCards);
   const [isAddingCardList, setIsAddingCardList] = useState(false);
   const [columnWithAddCard, setColumnWithAddCard] = useState("");
-
+  const [currentCardModalId, setCurrentCardModalId] = useState("");
   const handleCancelAddingCardList = () => {
     setIsAddingCardList(false);
   };
@@ -23,6 +24,20 @@ const Board: FC = () => {
     setColumnWithAddCard("");
   };
 
+  const handleCardClick = (cardId: string) => {
+    setCurrentCardModalId(cardId);
+  };
+
+  const getCardListTitle = (): string => {
+    const currentCardModal = cards[currentCardModalId];
+    const currentCardListId = currentCardModal?.listId;
+    const currentCardListData = lists[currentCardListId];
+
+    return currentCardListData?.listTitle;
+  };
+
+  const currentCardListTitle = getCardListTitle();
+
   return (
     <Root>
       {Object.values(lists).map((list) => {
@@ -31,6 +46,7 @@ const Board: FC = () => {
             <CardList
               listTitle={list.listTitle}
               id={list.id}
+              onCardClick={handleCardClick}
               isAddCardShowed={columnWithAddCard === list.id}
               onAddCardClick={handleAddCardClick}
               onCancelAddCardClick={handleCancelAddCardClick}
@@ -47,6 +63,15 @@ const Board: FC = () => {
           </IconContainer>
           Add list
         </StyledButton>
+      )}
+      {currentCardModalId && (
+        <CardModal
+          cardId={currentCardModalId}
+          cardTitle={cards[currentCardModalId].cardTitle}
+          listTitle={currentCardListTitle}
+          cardDescription={cards[currentCardModalId].cardDescription}
+          onClose={() => setCurrentCardModalId("")}
+        />
       )}
     </Root>
   );

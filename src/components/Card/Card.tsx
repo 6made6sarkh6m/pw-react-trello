@@ -1,10 +1,9 @@
-import React, { useState, useMemo, FC } from "react";
+import React, { useMemo, FC } from "react";
 import styled from "styled-components";
-import { CardModal } from "components";
 import { COLORS } from "styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCard } from "redux/ducks/Card";
-import { selectComment } from "redux/selectors";
+import { selectComments } from "redux/selectors";
 import { DeleteButton, DeleteIcon, CommentIcon } from "components/ui";
 
 interface CardProps {
@@ -13,12 +12,12 @@ interface CardProps {
   id: string;
   cardDescription: string;
   listTitle: string;
+  onCardClick: () => void;
 }
 
-const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
+const Card: FC<CardProps> = ({ title, id, onCardClick }) => {
   const dispatch = useDispatch();
-  const comments = useSelector(selectComment);
-  const [isOpen, setIsOpen] = useState(false);
+  const comments = useSelector(selectComments);
   const commentCount = useMemo(() => {
     return Object.values(comments).filter((comment) => comment.cardId === id)
       .length;
@@ -29,36 +28,24 @@ const Card: FC<CardProps> = ({ title, id, listTitle, cardDescription }) => {
   };
 
   return (
-    <>
-      {isOpen && (
-        <CardModal
-          cardId={id}
-          cardTitle={title}
-          listTitle={listTitle}
-          cardDescription={cardDescription}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
-
-      <CardItem onClick={() => setIsOpen(!isOpen)}>
-        <Container>
-          <CardTitle>{title}</CardTitle>
-          <DeleteButton
-            onClick={() => {
-              handleDeleteClick(id);
-            }}
-          >
-            <DeleteIcon />
-          </DeleteButton>
-        </Container>
-        <div>
-          <CommentCounter>
-            <CommentIcon />
-            {commentCount}
-          </CommentCounter>
-        </div>
-      </CardItem>
-    </>
+    <CardItem onClick={onCardClick}>
+      <Container>
+        <CardTitle>{title}</CardTitle>
+        <DeleteButton
+          onClick={() => {
+            handleDeleteClick(id);
+          }}
+        >
+          <DeleteIcon />
+        </DeleteButton>
+      </Container>
+      <div>
+        <CommentCounter>
+          <CommentIcon />
+          {commentCount}
+        </CommentCounter>
+      </div>
+    </CardItem>
   );
 };
 

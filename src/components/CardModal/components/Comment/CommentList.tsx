@@ -1,41 +1,39 @@
-import React, {FC, useMemo} from 'react';
-import styled from 'styled-components';
-import {useSelector} from "react-redux";
-import { selectComment, selectUser } from 'redux/selectors';
-import Comment from './Comment';
+import React, { FC, useMemo } from "react";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { selectComments, selectUser } from "redux/selectors";
+import Comment from "./Comment";
 
 interface CommentListProps {
-    cardId: string;
+  cardId: string;
 }
 
-const CommentList: FC<CommentListProps> = ({cardId}) => {
+const CommentList: FC<CommentListProps> = ({ cardId }) => {
+  const comments = useSelector(selectComments);
+  const { name } = useSelector(selectUser);
 
-    const comments = useSelector(selectComment);
-    const {name} = useSelector(selectUser);
+  const filteredComments = useMemo(
+    () =>
+      Object.values(comments).filter((comment) => comment.cardId === cardId),
+    [comments]
+  );
 
-    const filteredComments = useMemo(
-        () =>
-          Object.values(comments).filter((comment) => comment.cardId === cardId),
-        [comments]
-      );
-
-      return (
-        <CommentsContainer>
-        <Title>Comments</Title>
-        <ul>
-          {filteredComments.map((comment) => {
-            return (
-              <li key={comment.id}>
-                <Title>{name}</Title>
-                <Comment id={comment.id} commentValue={comment.comment} />
-              </li>
-            );
-          })}
-        </ul>
-      </CommentsContainer>
-      )
-
-}
+  return (
+    <CommentsContainer>
+      <Title>Comments</Title>
+      <ul>
+        {filteredComments.map((comment) => {
+          return (
+            <li key={comment.id}>
+              <Title>{name}</Title>
+              <Comment id={comment.id} commentValue={comment.comment} />
+            </li>
+          );
+        })}
+      </ul>
+    </CommentsContainer>
+  );
+};
 
 const CommentsContainer = styled.div`
   display: flex;

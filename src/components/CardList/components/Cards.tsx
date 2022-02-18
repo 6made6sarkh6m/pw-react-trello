@@ -1,15 +1,16 @@
 import React, { FC, useMemo } from "react";
 import { Card } from "components";
-import { selectCard } from "redux/selectors";
+import { selectCards } from "redux/selectors";
 import { useSelector } from "react-redux";
 
 interface CardsProps {
   listTitle: string;
   id: string;
+  onCardClick: (cardId: string) => void;
 }
 
-const Cards: FC<CardsProps> = ({ listTitle, id }) => {
-  const cards = useSelector(selectCard);
+const Cards: FC<CardsProps> = ({ listTitle, id, onCardClick }) => {
+  const cards = useSelector(selectCards);
 
   const filteredCards = useMemo(
     () => Object.values(cards).filter((card) => card.listId === id),
@@ -27,6 +28,7 @@ const Cards: FC<CardsProps> = ({ listTitle, id }) => {
               id={card.id}
               cardDescription={card.cardDescription}
               listTitle={listTitle}
+              onCardClick={() => onCardClick(card.id)}
             />
           </li>
         );

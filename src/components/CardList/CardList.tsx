@@ -18,6 +18,7 @@ interface ListProps {
   listTitle: string;
   id: string;
   isAddCardShowed: boolean;
+  onCardClick: (cardId: string) => void;
   onAddCardClick: (id: string) => void;
   onCancelAddCardClick: () => void;
 }
@@ -30,6 +31,7 @@ const CardList: FC<ListProps> = ({
   listTitle,
   id,
   isAddCardShowed,
+  onCardClick,
   onAddCardClick,
   onCancelAddCardClick,
 }) => {
@@ -77,7 +79,7 @@ const CardList: FC<ListProps> = ({
         </DeleteButton>
       </Header>
 
-      <Cards listTitle={listTitle} id={id} />
+      <Cards listTitle={listTitle} id={id} onCardClick={onCardClick} />
 
       {isAddCardShowed ? (
         <NewCard listId={id} onCancelAddingCard={onCancelAddCardClick} />
