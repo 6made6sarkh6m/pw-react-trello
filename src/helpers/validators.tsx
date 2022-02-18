@@ -1,4 +1,2 @@
-export const empty = (value: string) =>
-  value.trim() ? undefined : "No empty spaces";
-
-export const required = (value: string) => (value ? undefined : "Required");
+export const haseEmptyValue = (value: string) =>
+  value && value.trim() ? undefined : "Required";

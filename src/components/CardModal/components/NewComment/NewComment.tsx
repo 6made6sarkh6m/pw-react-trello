@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "redux/ducks/Comments";

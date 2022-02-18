@@ -2,13 +2,12 @@ import React, { FC, useRef, useMemo } from "react";
 import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { useDispatch, useSelector } from "react-redux";
-import { selectComment, selectUser } from "redux/selectors";
+import { useDispatch } from "react-redux";
 import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
 import { Description, NewComment, CommentList } from "./components";
-import { required, empty } from "helpers/validators";
+import { haseEmptyValue } from "helpers/validators";
 import { composeValidators } from "utils/composeValidators";
 
 interface CardViewProps {
@@ -71,7 +70,7 @@ const CardModal: FC<CardViewProps> = ({
                     <Field
                       name="title"
                       initialValue={cardTitle}
-                      validate={composeValidators(required, empty)}
+                      validate={composeValidators(haseEmptyValue)}
                       render={({ input, rest, meta }) => {
                         return (
                           <>
