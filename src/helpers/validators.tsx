@@ -1,2 +1,2 @@
-export const haseEmptyValue = (value: string) =>
+export const hasEmptyValue = (value: string) =>
   value && value.trim() ? undefined : "Required";

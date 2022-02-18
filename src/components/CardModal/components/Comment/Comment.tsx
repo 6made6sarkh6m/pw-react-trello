@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { deleteComment, updateComment } from "redux/ducks/Comments";
 import { Field, Form } from "react-final-form";
 import { TextInput, DeleteButton, DeleteIcon } from "components/ui";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
 
 interface CommentProps {
   id: string;
@@ -21,12 +23,10 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
   const onSubmit = (value: Value) => {
-    const comment = value.comment.trim();
-    if (comment) {
-      dispatch(updateComment({ id, comment }));
-      setComment(comment);
-      setIsEditing(false);
-    }
+    const comment = value.comment;
+    dispatch(updateComment({ id, comment }));
+    setComment(comment);
+    setIsEditing(false);
   };
 
   const handleDeleteClick = () => {
@@ -57,6 +57,7 @@ const Comment: FC<CommentProps> = ({ id, commentValue }) => {
                 <Field
                   name="comment"
                   initialValue={comment}
+                  validate={composeValidators(hasEmptyValue)}
                   render={({ input, rest }) => {
                     return <TextInput {...input} {...rest} autoFocus />;
                   }}
@@ -109,4 +110,5 @@ const EditCommentButton = styled.a`
 const StyledForm = styled.form`
   flex-grow: 1;
 `;
+
 export default Comment;

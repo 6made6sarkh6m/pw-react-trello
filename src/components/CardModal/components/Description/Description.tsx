@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { updateCardDescription } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { Textarea, Button } from "components/ui";
+import { FormApi } from "final-form";
 
 interface DescriptionProps {
   cardDescription: string;
@@ -18,14 +19,10 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
 
-  const onSubmit = (value: Value) => {
-    const descriptionCard = value.description.trim();
-    if (descriptionCard) {
-      dispatch(updateCardDescription({ id, descriptionCard }));
-      setIsEditingDescription(false);
-    } else {
-      setIsEditingDescription(false);
-    }
+  const onSubmit = (value: Value, form: FormApi<Value, "">) => {
+    const descriptionCard = value.description;
+    dispatch(updateCardDescription({ id, descriptionCard }));
+    setIsEditingDescription(false);
   };
 
   useEffect(() => {
@@ -58,9 +55,7 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
             />
             {isEditingDescription && (
               <DescriptionControlConteiner>
-                <StyledButton primary type="submit">
-                  Save
-                </StyledButton>
+                <StyledButton primary>Save</StyledButton>
                 <StyledButton onClick={() => setIsEditingDescription(false)}>
                   Cancel
                 </StyledButton>

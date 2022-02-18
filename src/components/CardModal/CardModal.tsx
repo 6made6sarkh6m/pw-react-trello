@@ -7,7 +7,7 @@ import { updateCard } from "redux/ducks/Card";
 import { Form, Field } from "react-final-form";
 import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
 import { Description, NewComment, CommentList } from "./components";
-import { haseEmptyValue } from "helpers/validators";
+import { hasEmptyValue } from "helpers/validators";
 import { composeValidators } from "utils/composeValidators";
 
 interface CardViewProps {
@@ -39,11 +39,8 @@ const CardModal: FC<CardViewProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const trimmedTitle = e.currentTarget.value.trim();
-      if (trimmedTitle) {
-        onSubmit({ title: e.currentTarget.value });
-        e.currentTarget.blur();
-      }
+      onSubmit({ title: e.currentTarget.value });
+      e.currentTarget.blur();
     }
   };
 
@@ -70,7 +67,7 @@ const CardModal: FC<CardViewProps> = ({
                     <Field
                       name="title"
                       initialValue={cardTitle}
-                      validate={composeValidators(haseEmptyValue)}
+                      validate={composeValidators(hasEmptyValue)}
                       render={({ input, rest, meta }) => {
                         return (
                           <>

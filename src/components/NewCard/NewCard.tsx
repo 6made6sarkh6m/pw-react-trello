@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { addCard } from "redux/ducks/Card";
 import { Field, Form } from "react-final-form";
 import { TextInput, Button } from "components/ui";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
 
 interface NewCardProps {
   listId: string;
@@ -19,11 +21,9 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
 
   const onSubmit = (value: Value) => {
-    const cardTitle = value.newCardTitle.trim();
-    if (cardTitle) {
-      dispatch(addCard({ cardTitle, listId }));
-      onCancelAddingCard();
-    }
+    const cardTitle = value.newCardTitle;
+    dispatch(addCard({ cardTitle, listId }));
+    onCancelAddingCard();
   };
 
   return (
@@ -34,6 +34,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
           <form onSubmit={handleSubmit}>
             <Field
               name="newCardTitle"
+              validate={composeValidators(hasEmptyValue)}
               render={({ input, rest }) => {
                 return (
                   <CardItem>

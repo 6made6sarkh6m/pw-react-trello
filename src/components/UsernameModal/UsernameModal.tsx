@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { saveUser } from "redux/ducks/User";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
-import { haseEmptyValue } from "helpers/validators";
+import { hasEmptyValue } from "helpers/validators";
 import { composeValidators } from "utils/composeValidators";
 type UsernameModalProps = {
   onClose?: () => void;
@@ -36,7 +36,7 @@ const UsernameModal: FC<UsernameModalProps> = ({ onClose }) => {
               <div style={{ width: "100%", flexDirection: "column" }}>
                 <Field
                   name="userName"
-                  validate={composeValidators(haseEmptyValue)}
+                  validate={composeValidators(hasEmptyValue)}
                   render={({ input, rest, meta }) => {
                     return (
                       <>

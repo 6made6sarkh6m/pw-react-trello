@@ -6,6 +6,8 @@ import { selectUser } from "redux/selectors";
 import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
 import { FormApi } from "final-form";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
 
 interface NewCommentProps {
   cardId: string;
@@ -21,11 +23,9 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
   const dispatch = useDispatch();
 
   const onSubmit = (value: Value, form: FormApi<Value, "">) => {
-    const comment = value.newComment.trim();
-    if (comment) {
-      dispatch(addComment({ cardId, comment, author }));
-      form.reset();
-    }
+    const comment = value.newComment;
+    dispatch(addComment({ cardId, comment, author }));
+    form.reset();
   };
 
   return (
@@ -36,6 +36,7 @@ const NewComment: FC<NewCommentProps> = ({ cardId }) => {
           <form onSubmit={handleSubmit}>
             <Field
               name="newComment"
+              validate={composeValidators(hasEmptyValue)}
               render={({ input, rest }) => {
                 return (
                   <TextInput
