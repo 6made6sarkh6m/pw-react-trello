@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
@@ -36,6 +36,7 @@ const CardList: FC<ListProps> = ({
   onCancelAddCardClick,
 }) => {
   const dispatch = useDispatch();
+  const [currentTitle, setCurrentTitle] = useState(listTitle);
 
   const onSubmit = (value: Value) => {
     const listTitle = value.cardListTitle;
@@ -44,15 +45,21 @@ const CardList: FC<ListProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const trimmedValue = e.currentTarget.value.trim();
-      if (trimmedValue) {
-        onSubmit({ cardListTitle: e.currentTarget.value });
-        e.currentTarget.blur();
-      }
+      e.currentTarget.blur();
     }
   };
   const handleDeleteCardList = (id: string) => {
     dispatch(deleteCardList({ id }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const trimmedValue = e.currentTarget.value.trim();
+    if (trimmedValue) {
+      onSubmit({ cardListTitle: trimmedValue });
+      setCurrentTitle(trimmedValue);
+    } else {
+      setCurrentTitle(listTitle);
+    }
   };
 
   return (
@@ -62,14 +69,12 @@ const CardList: FC<ListProps> = ({
           onSubmit={onSubmit}
           render={({ handleSubmit }) => (
             <StyledForm onSubmit={handleSubmit}>
-              <Field
-                name="cardListTitle"
-                initialValue={listTitle}
-                render={({ input, rest }) => {
-                  return (
-                    <TextInput {...input} {...rest} onKeyDown={handleKeyDown} />
-                  );
-                }}
+              <StyledTextInput
+                type="text"
+                onKeyDown={handleKeyDown}
+                onBlur={handleBlur}
+                value={currentTitle}
+                onChange={(e) => setCurrentTitle(e.target.value)}
               />
             </StyledForm>
           )}
@@ -127,6 +132,34 @@ const IconContainer = styled.div`
 
 const StyledButton = styled(Button)`
   width: 70%;
+`;
+
+const StyledTextInput = styled.input`
+  font-family: sans-serif;
+  width: 100%;
+  color: ${COLORS.deepBlue};
+  background: ${COLORS.lightGrey};
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  resize: none;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  min-height: 20px;
+  padding: 4px 8px;
+  margin: 0;
+  display: block;
+  transition: all 0.1s linear;
+
+  ::placeholder {
+    font-weight: 400;
+    color: ${COLORS.mildGrey};
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default CardList;
