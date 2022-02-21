@@ -1,46 +1,29 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { CardDataProps } from "App";
-import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
-import { CardProperties } from "enum/enum";
+import { useDispatch } from "react-redux";
+import { updateCardDescription } from "redux/ducks/Card";
+import { Form, Field } from "react-final-form";
+import { Textarea, Button } from "components/ui";
+import { FormApi } from "final-form";
+
 interface DescriptionProps {
   cardDescription: string;
-  cardId: string;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
+  id: string;
 }
 
-const Description: FC<DescriptionProps> = ({
-  cardDescription,
-  cardId,
-  onUpdateCard,
-}) => {
+type Value = {
+  description: string;
+};
+const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
+  const dispatch = useDispatch();
   const editDescRef = useRef<HTMLTextAreaElement>(null);
-  const [isEditingDescription, setIsEditingDescription] =
-    useState<boolean>(false);
-  const [description, setDescription] = useState<string>(cardDescription);
-  const onDescriptionUpdate = () => {
-    const trimmedDescription = description.trim();
-    if (trimmedDescription) {
-      setIsEditingDescription(false);
-      onUpdateCard(cardId, CardProperties.description, description);
-    } else {
-      setIsEditingDescription(false);
-      setDescription(cardDescription);
-    }
-  };
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
 
-  useClickOutside(editDescRef, () => {
-    if (isEditingDescription) {
-      setIsEditingDescription(false);
-      setDescription(description);
-    }
-  });
+  const onSubmit = (value: Value, form: FormApi<Value, "">) => {
+    const descriptionCard = value.description;
+    dispatch(updateCardDescription({ id, descriptionCard }));
+    setIsEditingDescription(false);
+  };
 
   useEffect(() => {
     if (isEditingDescription) {
@@ -49,61 +32,54 @@ const Description: FC<DescriptionProps> = ({
       editDescRef?.current?.blur?.();
     }
   }, [isEditingDescription]);
-  return (
-    <>
-      <DescriptionContainer>
-        <Title>Description</Title>
-        <Textarea
-          onClick={() => setIsEditingDescription(true)}
-          isEditing={isEditingDescription}
-          rows={8}
-          value={description}
-          placeholder="Type your description text"
-          onChange={(e) => setDescription(e.target.value)}
-          spellCheck={false}
-        ></Textarea>
-      </DescriptionContainer>
 
-      {isEditingDescription && (
-        <DescriptionControlConteiner>
-          <StyledButton primary={true} onClick={onDescriptionUpdate}>
-            Save
-          </StyledButton>
-          <StyledButton
-            primary={false}
-            onClick={() => {
-              setIsEditingDescription(false);
-              setDescription(cardDescription);
-            }}
-          >
-            Cancel
-          </StyledButton>
-        </DescriptionControlConteiner>
-      )}
-    </>
+  return (
+    <DescriptionContainer>
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="description"
+              initialValue={cardDescription}
+              render={({ input, rest }) => {
+                return (
+                  <Textarea
+                    {...input}
+                    {...rest}
+                    onClick={() => setIsEditingDescription(true)}
+                    rows={8}
+                  />
+                );
+              }}
+            />
+            {isEditingDescription && (
+              <DescriptionControlConteiner>
+                <StyledButton primary>Save</StyledButton>
+                <StyledButton onClick={() => setIsEditingDescription(false)}>
+                  Cancel
+                </StyledButton>
+              </DescriptionControlConteiner>
+            )}
+          </form>
+        )}
+      />
+    </DescriptionContainer>
   );
 };
+
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   padding: 0 4px;
   margin-top: 30px;
-`;
-const Title = styled.h2`
-  text-align: start;
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 600;
-  min-height: 20px;
-  padding: 8px;
-  margin: 0;
-  font-family: sans-serif;
 `;
 
 const DescriptionControlConteiner = styled.div`
   display: flex;
-  width: 30%;
+  max-width: 200px;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   padding: 0 4px;
@@ -111,7 +87,8 @@ const DescriptionControlConteiner = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 30%;
+  max-width: 100px;
+  width: 100%;
   align-items: center;
 `;
 

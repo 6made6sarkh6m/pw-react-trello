@@ -1,47 +1,36 @@
-import { CommentDataProps } from "App";
-import DeleteIcon from "components/ui/icons/DeleteIcon";
-import useClickOutside from "hooks/useClickOutside";
 import React, { FC, useEffect, useRef, useState } from "react";
+import useClickOutside from "hooks/useClickOutside";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "components/ui/components/DeleteButton";
-import { Textarea } from "components/ui/components/Textarea";
+import { useDispatch } from "react-redux";
+import { deleteComment, updateComment } from "redux/ducks/Comments";
+import { Field, Form } from "react-final-form";
+import { TextInput, DeleteButton, DeleteIcon } from "components/ui";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
+
 interface CommentProps {
   id: string;
   commentValue: string;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
 }
-
-const Comment: FC<CommentProps> = ({
-  id,
-  commentValue,
-  onUpdateComment,
-  onDeleteComment,
-}) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>(commentValue);
+type Value = {
+  comment: string;
+};
+const Comment: FC<CommentProps> = ({ id, commentValue }) => {
+  const dispatch = useDispatch();
+  const [isEditing, setIsEditing] = useState(false);
+  const [comment, setComment] = useState(commentValue);
   const ref = useRef<HTMLTextAreaElement>(null);
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      const trimmedComment = comment.trim();
-      if (trimmedComment) {
-        setIsEditing(false);
-        onUpdateComment(id, "comment", comment);
-      } else {
-        setIsEditing(false);
-        setComment(commentValue);
-      }
-    }
-    if (e.key === "Escape") {
-      setIsEditing(false);
-      setComment(commentValue);
-    }
+  const onSubmit = (value: Value) => {
+    const comment = value.comment;
+    dispatch(updateComment({ id, comment }));
+    setComment(comment);
+    setIsEditing(false);
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(deleteComment({ id }));
   };
   useClickOutside(ref, () => {
     if (isEditing) {
@@ -61,16 +50,23 @@ const Comment: FC<CommentProps> = ({
         {!isEditing && <CommentContent>{comment}</CommentContent>}
 
         {isEditing && (
-          <Textarea
-            autoFocus={true}
-            rows={1}
-            value={comment}
-            spellCheck={false}
-            onKeyDown={handleOnKeyDown}
-            onChange={(e) => setComment(e.target.value)}
+          <Form
+            onSubmit={onSubmit}
+            render={({ handleSubmit }) => (
+              <StyledForm onSubmit={handleSubmit}>
+                <Field
+                  name="comment"
+                  initialValue={comment}
+                  validate={composeValidators(hasEmptyValue)}
+                  render={({ input, rest }) => {
+                    return <TextInput {...input} {...rest} autoFocus />;
+                  }}
+                />
+              </StyledForm>
+            )}
           />
         )}
-        <DeleteButton onClick={() => onDeleteComment(id)}>
+        <DeleteButton onClick={handleDeleteClick}>
           <DeleteIcon />
         </DeleteButton>
       </CommentContainer>
@@ -80,10 +76,11 @@ const Comment: FC<CommentProps> = ({
     </>
   );
 };
+
 const CommentContainer = styled.div`
   position: relative;
   display: flex;
-  width: 70%;
+  width: 100%;
   min-height: 40px;
   background-color: ${COLORS.lightGrey};
   border-radius: 3px;
@@ -109,6 +106,9 @@ const EditCommentButton = styled.a`
   background-color: transparent;
   font-size: 13px;
   color: ${COLORS.deepGrey};
+`;
+const StyledForm = styled.form`
+  flex-grow: 1;
 `;
 
 export default Comment;

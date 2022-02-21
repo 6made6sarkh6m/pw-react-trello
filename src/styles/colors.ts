@@ -12,6 +12,6 @@ export const COLORS = {
     error: "red",
     buttonColors: {
         primary: "#0079bf",
-        transparent: "transparent",
+        transparent: "rgba(255, 255, 255, 0.3)",
     }
 }

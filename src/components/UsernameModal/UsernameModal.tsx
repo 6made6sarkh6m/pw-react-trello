@@ -1,62 +1,65 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import { StorageService } from "helpers/storageService";
 import { COLORS } from "styles/colors";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
-import { StorageProperties } from "enum/enum";
-type PopupProps = {
-  onSubmit?: () => void;
+import { useDispatch } from "react-redux";
+import { saveUser } from "redux/ducks/User";
+import { Form, Field } from "react-final-form";
+import { TextInput, Button } from "components/ui";
+import { hasEmptyValue } from "helpers/validators";
+import { composeValidators } from "utils/composeValidators";
+type UsernameModalProps = {
+  onClose?: () => void;
 };
 
-const UsernameModal: FC<PopupProps> = ({ onSubmit }) => {
-  const [username, setUsername] = useState<string>("");
-  const [isNotValid, setIsNotValid] = useState<boolean>(false);
+type Value = {
+  userName: string;
+};
 
-  const userData = {
-    name: ""
-  };
+const UsernameModal: FC<UsernameModalProps> = ({ onClose }) => {
+  const dispatch = useDispatch();
 
-  const handleOnSubmit = () => {
-    const trimmedUsername = username.trim();
-    if (trimmedUsername) {
-      userData.name = trimmedUsername;
-      StorageService.setData(userData, StorageProperties.user);
-      onSubmit?.();
-    } else {
-      setIsNotValid(true);
-    }
-  };
-
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const trimmedUsername = username.trim();
-      if (trimmedUsername) {
-        userData.name = trimmedUsername;
-        StorageService.setData(userData, StorageProperties.user);
-        onSubmit?.();
-      }
-    }
+  const onSubmit = (value: Value) => {
+    const name = value.userName;
+    dispatch(saveUser({ isAuth: true, name }));
+    onClose?.();
   };
 
   return (
     <Root>
       <PopupInner>
         <PopupTitle>What's your name?</PopupTitle>
-        <InputWrapper>
-          <Textarea
-            rows={1}
-            autoFocus={true}
-            placeholder="Type your name!"
-            onChange={(e) => setUsername(e.target.value)}
-            onKeyDown={handleonKeyDown}
-          ></Textarea>
-          <StyledButton primary={true} onClick={handleOnSubmit}>
-            SAVE
-          </StyledButton>
-        </InputWrapper>
-        {isNotValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
+
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit }) => (
+            <InputWrapper onSubmit={handleSubmit}>
+              <div style={{ width: "100%", flexDirection: "column" }}>
+                <Field
+                  name="userName"
+                  validate={composeValidators(hasEmptyValue)}
+                  render={({ input, rest, meta }) => {
+                    return (
+                      <>
+                        <TextInput
+                          autoFocus
+                          spellCheck={false}
+                          {...input}
+                          {...rest}
+                        />
+                        {meta.error && meta.touched && (
+                          <ErrorTitle>{meta.error}</ErrorTitle>
+                        )}
+                      </>
+                    );
+                  }}
+                />
+              </div>
+              <StyledButton type="submit" primary>
+                SAVE
+              </StyledButton>
+            </InputWrapper>
+          )}
+        />
       </PopupInner>
     </Root>
   );
@@ -87,18 +90,18 @@ const PopupInner = styled.div`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  background-color: ${COLORS.lightGrey};
+  background-color: ${COLORS.blindingWhite};
   border-radius: 3px;
   box-shadow: ${COLORS.boxShadow};
   display: flex;
   flex-direction: column;
   align-items: center;
   @media screen and (max-width: 800px) {
-    width: calc((100% - 100px) / 3);
+    width: 100%;
   }
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.form`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -123,12 +126,11 @@ const PopupTitle = styled.h2`
 `;
 
 const ErrorTitle = styled.p`
-    font-family: sans-serif;
-    color: ${COLORS.error};
-    font-size: 15px;
-    margin: 0;
-    min-height: 20px;
-    }
+  font-family: sans-serif;
+  color: ${COLORS.error};
+  font-size: 15px;
+  margin: 0;
+  min-height: 20px;
 `;
 
 const StyledButton = styled(Button)`

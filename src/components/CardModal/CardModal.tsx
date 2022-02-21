@@ -1,167 +1,106 @@
-import React, { FC, useRef, useEffect, useState, useMemo } from "react";
-import { Comment } from "./components/Comment";
-import { NewComment } from "./components/NewComment";
-import { Description } from "./components/Description";
-import { CardDataProps, CommentDataProps, CommentsData } from "App";
+import React, { FC, useRef, useMemo } from "react";
 import useClickOutside from "hooks/useClickOutside";
-import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
-import { CardProperties } from "enum/enum";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/DeleteButton";
-import { Textarea } from "../ui/components/Textarea";
+import { useDispatch } from "react-redux";
+import { updateCard } from "redux/ducks/Card";
+import { Form, Field } from "react-final-form";
+import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
+import { Description, NewComment, CommentList } from "./components";
+import { hasEmptyValue } from "helpers/validators";
+import { composeValidators } from "utils/composeValidators";
+
 interface CardViewProps {
   onClose?: () => void;
-  comments: CommentsData;
   cardId: string;
   cardTitle: string;
   listTitle: string;
   cardDescription: string;
-  username: string;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
+
+type Value = {
+  title: string;
+};
+
 const CardModal: FC<CardViewProps> = ({
   onClose,
-  comments,
   cardId,
   cardTitle,
   listTitle,
   cardDescription,
-  username,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
 }) => {
-  const editTitleRef = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useDispatch();
+  const modalRef = useRef(null);
 
-  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
+  const onSubmit = (value: Value) => {
+    const title = value.title;
+    dispatch(updateCard({ cardId, title }));
+  };
 
-  const [title, setTitle] = useState<string>(cardTitle);
-
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault();
-      const trimmedTitle = title.trim();
-      if (trimmedTitle) {
-        setIsEditingTitle(false);
-        onUpdateCard(cardId, CardProperties.title, title);
-      } else {
-        setTitle(cardTitle);
-        setIsEditingTitle(false);
-      }
+      onSubmit({ title: e.currentTarget.value });
+      e.currentTarget.blur();
     }
   };
-  const handleCloseView: EventListener | EventListenerObject = (e) => {
-    const event = e as KeyboardEvent;
-    if (event.key === "Escape") {
-      setIsEditingTitle(false);
-      setTitle(cardTitle);
+
+  const handleCloseView = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
       onClose?.();
     }
   };
-  useClickOutside(editTitleRef, () => {
-    if (isEditingTitle) {
-      setIsEditingTitle(false);
-      setTitle(cardTitle);
-    }
+
+  useClickOutside(modalRef, () => {
+    onClose?.();
   });
-
-  useEffect(() => {
-    if (isEditingTitle) {
-      editTitleRef?.current?.focus?.();
-      editTitleRef?.current?.select?.();
-    } else {
-      editTitleRef?.current?.blur?.();
-    }
-  }, [isEditingTitle]);
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleCloseView, false);
-
-    return () => {
-      document.removeEventListener("keydown", handleCloseView, false);
-    };
-  }, []);
-
-  const filteredComments = useMemo(
-    () =>
-      Object.values(comments).filter((comment) => comment.cardId === cardId),
-    [comments]
-  );
 
   return (
     <Root>
-      <Container>
+      <Container ref={modalRef} onKeyDown={handleCloseView}>
         <Modal>
           <Header>
-            <div style={{ width: "90%" }}>
-              <CardTitle>{cardTitle}</CardTitle>
-              {!isEditingTitle && (
-                <>
-                  <EditTitleContainer
-                    onClick={() => {
-                      setIsEditingTitle(true);
-                    }}
-                  ></EditTitleContainer>
-                </>
-              )}
-              <Textarea
-                isEditing={isEditingTitle}
-                rows={1}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onKeyDown={handleOnKeyDown}
-                spellCheck={false}
-              ></Textarea>
-            </div>
+            <CardTitleContainer>
+              <Form
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                  <form onSubmit={handleSubmit}>
+                    <Field
+                      name="title"
+                      initialValue={cardTitle}
+                      validate={composeValidators(hasEmptyValue)}
+                      render={({ input, rest, meta }) => {
+                        return (
+                          <>
+                            <TextInput
+                              {...input}
+                              {...rest}
+                              onKeyDown={handleKeyDown}
+                            />
+                            {meta.error && meta.touched && (
+                              <ErrorTitle>{meta.error}</ErrorTitle>
+                            )}
+                          </>
+                        );
+                      }}
+                    />
+                  </form>
+                )}
+              />
+            </CardTitleContainer>
             <DeleteButton onClick={onClose}>
-              <DeleteIcon></DeleteIcon>
+              <DeleteIcon />
             </DeleteButton>
           </Header>
           <ListTitleContainer>
             <ListTitle>В колонке {listTitle}</ListTitle>
           </ListTitleContainer>
-          <Description
-            cardDescription={cardDescription}
-            cardId={cardId}
-            onUpdateCard={onUpdateCard}
-          ></Description>
+
+          <Description cardDescription={cardDescription} id={cardId} />
+
           <Title>Actions</Title>
-          <NewComment
-            cardId={cardId}
-            username={username}
-            onAddComment={onAddComment}
-          ></NewComment>
-          <CommentsContainer>
-            <Title>Comments</Title>
-            <ul>
-              {filteredComments.map((comment) => {
-                return (
-                  <li key={comment.id}>
-                    <Title>{username}</Title>
-                    <Comment
-                      id={comment.id}
-                      commentValue={comment.comment}
-                      onUpdateComment={onUpdateComment}
-                      onDeleteComment={onDeleteComment}
-                    ></Comment>
-                  </li>
-                );
-              })}
-            </ul>
-          </CommentsContainer>
+          <NewComment cardId={cardId} />
+
+          <CommentList cardId={cardId} />
         </Modal>
       </Container>
     </Root>
@@ -169,25 +108,25 @@ const CardModal: FC<CardViewProps> = ({
 };
 
 const Root = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: ${COLORS.shadowed};
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: ${COLORS.shadowed};
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
 `;
 
 const Container = styled.div`
+  max-width: 600px;
+  width: 100%;
   position: relative;
-  width: max-content;
   background-color: ${COLORS.blindingWhite};
   border-radius: 2px;
   padding: 10px;
@@ -196,8 +135,8 @@ const Container = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 768px;
-  min-height: 600px;
+  width: 100%;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 768px) {
@@ -212,27 +151,8 @@ const Header = styled.div`
   padding: 0 4px;
 `;
 
-const CardTitle = styled.h2`
-  display: none;
-  text-align: start;
-  color: black;
-  font-weight: 600;
-  max-height: 30px;
-  padding: 8px;
-  margin: 0;
-`;
-
-const EditTitleContainer = styled.div`
-  position: absolute;
-  max-height: 60px;
-  margin: 0 4px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 4px;
-  cursor: text;
-  width: 90%;
+const CardTitleContainer = styled.div`
+  width: 100%;
 `;
 
 const ListTitleContainer = styled.div`
@@ -259,10 +179,11 @@ const Title = styled.h2`
   font-family: sans-serif;
 `;
 
-const CommentsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
+const ErrorTitle = styled.p`
+  font-family: sans-serif;
+  color: ${COLORS.error};
+  font-size: 15px;
+  margin: 0;
+  min-height: 20px;
 `;
-
 export default CardModal;

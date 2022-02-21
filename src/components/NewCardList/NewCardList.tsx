@@ -2,28 +2,27 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
-import { addCard } from "redux/ducks/Card";
-import { Field, Form } from "react-final-form";
+import { addCardList } from "redux/ducks/CardList";
+import { Form, Field } from "react-final-form";
 import { TextInput, Button } from "components/ui";
 import { composeValidators } from "utils/composeValidators";
 import { hasEmptyValue } from "helpers/validators";
 
-interface NewCardProps {
-  listId: string;
-  onCancelAddingCard: () => void;
+interface NewCardListProps {
+  onCancelAddingCardList: () => void;
 }
 
 type Value = {
-  newCardTitle: string;
+  newCardList: string;
 };
 
-const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
+const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
   const dispatch = useDispatch();
 
   const onSubmit = (value: Value) => {
-    const cardTitle = value.newCardTitle;
-    dispatch(addCard({ cardTitle, listId }));
-    onCancelAddingCard();
+    const listTitle = value.newCardList;
+    dispatch(addCardList({ listTitle }));
+    onCancelAddingCardList();
   };
 
   return (
@@ -32,28 +31,28 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
         onSubmit={onSubmit}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <Field
-              name="newCardTitle"
-              validate={composeValidators(hasEmptyValue)}
-              render={({ input, rest }) => {
-                return (
-                  <CardItem>
+            <CardListItem>
+              <Field
+                name="newCardList"
+                validate={composeValidators(hasEmptyValue)}
+                render={({ input, rest }) => {
+                  return (
                     <TextInput
                       autoFocus
                       spellCheck={false}
                       {...input}
                       {...rest}
                     />
-                  </CardItem>
-                );
-              }}
-            />
-            <ButtonContainer>
-              <StyledButton primary>Add</StyledButton>
-              <StyledButton onClick={() => onCancelAddingCard()}>
-                Cancel
-              </StyledButton>
-            </ButtonContainer>
+                  );
+                }}
+              />
+              <ButtonContainer>
+                <StyledButton primary={true}>Add</StyledButton>
+                <StyledButton onClick={onCancelAddingCardList}>
+                  Cancel
+                </StyledButton>
+              </ButtonContainer>
+            </CardListItem>
           </form>
         )}
       />
@@ -61,17 +60,18 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   );
 };
 
-const CardItem = styled.div`
+const CardListItem = styled.div`
   display: flex;
+  flex-direction: column;
   background-color: ${COLORS.blindingWhite};
-  width: 100%;
-  min-height: 50px;
+  width: 272px;
+  height: 70px;
   box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
   padding: 6px 8px;
   margin-bottom: 10px;
   border-radius: 3px;
-  overflow: hidden;
+  overflow-y: hidden;
 `;
 
 const ButtonContainer = styled.div`
@@ -84,4 +84,4 @@ const StyledButton = styled(Button)`
   width: 30%;
 `;
 
-export default NewCard;
+export default NewCardList;

@@ -1,89 +1,59 @@
-import React, { useState, useMemo, FC } from "react";
+import React, { useMemo, FC } from "react";
 import styled from "styled-components";
-import DeleteIcon from "../ui/icons/DeleteIcon";
-import CommentIcon from "../ui/icons/CommentIcon";
-import { CommentsData, CardDataProps, CommentDataProps } from "../../App";
-import { CardModal } from "../CardModal";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/DeleteButton";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCard } from "redux/ducks/Card";
+import { selectComments } from "redux/selectors";
+import { DeleteButton, DeleteIcon, CommentIcon } from "components/ui";
+
 interface CardProps {
   listId: string;
   title: string;
   id: string;
   cardDescription: string;
-  comments: CommentsData;
   listTitle: string;
-  username: string;
-  onDeleteCard: (cardId: string) => void;
-
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-
-  onAddComment: (cardId: string, author: string, comment: string) => void;
+  onCardClick: () => void;
 }
 
-const Card: FC<CardProps> = ({
-  title,
-  id,
-  comments,
-  listTitle,
-  cardDescription,
-  username,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
-}) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const Card: FC<CardProps> = ({ title, id, onCardClick }) => {
+  const dispatch = useDispatch();
+  const comments = useSelector(selectComments);
   const commentCount = useMemo(() => {
     return Object.values(comments).filter((comment) => comment.cardId === id)
       .length;
   }, [comments]);
+
+  const handleDeleteClick = (id: string) => {
+    dispatch(deleteCard({ id }));
+  };
+
   return (
-    <>
-      <CardItem onClick={() => setIsOpen(!isOpen)}>
+    <CardItem onClick={onCardClick}>
+      <Container>
         <CardTitle>{title}</CardTitle>
-        <DeleteButton onClick={() => onDeleteCard(id)}>
-          <DeleteIcon></DeleteIcon>
+        <DeleteButton
+          onClick={() => {
+            handleDeleteClick(id);
+          }}
+        >
+          <DeleteIcon />
         </DeleteButton>
+      </Container>
+      <div>
         <CommentCounter>
-          <CommentIcon></CommentIcon>
+          <CommentIcon />
           {commentCount}
         </CommentCounter>
-      </CardItem>
-      {isOpen && (
-        <CardModal
-          cardId={id}
-          cardTitle={title}
-          comments={comments}
-          listTitle={listTitle}
-          username={username}
-          cardDescription={cardDescription}
-          onClose={() => setIsOpen(false)}
-          onUpdateComment={onUpdateComment}
-          onDeleteComment={onDeleteComment}
-          onUpdateCard={onUpdateCard}
-          onAddComment={onAddComment}
-        ></CardModal>
-      )}
-    </>
+      </div>
+    </CardItem>
   );
 };
 
 const CardItem = styled.div`
   display: flex;
+  flex-direction: column;
   background-color: ${COLORS.blindingWhite};
-  width: 90%;
+  width: 100%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
   cursor: pointer;
@@ -91,6 +61,10 @@ const CardItem = styled.div`
   margin-bottom: 10px;
   border-radius: 3px;
   overflow: hidden;
+`;
+
+const Container = styled.div`
+  display: flex;
 `;
 
 const CardTitle = styled.span`
@@ -106,8 +80,7 @@ const CardTitle = styled.span`
 const CommentCounter = styled.span`
   font-family: monospace;
   font-size: 13px;
-  position: absolute;
-  margin-left: 10px;
+  margin-left: 0;
   align-self: flex-end;
   color: ${COLORS.deepGrey};
 `;

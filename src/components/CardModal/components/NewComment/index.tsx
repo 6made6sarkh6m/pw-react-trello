@@ -1,1 +1,1 @@
-export {default as NewComment} from './NewComment';
+export { default as NewComment } from "./NewComment";

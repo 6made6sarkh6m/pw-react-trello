@@ -1,152 +1,97 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
-import useClickOutside from "../../hooks/useClickOutside";
-import AddIcon from "../ui/icons/AddIcon";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
-import { CardDataProps, CardsData, CommentDataProps, CommentsData } from "App";
-import { Card } from "../Card";
-import { NewCard } from "../NewCard";
 import { COLORS } from "styles/colors";
+import { useDispatch } from "react-redux";
+import { deleteCardList, updateCardList } from "redux/ducks/CardList";
+import { Field, Form } from "react-final-form";
+import {
+  AddIcon,
+  Button,
+  DeleteButton,
+  DeleteIcon,
+  TextInput,
+} from "components/ui";
+import { NewCard } from "components";
+import { Cards } from "./components";
+
 interface ListProps {
   listTitle: string;
   id: string;
-  cards: CardsData;
-  comments: CommentsData;
-  username: string;
-  onUpdateList: (id: string, title: string) => void;
-  onAddCard: (listId: string, cardTitle: string) => void;
-  onDeleteCard: (id: string) => void;
-  onUpdateCard: (
-    cardId: string,
-    cardProperty: keyof CardDataProps,
-    value: string
-  ) => void;
-  onUpdateComment: (
-    id: string,
-    commentProperty: keyof CommentDataProps,
-    value: string
-  ) => void;
-  onDeleteComment: (id: string) => void;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
+  isAddCardShowed: boolean;
+  onCardClick: (cardId: string) => void;
+  onAddCardClick: (id: string) => void;
+  onCancelAddCardClick: () => void;
 }
+
+type Value = {
+  cardListTitle: string;
+};
 
 const CardList: FC<ListProps> = ({
   listTitle,
   id,
-  cards,
-  comments,
-  username,
-  onAddCard,
-  onDeleteCard,
-  onUpdateCard,
-  onUpdateComment,
-  onDeleteComment,
-  onAddComment,
-  onUpdateList,
+  isAddCardShowed,
+  onCardClick,
+  onAddCardClick,
+  onCancelAddCardClick,
 }) => {
-  const [currentTitle, setCurrentTitle] = useState<string>(listTitle);
-  const [isAddingCard, setIsAddingCard] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const ref = useRef<HTMLTextAreaElement>(null);
-  const [isAddingCardOnColumn, setAddingCardOnColumn] = useState<string>("");
+  const dispatch = useDispatch();
+  const [currentTitle, setCurrentTitle] = useState(listTitle);
 
-  let isAddingNewCard = false;
-
-  const handleOnAddNewCard = (id: string) => {
-    setAddingCardOnColumn(id);
-    isAddingNewCard = isAddingCardOnColumn === id;
+  const onSubmit = (value: Value) => {
+    const listTitle = value.cardListTitle;
+    dispatch(updateCardList({ id, listTitle }));
   };
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault();
-      const trimmedTitle = currentTitle.trim();
-      if (trimmedTitle) {
-        setIsEditing(false);
-        onUpdateList(id, currentTitle);
-      }
-    }
-
-    if (e.key === "Escape") {
-      setCurrentTitle(listTitle);
-      setIsEditing(false);
+      e.currentTarget.blur();
     }
   };
-
-  const handleCancelAddingCard = () => {
-    setIsAddingCard(false);
+  const handleDeleteCardList = (id: string) => {
+    dispatch(deleteCardList({ id }));
   };
-  useClickOutside(ref, () => {
-    if (isEditing) {
-      setIsEditing(false);
-    }
-  });
 
-  useEffect(() => {
-    if (isEditing) {
-      ref?.current?.focus?.();
-      ref?.current?.select?.();
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const trimmedValue = e.currentTarget.value.trim();
+    if (trimmedValue) {
+      onSubmit({ cardListTitle: trimmedValue });
+      setCurrentTitle(trimmedValue);
     } else {
-      ref?.current?.blur?.();
+      setCurrentTitle(listTitle);
     }
-  }, [isEditing]);
+  };
+
   return (
     <Root>
       <Header>
-        <Title>{listTitle}</Title>
-        {!isEditing && (
-          <EditTitleContainer
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          ></EditTitleContainer>
-        )}
-        <Textarea
-          isEditing={isEditing}
-          rows={1}
-          value={currentTitle}
-          spellCheck={false}
-          onChange={(e) => setCurrentTitle(e.target.value)}
-          onKeyDown={handleonKeyDown}
-        ></Textarea>
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit }) => (
+            <StyledForm onSubmit={handleSubmit}>
+              <StyledTextInput
+                type="text"
+                onKeyDown={handleKeyDown}
+                onBlur={handleBlur}
+                value={currentTitle}
+                onChange={(e) => setCurrentTitle(e.target.value)}
+              />
+            </StyledForm>
+          )}
+        />
+        <DeleteButton onClick={() => handleDeleteCardList(id)}>
+          <DeleteIcon />
+        </DeleteButton>
       </Header>
-      <ul>
-        {Object.values(cards)
-          .filter((card) => card.listId === id)
-          .map((card) => {
-            return (
-              <li key={card.id}>
-                <Card
-                  listId={id}
-                  title={card.cardTitle}
-                  id={card.id}
-                  username={username}
-                  comments={comments}
-                  cardDescription={card.cardDescription}
-                  listTitle={listTitle}
-                  onDeleteCard={onDeleteCard}
-                  onUpdateCard={onUpdateCard}
-                  onUpdateComment={onUpdateComment}
-                  onDeleteComment={onDeleteComment}
-                  onAddComment={onAddComment}
-                ></Card>
-              </li>
-            );
-          })}
-      </ul>
-      {isAddingCard ? (
-        <NewCard
-          listId={id}
-          onCancelAddingCard={handleCancelAddingCard}
-          onAddCard={onAddCard}
-        ></NewCard>
+
+      <Cards listTitle={listTitle} id={id} onCardClick={onCardClick} />
+
+      {isAddCardShowed ? (
+        <NewCard listId={id} onCancelAddingCard={onCancelAddCardClick} />
       ) : (
-        <StyledButton
-          onClick={() => setIsAddingCard(!isAddingCard)}
-          primary={false}
-        >
+        <StyledButton onClick={() => onAddCardClick(id)}>
           <IconContainer>
-            <AddIcon></AddIcon>
+            <AddIcon />
           </IconContainer>
           Add card
         </StyledButton>
@@ -154,47 +99,27 @@ const CardList: FC<ListProps> = ({
     </Root>
   );
 };
+
 const Root = styled.div`
   width: 272px;
   background: ${COLORS.lightGrey};
   border-radius: 3px;
   margin-right: 12px;
   margin-bottom: 12px;
-  padding: 0 4px 8px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
 `;
 
 const Header = styled.div`
   padding: 8px 4px;
   position: relative;
   display: flex;
+  flex-direction: row;
 `;
 
-const Title = styled.h2`
-  display: none;
-  text-align: start;
-  color: ${COLORS.deepBlue};
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 600;
-  min-height: 20px;
-  padding: 8px;
-  margin: 0;
-`;
-
-const EditTitleContainer = styled.div`
-  position: absolute;
-  margin: 0 4px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 4px;
-  cursor: pointer;
+const StyledForm = styled.form`
+  flex-grow: 1;
 `;
 
 const IconContainer = styled.div`
@@ -207,6 +132,34 @@ const IconContainer = styled.div`
 
 const StyledButton = styled(Button)`
   width: 70%;
+`;
+
+const StyledTextInput = styled.input`
+  font-family: sans-serif;
+  width: 100%;
+  color: ${COLORS.deepBlue};
+  background: ${COLORS.lightGrey};
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  resize: none;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  min-height: 20px;
+  padding: 4px 8px;
+  margin: 0;
+  display: block;
+  transition: all 0.1s linear;
+
+  ::placeholder {
+    font-weight: 400;
+    color: ${COLORS.mildGrey};
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default CardList;

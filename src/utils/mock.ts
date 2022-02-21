@@ -36,5 +36,6 @@ export const defaultComments = {
 };
 
 export const defaultUser = {
+  isAuth: false,
   name: ""
 };

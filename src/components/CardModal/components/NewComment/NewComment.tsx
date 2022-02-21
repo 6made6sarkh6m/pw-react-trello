@@ -1,51 +1,59 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import { COLORS } from "styles/colors";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
+import { useDispatch, useSelector } from "react-redux";
+import { addComment } from "redux/ducks/Comments";
+import { selectUser } from "redux/selectors";
+import { Form, Field } from "react-final-form";
+import { TextInput, Button } from "components/ui";
+import { FormApi } from "final-form";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
+
 interface NewCommentProps {
   cardId: string;
-  username: string;
-  onAddComment: (cardId: string, author: string, comment: string) => void;
 }
-const NewComment: FC<NewCommentProps> = ({
-  cardId,
-  username,
-  onAddComment,
-}) => {
-  const ref = useRef<HTMLTextAreaElement>(null);
-  const [newComment, setNewComment] = useState<string>("");
-  const onSaveComment = () => {
-    const trimmedComment = newComment.trim();
-    if (trimmedComment) {
-      onAddComment(cardId, username, newComment);
-      setNewComment("");
-      ref?.current?.blur?.();
-    }
+
+type Value = {
+  newComment: string;
+};
+
+const NewComment: FC<NewCommentProps> = ({ cardId }) => {
+  const authorData = useSelector(selectUser);
+  const author = authorData.name;
+  const dispatch = useDispatch();
+
+  const onSubmit = (value: Value, form: FormApi<Value, "">) => {
+    const comment = value.newComment;
+    dispatch(addComment({ cardId, comment, author }));
+    form.reset();
   };
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      if (newComment.trim() !== "") {
-        onAddComment(cardId, username, newComment);
-        setNewComment("");
-        ref?.current?.blur?.();
-      }
-    }
-  };
   return (
     <NewCommentContainer>
-      <Textarea
-        rows={3}
-        value={newComment}
-        placeholder="Type your comment here"
-        onChange={(e) => setNewComment(e.target.value)}
-        onKeyDown={handleOnKeyDown}
-        spellCheck={false}
-      ></Textarea>
-      <StyledButton primary={true} onClick={onSaveComment}>
-        Add
-      </StyledButton>
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit, form }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="newComment"
+              validate={composeValidators(hasEmptyValue)}
+              render={({ input, rest }) => {
+                return (
+                  <TextInput
+                    {...input}
+                    {...rest}
+                    placeholder="Type your comment here"
+                    spellCheck={false}
+                  />
+                );
+              }}
+            />
+            <StyledButton type="submit" primary>
+              Add
+            </StyledButton>
+          </form>
+        )}
+      />
     </NewCommentContainer>
   );
 };
@@ -53,15 +61,17 @@ const NewComment: FC<NewCommentProps> = ({
 const NewCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
   margin-top: 15px;
   position: relative;
   min-height: 20px;
-  box-shadow: 0 1px 0 ${COLORS.greyShadowed};
   padding: 0px 4px;
 `;
+
 const StyledButton = styled(Button)`
-  width: 70px;
+  max-width: 80px;
+  width: 100%;
   align-items: center;
 `;
+
 export default NewComment;
