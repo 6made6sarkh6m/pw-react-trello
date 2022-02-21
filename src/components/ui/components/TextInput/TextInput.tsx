@@ -3,20 +3,20 @@ import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
 
-type TextAreaProps = FieldRenderProps<string, any>;
+type TextInputProps = FieldRenderProps<string, any>;
 interface StyledProps {
   isEditing?: boolean;
   autoFocus?: boolean;
 }
-const Textarea: FC<TextAreaProps> = ({
+const TextInput: FC<TextInputProps> = ({
   input,
   meta,
   ...rest
-}: TextAreaProps) => {
-  return <StyledTextarea {...input} {...rest} />;
+}: TextInputProps) => {
+  return <StyledTextInput {...input} {...rest} />;
 };
 
-const StyledTextarea = styled.textarea<StyledProps>`
+const StyledTextInput = styled.input<StyledProps>`
   font-family: sans-serif;
   width: 100%;
   color: ${COLORS.deepBlue};
@@ -46,4 +46,4 @@ const StyledTextarea = styled.textarea<StyledProps>`
   }
 `;
 
-export default Textarea;
+export default TextInput;

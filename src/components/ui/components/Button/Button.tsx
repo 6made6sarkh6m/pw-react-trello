@@ -8,14 +8,26 @@ interface ButtonProps {
   background?: string;
   color?: string;
   primary?: boolean;
+  type?: any;
 }
 
 interface StyledProps {
   primary?: boolean;
 }
-const Button: FC<ButtonProps> = ({ className, onClick, children, primary }) => {
+const Button: FC<ButtonProps> = ({
+  className,
+  onClick,
+  children,
+  primary,
+  type,
+}) => {
   return (
-    <StyledButton primary={primary} className={className} onClick={onClick}>
+    <StyledButton
+      primary={primary}
+      className={className}
+      onClick={onClick}
+      type={type}
+    >
       {children}
     </StyledButton>
   );

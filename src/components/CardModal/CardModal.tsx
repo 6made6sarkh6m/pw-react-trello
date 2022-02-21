@@ -1,16 +1,15 @@
-import React, { FC, useRef, useEffect, useState, useMemo } from "react";
-import { Comment } from "./components/Comment";
-import { NewComment } from "./components/NewComment";
-import { Description } from "./components/Description";
+import React, { FC, useRef, useMemo } from "react";
 import useClickOutside from "hooks/useClickOutside";
-import DeleteIcon from "../ui/icons/DeleteIcon";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { DeleteButton } from "../ui/components/DeleteButton";
-import { Textarea } from "../ui/components/Textarea";
-import { useDispatch, useSelector } from "react-redux";
-import { selectComment, selectUser } from "redux/selectors";
-import { updateCard } from "redux/ducks/Card/CardSlice";
+import { useDispatch } from "react-redux";
+import { updateCard } from "redux/ducks/Card";
+import { Form, Field } from "react-final-form";
+import { DeleteButton, DeleteIcon, TextInput } from "components/ui";
+import { Description, NewComment, CommentList } from "./components";
+import { hasEmptyValue } from "helpers/validators";
+import { composeValidators } from "utils/composeValidators";
+
 interface CardViewProps {
   onClose?: () => void;
   cardId: string;
@@ -18,6 +17,11 @@ interface CardViewProps {
   listTitle: string;
   cardDescription: string;
 }
+
+type Value = {
+  title: string;
+};
+
 const CardModal: FC<CardViewProps> = ({
   onClose,
   cardId,
@@ -26,31 +30,22 @@ const CardModal: FC<CardViewProps> = ({
   cardDescription,
 }) => {
   const dispatch = useDispatch();
-  const comments = useSelector(selectComment);
-  const { name } = useSelector(selectUser);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [newTitle, setTitle] = useState(cardTitle);
   const modalRef = useRef(null);
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const onSubmit = (value: Value) => {
+    const title = value.title;
+    dispatch(updateCard({ cardId, title }));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault();
-      const title = newTitle.trim();
-      if (title) {
-        dispatch(updateCard({ cardId, title }));
-        setIsEditingTitle(false);
-      } else {
-        setTitle(cardTitle);
-        setIsEditingTitle(false);
-      }
+      onSubmit({ title: e.currentTarget.value });
+      e.currentTarget.blur();
     }
   };
 
-  const handleCloseView: EventListener | EventListenerObject = (e) => {
-    const event = e as KeyboardEvent;
-    if (event.key === "Escape") {
-      setIsEditingTitle(false);
-      setTitle(cardTitle);
+  const handleCloseView = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
       onClose?.();
     }
   };
@@ -59,45 +54,39 @@ const CardModal: FC<CardViewProps> = ({
     onClose?.();
   });
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleCloseView, false);
-
-    return () => {
-      document.removeEventListener("keydown", handleCloseView, false);
-    };
-  }, []);
-
-  const filteredComments = useMemo(
-    () =>
-      Object.values(comments).filter((comment) => comment.cardId === cardId),
-    [comments]
-  );
-
   return (
     <Root>
-      <Container ref={modalRef}>
+      <Container ref={modalRef} onKeyDown={handleCloseView}>
         <Modal>
           <Header>
-            <div style={{ width: "90%" }}>
-              <CardTitle>{cardTitle}</CardTitle>
-              {!isEditingTitle && (
-                <>
-                  <EditTitleContainer
-                    onClick={() => {
-                      setIsEditingTitle(true);
-                    }}
-                  ></EditTitleContainer>
-                </>
-              )}
-              <Textarea
-                isEditing={isEditingTitle}
-                rows={1}
-                value={newTitle}
-                onChange={(e) => setTitle(e.target.value)}
-                onKeyDown={handleOnKeyDown}
-                spellCheck={false}
-              ></Textarea>
-            </div>
+            <CardTitleContainer>
+              <Form
+                onSubmit={onSubmit}
+                render={({ handleSubmit }) => (
+                  <form onSubmit={handleSubmit}>
+                    <Field
+                      name="title"
+                      initialValue={cardTitle}
+                      validate={composeValidators(hasEmptyValue)}
+                      render={({ input, rest, meta }) => {
+                        return (
+                          <>
+                            <TextInput
+                              {...input}
+                              {...rest}
+                              onKeyDown={handleKeyDown}
+                            />
+                            {meta.error && meta.touched && (
+                              <ErrorTitle>{meta.error}</ErrorTitle>
+                            )}
+                          </>
+                        );
+                      }}
+                    />
+                  </form>
+                )}
+              />
+            </CardTitleContainer>
             <DeleteButton onClick={onClose}>
               <DeleteIcon />
             </DeleteButton>
@@ -105,29 +94,13 @@ const CardModal: FC<CardViewProps> = ({
           <ListTitleContainer>
             <ListTitle>В колонке {listTitle}</ListTitle>
           </ListTitleContainer>
-          <Description
-            cardDescription={cardDescription}
-            id={cardId}
-          ></Description>
-          <Title>Actions</Title>
-          <NewComment cardId={cardId}></NewComment>
 
-          <CommentsContainer>
-            <Title>Comments</Title>
-            <ul>
-              {filteredComments.map((comment) => {
-                return (
-                  <li key={comment.id}>
-                    <Title>{name}</Title>
-                    <Comment
-                      id={comment.id}
-                      commentValue={comment.comment}
-                    ></Comment>
-                  </li>
-                );
-              })}
-            </ul>
-          </CommentsContainer>
+          <Description cardDescription={cardDescription} id={cardId} />
+
+          <Title>Actions</Title>
+          <NewComment cardId={cardId} />
+
+          <CommentList cardId={cardId} />
         </Modal>
       </Container>
     </Root>
@@ -135,25 +108,25 @@ const CardModal: FC<CardViewProps> = ({
 };
 
 const Root = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: ${COLORS.shadowed};
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: ${COLORS.shadowed};
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
 `;
 
 const Container = styled.div`
+  max-width: 600px;
+  width: 100%;
   position: relative;
-  width: max-content;
   background-color: ${COLORS.blindingWhite};
   border-radius: 2px;
   padding: 10px;
@@ -162,8 +135,8 @@ const Container = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 768px;
-  min-height: 600px;
+  width: 100%;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 768px) {
@@ -178,27 +151,8 @@ const Header = styled.div`
   padding: 0 4px;
 `;
 
-const CardTitle = styled.h2`
-  display: none;
-  text-align: start;
-  color: black;
-  font-weight: 600;
-  max-height: 30px;
-  padding: 8px;
-  margin: 0;
-`;
-
-const EditTitleContainer = styled.div`
-  position: absolute;
-  max-height: 60px;
-  margin: 0 4px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 4px;
-  cursor: text;
-  width: 90%;
+const CardTitleContainer = styled.div`
+  width: 100%;
 `;
 
 const ListTitleContainer = styled.div`
@@ -225,10 +179,11 @@ const Title = styled.h2`
   font-family: sans-serif;
 `;
 
-const CommentsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
+const ErrorTitle = styled.p`
+  font-family: sans-serif;
+  color: ${COLORS.error};
+  font-size: 15px;
+  margin: 0;
+  min-height: 20px;
 `;
-
 export default CardModal;

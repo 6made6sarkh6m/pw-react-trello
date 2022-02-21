@@ -1,57 +1,65 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { COLORS } from "styles/colors";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
-import { saveUser } from "redux/ducks/User/UserSlice";
+import { saveUser } from "redux/ducks/User";
+import { Form, Field } from "react-final-form";
+import { TextInput, Button } from "components/ui";
+import { hasEmptyValue } from "helpers/validators";
+import { composeValidators } from "utils/composeValidators";
 type UsernameModalProps = {
-  onSubmit?: () => void;
+  onClose?: () => void;
 };
 
-const UsernameModal: FC<UsernameModalProps> = ({ onSubmit }) => {
+type Value = {
+  userName: string;
+};
+
+const UsernameModal: FC<UsernameModalProps> = ({ onClose }) => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [isValid, setIsValid] = useState<boolean>(true);
 
-  const handleOnSubmit = () => {
-    const name = username.trim();
-    if (name) {
-      dispatch(saveUser({ isAuth: true, name }));
-      onSubmit?.();
-    } else {
-      setIsValid(false);
-    }
-  };
-
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const name = username.trim();
-      if (name) {
-        dispatch(saveUser({ isAuth: true, name }));
-        onSubmit?.();
-      }
-    }
+  const onSubmit = (value: Value) => {
+    const name = value.userName;
+    dispatch(saveUser({ isAuth: true, name }));
+    onClose?.();
   };
 
   return (
     <Root>
       <PopupInner>
         <PopupTitle>What's your name?</PopupTitle>
-        <InputWrapper>
-          <Textarea
-            rows={1}
-            autoFocus={true}
-            placeholder="Type your name!"
-            onChange={(e) => setUsername(e.target.value)}
-            onKeyDown={handleonKeyDown}
-          ></Textarea>
-          <StyledButton primary={true} onClick={handleOnSubmit}>
-            SAVE
-          </StyledButton>
-        </InputWrapper>
-        {!isValid && <ErrorTitle>Please, type your name!</ErrorTitle>}
+
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit }) => (
+            <InputWrapper onSubmit={handleSubmit}>
+              <div style={{ width: "100%", flexDirection: "column" }}>
+                <Field
+                  name="userName"
+                  validate={composeValidators(hasEmptyValue)}
+                  render={({ input, rest, meta }) => {
+                    return (
+                      <>
+                        <TextInput
+                          autoFocus
+                          spellCheck={false}
+                          {...input}
+                          {...rest}
+                        />
+                        {meta.error && meta.touched && (
+                          <ErrorTitle>{meta.error}</ErrorTitle>
+                        )}
+                      </>
+                    );
+                  }}
+                />
+              </div>
+              <StyledButton type="submit" primary>
+                SAVE
+              </StyledButton>
+            </InputWrapper>
+          )}
+        />
       </PopupInner>
     </Root>
   );
@@ -82,7 +90,7 @@ const PopupInner = styled.div`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  background-color: ${COLORS.lightGrey};
+  background-color: ${COLORS.blindingWhite};
   border-radius: 3px;
   box-shadow: ${COLORS.boxShadow};
   display: flex;
@@ -93,7 +101,7 @@ const PopupInner = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.form`
   display: flex;
   flex-direction: row;
   align-items: center;

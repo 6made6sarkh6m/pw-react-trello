@@ -11,7 +11,7 @@ export type CardListData = Record<string, ListDataProps>;
 export const initialDeskState: CardListData = defaultLists;
 
 export const CardListSlice = createSlice({
-  name: "cardlist",
+  name: "cardlists",
   initialState: initialDeskState,
   reducers: {
     updateCardList(state, action: PayloadAction<ListDataProps>) {

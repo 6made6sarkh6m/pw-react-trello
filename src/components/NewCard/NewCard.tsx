@@ -1,60 +1,62 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
 import { COLORS } from "styles/colors";
 import { useDispatch } from "react-redux";
-import { addCard } from "redux/ducks/Card/CardSlice";
+import { addCard } from "redux/ducks/Card";
+import { Field, Form } from "react-final-form";
+import { TextInput, Button } from "components/ui";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
+
 interface NewCardProps {
   listId: string;
   onCancelAddingCard: () => void;
 }
 
+type Value = {
+  newCardTitle: string;
+};
+
 const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
   const dispatch = useDispatch();
-  const [currentTitle, setCurrentTitle] = useState("");
 
-  const handleonKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const cardTitle = currentTitle.trim();
-      if (cardTitle) {
-        dispatch(addCard({ cardTitle, listId }));
-        onCancelAddingCard();
-      }
-    }
-    if (e.key === "Escape") {
-      onCancelAddingCard();
-    }
-  };
-
-  const handleAddCard = () => {
-    const cardTitle = currentTitle.trim();
-    if (cardTitle) {
-      dispatch(addCard({ cardTitle, listId }));
-      onCancelAddingCard();
-    }
+  const onSubmit = (value: Value) => {
+    const cardTitle = value.newCardTitle;
+    dispatch(addCard({ cardTitle, listId }));
+    onCancelAddingCard();
   };
 
   return (
     <>
-      <CardItem>
-        <Textarea
-          autoFocus={true}
-          rows={2}
-          placeholder="Set card name"
-          onKeyDown={handleonKeyDown}
-          onChange={(e) => setCurrentTitle(e.target.value)}
-        ></Textarea>
-      </CardItem>
-      <ButtonContainer>
-        <StyledButton primary={true} onClick={handleAddCard}>
-          Add
-        </StyledButton>
-        <StyledButton onClick={() => onCancelAddingCard()}>
-          Cancel
-        </StyledButton>
-      </ButtonContainer>
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="newCardTitle"
+              validate={composeValidators(hasEmptyValue)}
+              render={({ input, rest }) => {
+                return (
+                  <CardItem>
+                    <TextInput
+                      autoFocus
+                      spellCheck={false}
+                      {...input}
+                      {...rest}
+                    />
+                  </CardItem>
+                );
+              }}
+            />
+            <ButtonContainer>
+              <StyledButton primary>Add</StyledButton>
+              <StyledButton onClick={() => onCancelAddingCard()}>
+                Cancel
+              </StyledButton>
+            </ButtonContainer>
+          </form>
+        )}
+      />
     </>
   );
 };
@@ -62,7 +64,7 @@ const NewCard: FC<NewCardProps> = ({ listId, onCancelAddingCard }) => {
 const CardItem = styled.div`
   display: flex;
   background-color: ${COLORS.blindingWhite};
-  width: 90%;
+  width: 100%;
   min-height: 50px;
   box-shadow: ${COLORS.boxShadow};
   cursor: pointer;

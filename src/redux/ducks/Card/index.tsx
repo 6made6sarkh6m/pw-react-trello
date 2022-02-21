@@ -1,1 +1,7 @@
-export { default as CardReducer } from "./CardSlice";
+export {
+  default as CardReducer,
+  addCard,
+  updateCard,
+  updateCardDescription,
+  deleteCard,
+} from "./CardSlice";

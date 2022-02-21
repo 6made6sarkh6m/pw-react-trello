@@ -1,29 +1,28 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Button } from "components/ui/components/Button";
-import { Textarea } from "components/ui/components/Textarea";
-import { CardProperties } from "enum/enum";
 import { useDispatch } from "react-redux";
-import { updateCardDescription } from "redux/ducks/Card/CardSlice";
+import { updateCardDescription } from "redux/ducks/Card";
+import { Form, Field } from "react-final-form";
+import { Textarea, Button } from "components/ui";
+import { FormApi } from "final-form";
+
 interface DescriptionProps {
   cardDescription: string;
   id: string;
 }
 
+type Value = {
+  description: string;
+};
 const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
   const dispatch = useDispatch();
   const editDescRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
-  const [description, setDescription] = useState(cardDescription);
-  const handleDescriptionUpdate = () => {
-    const descriptionCard = description.trim();
-    if (descriptionCard) {
-      dispatch(updateCardDescription({ id, descriptionCard }));
-      setIsEditingDescription(false);
-    } else {
-      setIsEditingDescription(false);
-      setDescription(cardDescription);
-    }
+
+  const onSubmit = (value: Value, form: FormApi<Value, "">) => {
+    const descriptionCard = value.description;
+    dispatch(updateCardDescription({ id, descriptionCard }));
+    setIsEditingDescription(false);
   };
 
   useEffect(() => {
@@ -33,60 +32,54 @@ const Description: FC<DescriptionProps> = ({ cardDescription, id }) => {
       editDescRef?.current?.blur?.();
     }
   }, [isEditingDescription]);
-  return (
-    <>
-      <DescriptionContainer>
-        <Title>Description</Title>
-        <Textarea
-          onClick={() => setIsEditingDescription(true)}
-          isEditing={isEditingDescription}
-          rows={8}
-          value={description}
-          placeholder="Type your description text"
-          onChange={(e) => setDescription(e.target.value)}
-          spellCheck={false}
-        ></Textarea>
-      </DescriptionContainer>
 
-      {isEditingDescription && (
-        <DescriptionControlConteiner>
-          <StyledButton primary={true} onClick={handleDescriptionUpdate}>
-            Save
-          </StyledButton>
-          <StyledButton
-            onClick={() => {
-              setIsEditingDescription(false);
-              setDescription(cardDescription);
-            }}
-          >
-            Cancel
-          </StyledButton>
-        </DescriptionControlConteiner>
-      )}
-    </>
+  return (
+    <DescriptionContainer>
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="description"
+              initialValue={cardDescription}
+              render={({ input, rest }) => {
+                return (
+                  <Textarea
+                    {...input}
+                    {...rest}
+                    onClick={() => setIsEditingDescription(true)}
+                    rows={8}
+                  />
+                );
+              }}
+            />
+            {isEditingDescription && (
+              <DescriptionControlConteiner>
+                <StyledButton primary>Save</StyledButton>
+                <StyledButton onClick={() => setIsEditingDescription(false)}>
+                  Cancel
+                </StyledButton>
+              </DescriptionControlConteiner>
+            )}
+          </form>
+        )}
+      />
+    </DescriptionContainer>
   );
 };
+
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
   padding: 0 4px;
   margin-top: 30px;
-`;
-const Title = styled.h2`
-  text-align: start;
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 600;
-  min-height: 20px;
-  padding: 8px;
-  margin: 0;
-  font-family: sans-serif;
 `;
 
 const DescriptionControlConteiner = styled.div`
   display: flex;
-  width: 30%;
+  max-width: 200px;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   padding: 0 4px;
@@ -94,7 +87,8 @@ const DescriptionControlConteiner = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 30%;
+  max-width: 100px;
+  width: 100%;
   align-items: center;
 `;
 

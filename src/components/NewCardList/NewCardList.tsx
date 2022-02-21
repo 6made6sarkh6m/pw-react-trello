@@ -1,62 +1,61 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import { Button } from "components/ui/components/Button";
 import { COLORS } from "styles/colors";
-import { Textarea } from "components/ui/components/Textarea";
 import { useDispatch } from "react-redux";
-import { addCardList } from "redux/ducks/CardList/CardListSlice";
+import { addCardList } from "redux/ducks/CardList";
+import { Form, Field } from "react-final-form";
+import { TextInput, Button } from "components/ui";
+import { composeValidators } from "utils/composeValidators";
+import { hasEmptyValue } from "helpers/validators";
 
 interface NewCardListProps {
   onCancelAddingCardList: () => void;
 }
 
+type Value = {
+  newCardList: string;
+};
+
 const NewCardList: FC<NewCardListProps> = ({ onCancelAddingCardList }) => {
   const dispatch = useDispatch();
-  const [cardListTitle, setCardListTitle] = useState("");
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
-      const listTitle = cardListTitle.trim();
-
-      if (listTitle) {
-        dispatch(addCardList({ listTitle }));
-        onCancelAddingCardList();
-      }
-    }
-
-    if (e.key === "Escape") {
-      onCancelAddingCardList();
-    }
-  };
-
-  const handleAddCard = () => {
-    const listTitle = cardListTitle.trim();
-
-    if (listTitle) {
-      dispatch(addCardList({ listTitle }));
-      onCancelAddingCardList();
-    }
+  const onSubmit = (value: Value) => {
+    const listTitle = value.newCardList;
+    dispatch(addCardList({ listTitle }));
+    onCancelAddingCardList();
   };
 
   return (
     <>
-      <CardListItem>
-        <Textarea
-          autoFocus={true}
-          rows={1}
-          placeholder="Set list title"
-          onKeyDown={handleOnKeyDown}
-          onChange={(e) => setCardListTitle(e.target.value)}
-        ></Textarea>
-        <ButtonContainer>
-          <StyledButton primary={true} onClick={handleAddCard}>
-            Add
-          </StyledButton>
-          <StyledButton  onClick={onCancelAddingCardList}>
-            Cancel
-          </StyledButton>
-        </ButtonContainer>
-      </CardListItem>
+      <Form
+        onSubmit={onSubmit}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <CardListItem>
+              <Field
+                name="newCardList"
+                validate={composeValidators(hasEmptyValue)}
+                render={({ input, rest }) => {
+                  return (
+                    <TextInput
+                      autoFocus
+                      spellCheck={false}
+                      {...input}
+                      {...rest}
+                    />
+                  );
+                }}
+              />
+              <ButtonContainer>
+                <StyledButton primary={true}>Add</StyledButton>
+                <StyledButton onClick={onCancelAddingCardList}>
+                  Cancel
+                </StyledButton>
+              </ButtonContainer>
+            </CardListItem>
+          </form>
+        )}
+      />
     </>
   );
 };
